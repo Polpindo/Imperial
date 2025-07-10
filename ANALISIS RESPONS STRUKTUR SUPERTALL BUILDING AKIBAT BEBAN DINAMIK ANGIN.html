@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1024">
-    <title>ANALISIS RESPONS STRUKTUR SUPERTALL BUILDING AKIBAT BEBAN DINAMIK ANGIN</title>
+    <title>ANALISIS RESPONS DINAMIS STRUKTUR SUPERTALL BUILDING AKIBAT BEBAN ANGIN</title>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -279,15 +279,16 @@
         }
         .calculation-step pre, .flowchart {
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 9px;
+            line-height: 1.2;
             color: #333;
-            line-height: 1.4;
             background-color: rgba(234, 227, 216, 0.4);
             border: 1px solid #e0d8cc;
             padding: 15px;
             margin: 10px 0;
             border-radius: 4px;
             white-space: pre-wrap;
+            overflow-x: auto;
         }
         .calculation-step strong {
             font-family: 'Arial', sans-serif;
@@ -306,6 +307,9 @@
             font-size: inherit;
             line-height: 1.5;
         }
+        .calculation-sheet .conclusion-text {
+            line-height: 1.1;
+        }
         .calculation-sheet em {
             font-style: italic;
         }
@@ -321,6 +325,16 @@
             padding: 10px;
             text-align: left;
         }
+        .image-wrapper {
+            margin-top: 38px;
+            margin-bottom: 20px;
+        }
+        .image-caption {
+            font-family: 'Times New Roman', serif;
+            font-size: 6px;
+            text-align: right;
+            margin-top: 5px;
+        }
 
     </style>
 </head>
@@ -330,7 +344,7 @@
     
     <div class="container">
         <div class="header">
-            <h1 class="title">ANALISIS RESPONS STRUKTUR SUPERTALL BUILDING AKIBAT BEBAN DINAMIK ANGIN</h1>
+            <h1 class="title">ANALISIS RESPONS DINAMIS STRUKTUR SUPERTALL BUILDING AKIBAT BEBAN ANGIN</h1>
             <h2 class="subtitle">Simulasi Parameterized Aerodynamic Wind Load terhadap Respons Dinamis Bangunan Sangat Tinggi (Studi Kasus DKI Jakarta)</h2>
             
             <div class="author-block">
@@ -350,7 +364,7 @@
                 Pemodelan parametrik beban angin pada gedung sangat tinggi di DKI Jakarta menjadi krusial mengingat risiko <em>vortex shedding</em> dan <em>buffeting</em> yang dapat memicu getaran berlebih (<em>excessive vibration</em>), terutama pada struktur dengan rasio kelangsingan tinggi. Perilaku dinamis semacam ini berpotensi menurunkan tingkat kenyamanan penghuni bahkan dapat memengaruhi stabilitas struktur secara keseluruhan.
             </p>
             <p>
-                Penelitian ini menganalisis respons dinamis struktur terhadap beban angin menggunakan perangkat lunak STAAD.Pro Connect Edition (Versi 22) menggunakan pendekatan analisis spektral linier berbasis metode elemen hingga (<em>Finite Element Method</em>). Beban angin dimodelkan berdasarkan parameter empiris dan semi-empiris dari standar internasional dan nasional, yaitu SNI 1727:2020, Eurocode EN 1991-1-4, dan ASCE 7-22, yang disusun berdasarkan data hasil uji terowongan angin dan pengamatan lapangan jangka panjang.
+                Penelitian ini menganalisis respons dinamis struktur terhadap beban angin menggunakan perangkat lunak STAAD.Pro V8i-SS6 (2020) menggunakan pendekatan analisis spektral linier berbasis metode elemen hingga (<em>Finite Element Method</em>). Beban angin dimodelkan berdasarkan parameter empiris dan semi-empiris dari standar internasional dan nasional, yaitu SNI 1727:2020, Eurocode EN 1991-1-4, dan ASCE 7-22, yang disusun berdasarkan data hasil uji terowongan angin dan pengamatan lapangan jangka panjang.
             </p>
             <p>
                 Studi kasus dilakukan pada model struktur tower setinggi 345 meter. Hasil analisis awal pada model dasar (tanpa sistem pengaku dan peredam tambahan) menunjukkan bahwa simpangan puncak lateral sebesar 1,4175 meter dan percepatan sebesar 127,4 mg telah melampaui ambang batas kenyamanan. Temuan ini menggarisbawahi urgensi penerapan solusi mitigasi terintegrasi, yang mencakup sistem pengaku lateral seperti inti beton bertulang (<em>reinforced concrete core</em>) dan <em>outrigger</em>, serta sistem peredam tambahan, untuk memastikan kelayakan desain pada bangunan sangat tinggi (<em>supertall building</em>) di lingkungan tropis urban seperti Jakarta.
@@ -682,6 +696,10 @@
 |           END           |
 +-------------------------+
             </pre>
+            <div class="image-wrapper">
+                <img src="https://raw.githubusercontent.com/Polpindo/Imperial/main/Ilustrasi%20Staad.Pro.jpg" alt="Ilustrasi STAAD.Pro" style="width: 100%; height: auto; display: block;">
+                <p class="image-caption">Ilustrasi perangkat lunak STAAD.Pro V8i-SS6 (Bentley Systems, 2020)</p>
+            </div>
             
             <div class="calculation-sheet">
                 <h3 class="sub-bab-title" style="font-size: 19px; font-family: 'Arial', sans-serif;">B. Parameter Dasar Bangunan dan Angin</h3>
@@ -778,7 +796,7 @@ a_peak,y = 3.71 * (2π*0.12)² * 0.0951 = 0.2006 m/s² => 20.46 mg
                 
                 <h3 class="sub-bab-title" style="font-size: 19px; font-family: 'Arial', sans-serif;">D. Evaluasi dan Kesimpulan Teknis</h3>
                 <div class="calculation-step">
-                    <strong>Evaluasi Batas Layan (Serviceability Limit State)</strong>
+                    <strong style="font-family:'Special Elite', monospace;">Evaluasi Batas Layan (Serviceability Limit State)</strong>
 <pre>
 1. Drift Antar Lantai:
    - Batas SNI: H/500 = 345/500 = 0.69 m
@@ -791,7 +809,7 @@ a_peak,y = 3.71 * (2π*0.12)² * 0.0951 = 0.2006 m/s² => 20.46 mg
    - Hasil Across-wind: 20.46 mg --> TIDAK MEMENUHI
 </pre>
                 </div>
-                <p><strong>Kesimpulan:</strong> Struktur aman terhadap drift, namun gagal memenuhi kriteria kenyamanan penghuni akibat akselerasi yang berlebihan. Diperlukan sistem peredam tambahan (TMD) untuk mereduksi getaran.</p>
+                <p class="conclusion-text"><strong>Kesimpulan:</strong> Struktur aman terhadap drift, namun gagal memenuhi kriteria kenyamanan penghuni akibat akselerasi yang berlebihan. Diperlukan sistem peredam tambahan (TMD) untuk mereduksi getaran.</p>
 
             </div>
         </div>
@@ -885,7 +903,7 @@ a_peak,y = 3.71 * (2π*0.12)² * 0.0951 = 0.2006 m/s² => 20.46 mg
                     <tbody>
                         <tr><td><strong>Tinggi / Lebar</strong></td><td>508m / 100m</td><td>426m / 28m</td><td>828m / ~150m (basis)</td><td>345m / 60m</td></tr>
                         <tr><td><strong>Rasio Kelangsingan</strong></td><td>5.1 : 1</td><td><strong>15.2 : 1 (Sangat Langsing)</strong></td><td>~5.5 : 1</td><td>5.75 : 1</td></tr>
-                        <tr><td><strong>Sistem Mitigasi Angin</strong></td><td>1. <strong>Struktur:</strong> Core & Outrigger<br>2. <strong>Mekanis:</strong> TMD Bola Baja 660 ton</td><td>1. <strong>Struktur:</strong> Core & Outrigger<br>2. <strong>Mekanis:</strong> 2 x TMD @ 650 ton<br>3. <strong>Aerodinamis:</strong> Lantai terbuka</td><td>1. <strong>Aerodinamis:</strong> Bentuk sayap "Y" & <em>setbacks</em> yang mengecil ke atas untuk disorganisasi <em>vortex</em></td><td><strong>Hanya Struktur:</strong> Core & Outrigger (dalam model awal)</td></tr>
+                        <tr><td><strong>Sistem Mitigasi Angin</strong></td><td>1. <strong>Struktur:</strong> Core & Outrigger<br>2. <strong>Mekanis:</strong> TMD Bola Baja 660 ton</td><td>1. <strong>Struktur:</strong> Core & Outrigger<br>2. <strong>Mekanis:</strong> 2 x TMD @ 650 ton<br>3. <strong>Aerodinamis:</strong> Lantai terbuka</td><td>1. <strong>Aerodinamis:</strong> Bentuk sayap "Y" & <em>setbacks</em> yang mengecil ke atas untuk disorganisasi <em>vortex</em></td><td><strong>Hanya Struktur Open Frame Beton Komposit Baja (dalam model awal)—disarankan menggunakan RC core & Outrigger dengan TMD</strong></td></tr>
                         <tr><td><strong>Simpangan Puncak (Tanpa Peredam)</strong></td><td>Estimasi: ~1.15 m (H/440)</td><td>Estimasi: ~1.5 m (H/280)</td><td>Estimasi: ~1.7 m (H/490)</td><td><strong>1.4175 m (H/244)</strong></td></tr>
                         <tr><td><strong>Simpangan Puncak (Dengan Peredam)</strong></td><td><strong>~0.95 m (H/530)</strong> - OK</td><td><strong>~1.2 m (H/355)</strong> - OK</td><td><strong>~1.5 m (H/550)</strong> - OK</td><td><strong>~1.2 m (H/285)</strong> - OK</td></tr>
                         <tr><td><strong>Akselerasi Puncak (Tanpa Peredam)</strong></td><td>~35 mg (Tidak Nyaman)</td><td>~50 mg (Sangat Tidak Nyaman)</td><td>~25 mg (Tidak Nyaman)</td><td><strong>127.4 mg (Along)</strong><br><strong>21.2 mg (Across)</strong></td></tr>
@@ -957,4 +975,4 @@ a_peak,y = 3.71 * (2π*0.12)² * 0.0951 = 0.2006 m/s² => 20.46 mg
     </div>
     
 </body>
-</html>
+</html>```
