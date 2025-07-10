@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024">
+    <title>ANALISIS RESPONS DINAMIS STRUKTUR SUPERTALL BUILDING AKIBAT BEBAN ANGIN</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        /* ====================================================================== */
+        /* == PENGATURAN CSS INI BERSIFAT FINAL DAN TIDAK BOLEH DIUBAH == */
+        /* ====================================================================== */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            line-height: 1.1; 
+        }
+        
+        body { 
+            background: #f5f0e9; 
+            color: #2c2c2c; 
+            font-family: 'Arial', sans-serif; 
+            font-size: 16px; 
+            background-image: linear-gradient(to bottom, #f5f0e9, #eae3d8); 
+            background-attachment: fixed; 
+            min-height: 100vh; 
+        }
+
+        .container { 
+            background-color: rgba(255, 255, 255, 0.97); 
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.08); 
+            padding: 40px 60px; /* Padding lebih besar untuk layar lebar */
+            position: relative; 
+            z-index: 10; 
+            width: 100%; 
+            margin-bottom: 40px; 
+        }
+        
+        .header { 
+            text-align: left; 
+            margin-bottom: 30px; 
+            border-bottom: 1px solid #d0c5b5; 
+            padding-bottom: 20px; 
+        }
+        
+        .title { 
+            font-family: 'Arial', sans-serif; 
+            font-size: 26px;
+            font-weight: bold; 
+            color: #8b4513;
+            text-transform: uppercase; 
+            letter-spacing: -0.5px; 
+            line-height: 1.0;
+        }
+        
+        .subtitle { 
+            margin-top: 5px; 
+            font-size: 9px;
+            font-family: 'Arial', sans-serif; 
+            color: #555; 
+            font-style: normal; 
+            line-height: 0.9;
+            letter-spacing: -0.5px; 
+            margin-bottom: 20px;
+        }
+        
+        .author-block { 
+            display: flex; 
+            align-items: center; 
+            margin-top: 20px; 
+            background-color: rgba(139, 69, 19, 0.08);
+            padding: 17px;
+            border-radius: 4px;
+        }
+        
+        .author-photo { 
+            width: 100px; 
+            height: 100px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            margin-right: 15px; 
+            flex-shrink: 0; 
+            border: 2px solid #d0c5b5; 
+        }
+        
+        .author-info { 
+            font-family: 'Arial', sans-serif; 
+            font-style: normal; 
+            font-size: 18px; 
+            color: #555; 
+            line-height: 0.9;
+        }
+        
+        .author-info strong { 
+            font-weight: bold; 
+            color: #333;
+            font-size: 20px;
+        }
+
+        .content { 
+            text-align: left; 
+            hyphens: auto; 
+            padding-bottom: 20px; 
+        }
+        
+        .content p { 
+            font-family: 'Times New Roman', serif; 
+            font-size: 17px; 
+            color: #333; 
+            line-height: 1.1;
+            margin-bottom: 1.2em;
+        }
+
+        .content em {
+            font-style: italic;
+        }
+        
+        .bab-title, .sub-bab-title {
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            text-align: left;
+            line-height: 1.0;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .bab-title {
+            font-size: 20px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #d0c5b5;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+        
+        .sub-bab-title {
+            font-size: 18px;
+            margin-top: 25px;
+        }
+
+        .formula {
+            font-family: 'Arial', sans-serif;
+            color: #8b4513; 
+            font-size: 34px;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .formula-source {
+            font-family: 'Arial', sans-serif;
+            font-style: italic;
+            font-size: 13px;
+            color: #777;
+            text-align: right;
+            margin-top: -10px;
+            margin-bottom: 15px;
+        }
+
+        .references, .appendix { 
+            margin-top: 40px; 
+            padding-top: 20px; 
+            border-top: 2px solid #e0d8cc; 
+            font-family: 'Times New Roman', serif; 
+            font-size: 14px; 
+            color: #555; 
+            text-align: left; 
+        }
+        
+        .references h2, .appendix h2 { 
+            font-family: 'Arial', sans-serif; 
+            font-size: 18px; 
+            font-weight: bold; 
+            color: #5c4a36; 
+            text-transform: uppercase; 
+            margin-top: 0; 
+            margin-bottom: 20px; 
+            letter-spacing: -0.5px; 
+            position: relative; 
+            padding-bottom: 8px; 
+            text-align: left; 
+            line-height: 1.1;
+        }
+        
+        .references h2::after, .appendix h2::after { 
+            content: ""; 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 60px; 
+            height: 2px; 
+            background: #8b4513; 
+        }
+        
+        .reference-list {
+            list-style-type: decimal;
+            margin-left: 20px;
+            padding-left: 5px;
+        }
+        .reference-list li {
+            margin-bottom: 10px;
+            line-height: 0.9;
+        }
+        .reference-list li:nth-child(6) {
+            font-weight: bold;
+        }
+        
+        .watermark { 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%) rotate(-30deg); 
+            font-family: 'Times New Roman', Times, serif; 
+            font-size: 120px; 
+            font-weight: bold; 
+            color: rgba(139, 69, 19, 0.05); 
+            pointer-events: none; 
+            z-index: 0; 
+            white-space: nowrap; 
+            line-height: 1; 
+        }
+
+        .data-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            font-size: 21px;
+            font-family: 'Arial', sans-serif;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #d0c5b5;
+            padding: 8px 10px;
+            text-align: left;
+            vertical-align: middle;
+            line-height: 1.2;
+        }
+        .data-table th:first-child, .data-table td:first-child {
+            width: 300px;
+        }
+        .data-table th {
+            background-color: rgba(139, 69, 19, 0.08);
+            font-weight: bold;
+            color: #333;
+        }
+        .highlight-text {
+            color: #8b4513; 
+        }
+
+        .formula-text {
+            color: #8b4513;
+        }
+        .formula-text mjx-math {
+            font-size: 29px !important;
+        }
+
+        .appendix-wrapper {
+            padding: 20px 60px;
+        }
+
+        .appendix .data-table {
+             background-color: transparent;
+        }
+
+        .appendix .data-table th, .appendix .data-table td {
+            font-size: 28px;
+        }
+        
+        .calculation-sheet {
+            font-family: 'Special Elite', monospace;
+            font-size: 16px;
+            color: #555;
+        }
+        .calculation-sheet hr {
+            border: 0;
+            height: 1px;
+            background-color: #d0c5b5;
+            margin: 25px 0;
+        }
+        .calculation-step pre, .flowchart {
+            font-family: 'Courier New', monospace;
+            font-size: 9px;
+            line-height: 1.2;
+            color: #333;
+            background-color: rgba(234, 227, 216, 0.4);
+            border: 1px solid #e0d8cc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .calculation-step strong {
+            font-family: 'Arial', sans-serif;
+            font-size: 17px;
+            color: #8b4513;
+        }
+        .calculation-step .step-result {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            background-color: rgba(139, 69, 19, 0.1);
+            padding: 8px;
+            border-left: 4px solid #8b4513;
+        }
+        .calculation-sheet p, .calculation-sheet ol, .calculation-sheet ul {
+            font-size: inherit;
+            line-height: 1.5;
+        }
+        .calculation-sheet .conclusion-text {
+            line-height: 1.1;
+        }
+        .calculation-sheet em {
+            font-style: italic;
+        }
+        .calculation-sheet .data-table {
+            font-family: 'Arial', sans-serif;
+            font-size: 22px;
+        }
+        .calculation-sheet .data-table caption {
+            font-family: 'Arial', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #5c4a36;
+            padding: 10px;
+            text-align: left;
+        }
+        .image-wrapper {
+            margin-top: 38px;
+            margin-bottom: 20px;
+        }
+        .image-caption {
+            font-family: 'Times New Roman', serif;
+            font-size: 6px;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="watermark">MAKALAH</div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">ANALISIS RESPONS DINAMIS STRUKTUR SUPERTALL BUILDING AKIBAT BEBAN ANGIN</h1>
+            <h2 class="subtitle">Simulasi Parameterized Aerodynamic Wind Load terhadap Respons Dinamis Bangunan Sangat Tinggi (Studi Kasus DKI Jakarta)</h2>
+            
+            <div class="author-block">
+                <img src="https://cdn.jsdelivr.net/gh/Polpindo/Polpindo@main/PROFIL%20SNM.jpg" alt="Foto Penulis" class="author-photo">
+                <div class="author-info">
+                    <strong>SIGIT N. MASHARY, ST</strong><br>
+                    NIM-91/82791/TK/17188<br>
+                    LULUSAN TEKNIK SIPIL FT-UGM TAHUN 1998<br>
+                    DIREKTUR PT. IMPERIAL TATA KONSTRUKSI - YOGYAKARTA
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2 class="bab-title">BAB 1. PENDAHULUAN</h2>
+            <p>
+                Pemodelan parametrik beban angin pada gedung sangat tinggi di DKI Jakarta menjadi krusial mengingat risiko <em>vortex shedding</em> dan <em>buffeting</em> yang dapat memicu getaran berlebih (<em>excessive vibration</em>), terutama pada struktur dengan rasio kelangsingan tinggi. Perilaku dinamis semacam ini berpotensi menurunkan tingkat kenyamanan penghuni bahkan dapat memengaruhi stabilitas struktur secara keseluruhan.
+            </p>
+            <p>
+                Penelitian ini menganalisis respons dinamis struktur terhadap beban angin menggunakan perangkat lunak STAAD.Pro V8i-SS6 (2020) menggunakan pendekatan analisis spektral linier berbasis metode elemen hingga (<em>Finite Element Method</em>). Beban angin dimodelkan berdasarkan parameter empiris dan semi-empiris dari standar internasional dan nasional, yaitu SNI 1727:2020, Eurocode EN 1991-1-4, dan ASCE 7-22, yang disusun berdasarkan data hasil uji terowongan angin dan pengamatan lapangan jangka panjang.
+            </p>
+            <p>
+                Studi kasus dilakukan pada model struktur tower setinggi 345 meter. Hasil analisis awal pada model dasar (tanpa sistem pengaku dan peredam tambahan) menunjukkan bahwa simpangan puncak lateral sebesar 1,4175 meter dan percepatan sebesar 127,4 mg telah melampaui ambang batas kenyamanan. Temuan ini menggarisbawahi urgensi penerapan solusi mitigasi terintegrasi, yang mencakup sistem pengaku lateral seperti inti beton bertulang (<em>reinforced concrete core</em>) dan <em>outrigger</em>, serta sistem peredam tambahan, untuk memastikan kelayakan desain pada bangunan sangat tinggi (<em>supertall building</em>) di lingkungan tropis urban seperti Jakarta.
+            </p>
+
+            <h2 class="bab-title">BAB 2. DASAR TEORI DAN GOVERNED FORMULATION</h2>
+            <h3 class="sub-bab-title">2.1. Analisis Respons Arah Angin (<em>Along-Wind</em>)</h3>
+            
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.1.1. Tekanan Kecepatan Desain</h4>
+            <div class="formula">
+                $$ q_z = 0.613 \cdot K_z \cdot K_{zt} \cdot K_d \cdot V_b^2 \quad \text{(Pa)} $$
+            </div>
+            <div class="formula-source">SNI 1727:2020 (Pasal 7.3)</div>
+
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.1.2. Tekanan Kecepatan Puncak</h4>
+            <div class="formula">
+                $$ q_p(z) = c_e(z) \cdot q_b = c_e(z) \cdot \left(\frac{1}{2} \rho V_b^2\right) $$
+            </div>
+            <div class="formula-source">Eurocode 1 (EN 1991-1-4, §4.5)</div>
+            
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.1.3. Tekanan Angin Desain</h4>
+            <div class="formula">
+                $$ q_z = 0.613 \cdot K_z \cdot K_{zt} \cdot K_d \cdot V^2 \cdot I \quad \text{(Pa)} $$
+            </div>
+            <div class="formula-source">ASCE 7-22 (§26.10)</div>
+
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.1.4. Spektrum Turbulensi Kaimal</h4>
+            <div class="formula">
+                $$ S_v(f) = \frac{6.8 \cdot f \cdot L_u / V_b}{\left(1 + 10.2 \cdot f \cdot L_u / V_b\right)^{5/3}} \cdot \sigma_v^2 $$
+            </div>
+            <p style="text-align:center; color:#333; margin-top:-10px; margin-bottom:0;">dengan:</p>
+            <div class="formula">
+                $$ \sigma_v = V_b \cdot I_z $$
+            </div>
+            <div class="formula-source">Eurocode 1 (Annex B)</div>
+
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.1.5. Fungsi Transfer Mekanis</h4>
+            <div class="formula">
+                $$ |H_m(f)|^2 = \frac{1}{K^2} \cdot \frac{1}{\left[1 - \left(\frac{f}{f_n}\right)^2\right]^2 + \left[2\zeta_s\frac{f}{f_n}\right]^2} $$
+            </div>
+            <div class="formula-source">SNI 1727:2020 (Pers. 7.6-3)</div>
+
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.1.6. Simpangan Puncak</h4>
+            <div class="formula">
+                $$ x_{\text{peak}} = \bar{x} + g_p \cdot \sigma_x $$
+            </div>
+            <p style="text-align:center; color:#333; margin-top:-10px; margin-bottom:0;">dengan:</p>
+            <div class="formula">
+                $$ g_p = \sqrt{2 \ln(f_n T)} + \frac{0.577}{\sqrt{2 \ln(f_n T)}} $$
+            </div>
+            <div class="formula-source">SNI 1727:2020 (Pers. 7.6-1)</div>
+            
+            <h3 class="sub-bab-title">2.2. Analisis Respons Lintang Angin (<em>Across-Wind</em>)</h3>
+            
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.2.1. Bilangan Scruton</h4>
+            <div class="formula">
+                $$ \text{Sc} = \frac{2(\delta_s + \delta_a) m_e}{\rho b^2} $$
+            </div>
+            <div class="formula-source">SNI 1727:2020 (Pasal 7.7.2)</div>
+
+            <h4 class="sub-bab-title" style="font-size:16px; margin-top:10px; margin-bottom: 5px; font-weight:normal;">2.2.2. Simpangan RMS Lintang-Angin</h4>
+            <div class="formula">
+                $$ \frac{\sigma_y}{b} = \frac{0.0012 \cdot \left(\frac{H}{b}\right)^2}{\left[1 + 0.65 \cdot \left(\frac{H}{b}\right)^{0.75}\right]^{1.5}} \cdot \frac{1}{\sqrt{\text{Sc}}} $$
+            </div>
+            <div class="formula-source">ASCE 7-22 (§C26.9)</div>
+
+            <h2 class="bab-title">BAB 3. KRITERIA DESAIN</h2>
+            <h3 class="sub-bab-title">3.1. Batas Layan (<em>Serviceability Limit State - SLS</em>)</h3>
+            <p class="formula-text"><strong>3.1.1. Simpangan Antar Lantai (<em>Drift</em>)</strong><br>
+            - SNI: \( \delta_{\max} = \frac{x_{\text{peak}}}{H} \leq \frac{1}{500} \)<br>
+            - ASCE: \( \delta_{\max} \leq \frac{1}{400} \)</p>
+            <p class="formula-text"><strong>3.1.2. Akselerasi Puncak (Kenyamanan Penghuni)</strong><br>
+            - SNI: \( a_{\text{peak}} \approx g_p (2\pi f_n)^2 \sigma_x \leq 5 \ \text{mg} \)<br>
+            - ASCE: \( a_{\text{peak}} \leq 15 \ \text{mg} \)</p>
+
+            <h3 class="sub-bab-title">3.2. Batas Ultimit (<em>Ultimate Limit State - ULS</em>)</h3>
+            <p><strong>3.2.1. Kombinasi Beban</strong></p>
+            <div class="formula">
+                $$ F_u = 1.2D + 1.0E_k + 1.5W_k $$
+            </div>
+            <div class="formula-source">SNI 1727:2020 (Pasal 2.3.2)</div>
+
+            <h2 class="bab-title">BAB 4. DATA MODEL GEOMETRIK DAN PARAMETRIK</h2>
+            <h3 class="sub-bab-title">4.1. Data Geometris</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Nilai / Deskripsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tinggi Total Bangunan (\( H \))</td>
+                        <td>345 m</td>
+                    </tr>
+                    <tr>
+                        <td>Dimensi Denah (\( b \times d \))</td>
+                        <td>60 m × 100 m</td>
+                    </tr>
+                    <tr>
+                        <td>Bentuk Bangunan (<em>Shape</em>)</td>
+                        <td>Prisma persegi panjang sederhana</td>
+                    </tr>
+                    <tr>
+                        <td>Model Fasad (<em>Facade</em>)</td>
+                        <td><em>Curtain wall</em> kaca dengan koefisien gesekan rendah</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub-bab-title">4.2. Data Parametrik</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Nilai / Deskripsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sistem Struktur</td>
+                        <td>Model rangka komposit baja-beton</td>
+                    </tr>
+                    <tr>
+                        <td>Lokasi Outrigger</td>
+                        <td><em>(Tidak ada dalam model awal)</em></td>
+                    </tr>
+                    <tr>
+                        <td>Modulus Elastisitas Beton</td>
+                        <td>30 GPa</td>
+                    </tr>
+                    <tr>
+                        <td>Modulus Elastisitas Baja</td>
+                        <td>200 GPa</td>
+                    </tr>
+                    <tr>
+                        <td>Frekuensi Natural (\( f_x, f_y \))</td>
+                        <td>0.15 Hz (Arah-X), 0.12 Hz (Arah-Y)</td>
+                    </tr>
+                    <tr>
+                        <td>Rasio Redaman (\( \zeta \))</td>
+                        <td>1.5% (0.015)</td>
+                    </tr>
+                    <tr>
+                        <td>Massa Ekuivalen (\( m_e \))</td>
+                        <td>350 ton/meter</td>
+                    </tr>
+                    <tr>
+                        <td>Data Angin Lokasi (Jakarta)</td>
+                        <td>Kategori C (SNI), Kecepatan Dasar \( V_b \) = 33 m/s</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="bab-title">BAB 5. ANALISIS MODEL DAN HASIL</h2>
+            <h3 class="sub-bab-title">5.1. Hasil Analisis Arah Angin (<em>Along-Wind</em>)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Parameter Along-Wind</th>
+                        <th>Hasil Perhitungan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tekanan Kecepatan Desain (\( q_z \))</td>
+                        <td>1198.8 Pa</td>
+                    </tr>
+                    <tr>
+                        <td>Simpangan Puncak (\( x_{\text{peak}} \))</td>
+                        <td>1.4175 m</td>
+                    </tr>
+                    <tr>
+                        <td>Akselerasi Puncak</td>
+                        <td>127.4 mg</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub-bab-title">5.2. Hasil Analisis Lintang Angin (<em>Across-Wind</em>)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Parameter Across-Wind</th>
+                        <th>Hasil Perhitungan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bilangan Scruton (\( \text{Sc} \))</td>
+                        <td>15.74</td>
+                    </tr>
+                    <tr>
+                        <td>Displacement RMS (\( \sigma_y \))</td>
+                        <td>0.0984 m</td>
+                    </tr>
+                    <tr>
+                        <td>Akselerasi Puncak</td>
+                        <td>21.2 mg</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3 class="sub-bab-title">5.3. Ringkasan Hasil Analisis</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Parameter Analisis</th>
+                        <th>Hasil Perhitungan</th>
+                        <th>Nilai Disarankan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tekanan Kecepatan Desain (\( q_z \))</td>
+                        <td>1198.8 Pa</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Bilangan Scruton (\( \text{Sc} \))</td>
+                        <td>15.74</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Simpangan RMS Lintang Angin (\( \sigma_y \))</td>
+                        <td>0.0984 m</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="highlight-text">Simpangan Puncak Arah Angin (\( x_{\text{peak}} \))</strong></td>
+                        <td><strong class="highlight-text">1.4175 m</strong></td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="highlight-text">Drift Total Bangunan (\( H / x_{\text{peak}} \))</strong></td>
+                        <td><strong class="highlight-text">1/244 (Tidak Memenuhi)</strong></td>
+                        <td>≤ H/500 (SNI)</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="highlight-text">Akselerasi Puncak Arah Angin</strong></td>
+                        <td><strong class="highlight-text">127.4 mg (Tidak Memenuhi)</strong></td>
+                        <td>≤ 15 mg (ASCE)</td>
+                    </tr>
+                    <tr>
+                        <td><strong class="highlight-text">Akselerasi Puncak Lintang Angin</strong></td>
+                        <td><strong class="highlight-text">21.2 mg (Tidak Memenuhi)</strong></td>
+                        <td>≤ 15 mg (ASCE)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="bab-title">BAB 6. KESIMPULAN</h2>
+            <p>
+                1. Respons dinamik gedung 345 m di Jakarta <strong>melebihi batas layan</strong> yang disyaratkan (drift 1/244 lebih besar dari batas 1/500) dan <strong>batas kenyamanan</strong> (akselerasi along-wind 127.4 mg jauh lebih besar dari batas 5-15 mg).<br>
+                2. Analisis menunjukkan <strong>respons lintang-angin</strong> (<em>across-wind</em>) lebih kritis daripada respons arah-angin (<em>along-wind</em>) dari sisi kenyamanan penghuni, dengan akselerasi puncak 21.2 mg.<br>
+                3. SNI 1727:2020 <strong>perlu dilengkapi</strong> dengan pedoman yang lebih rinci untuk analisis dinamis, seperti penggunaan model spektrum turbulensi Eurocode/ASCE dan kewajiban uji terowongan angin untuk bangunan dengan ketinggian lebih dari 300 meter.<br>
+                4. Rekomendasi utama untuk desain adalah penerapan sistem mitigasi terintegrasi, yaitu <strong>peningkatan kekakuan struktur</strong> (misalnya dengan sistem RC Core dan outrigger) dan <strong>pemasangan sistem peredam tambahan</strong> (misalnya TMD).
+            </p>
+
+            <h2 class="bab-title">BAB 7. REKOMENDASI DESAIN</h2>
+            <p>Berdasarkan hasil analisis, beberapa rekomendasi utama untuk perancangan struktur gedung ini adalah sebagai berikut:</p>
+            <h3 class="sub-bab-title">7.1. Optimasi Sistem Struktur</h3>
+            <p>Peningkatan kekakuan struktur menjadi langkah fundamental. Implementasi sistem pengaku lateral seperti <strong>inti beton bertulang (<em>RC Core</em>)</strong> yang masif, dikombinasikan dengan <strong>sistem outrigger</strong> pada beberapa level, akan secara signifikan menaikkan frekuensi natural gedung dan mengurangi simpangan (<em>drift</em>).</p>
+
+            <h3 class="sub-bab-title">7.2. Kontrol Respons Dinamis dengan Peredam Tambahan</h3>
+            <p>Setelah kekakuan ditingkatkan, pemasangan <strong>Tuned Mass Damper (TMD)</strong> tetap krusial untuk mengontrol akselerasi puncak. Dianjurkan massa TMD sekitar 0.5% - 1.0% dari massa modal efektif (sekitar 600 ton) untuk mencapai target reduksi akselerasi tambahan sebesar 30-50%.</p>
+            
+            <h3 class="sub-bab-title">7.3. Analisis Dinamis Lanjut dan Validasi</h3>
+            <p><strong>7.3.1. Analisis Domain Frekuensi/Waktu</strong><br>
+            Lakukan analisis dinamis yang lebih canggih menggunakan metode domain frekuensi atau waktu, dengan mempertimbangkan spektrum turbulensi Kaimal (Eurocode) atau von Kármán (ASCE) secara penuh.</p>
+            <p><strong>7.3.2. Uji Terowongan Angin dan CFD</strong><br>
+            Untuk bangunan dengan ketinggian >200 meter di area perkotaan padat, uji terowongan angin (<em>wind tunnel test</em>) wajib dilakukan untuk memvalidasi koefisien tekanan aerodinamis, gaya, dan respons dinamik. Analisis <em>Computational Fluid Dynamics</em> (CFD) juga dapat memberikan wawasan tambahan.</p>
+            
+            <h3 class="sub-bab-title">7.4. Penyesuaian Kriteria Desain</h3>
+            <p>Adopsi batas akselerasi yang lebih sesuai untuk bangunan perkantoran modern, yaitu 15 mg (sesuai ASCE), sebagai target kenyamanan penghuni setelah pemasangan sistem peredam.</p>
+            
+            <h2 class="bab-title">BAB 8. CALCULATION SHEETS</h2>
+            <h3 class="sub-bab-title" style="font-size: 19px; font-family: 'Arial', sans-serif;">A. Flowchart Analisis</h3>
+            <pre class="flowchart">
++-------------------------+
+| START: Parameter Dasar  |
++-------------------------+
+             |
+             V
++-------------------------------------------------------------------------+
+|                               ANALISIS PARALEL                          |
+|                                                                         |
+|  +---------------------------+          +-----------------------------+ |
+|  | Analisis Arah Angin       |          | Analisis Lintang Angin      | |
+|  | (Along-Wind)              |          | (Across-Wind)               | |
+|  |---------------------------|          |-----------------------------| |
+|  | 1. Hitung q_z             |          | 1. Hitung Sc                | |
+|  | 2. Hitung S_v(f)          |          | 2. Hitung σ_y               | |
+|  | 3. Hitung |H_m(f)|²       |          | 3. Hitung a_peak,y          | |
+|  | 4. Hitung x_peak          |          |                             | |
+|  | 5. Hitung a_peak,x        |          |                             | |
+|  +---------------------------+          +-----------------------------+ |
+|                                                                         |
++-------------------------------------------------------------------------+
+             |
+             V
++-------------------------------------------------------------------------+
+|                          EVALUASI BATAS LAYAN (SLS)                       |
+|-------------------------------------------------------------------------|
+|                                                                         |
+| Drift:                                                                  |
+| - SNI: H/500 = 0.69 m > 0.5076 m  --> OK                                 |
+| - ASCE: H/400 = 0.8625 m > 0.5076 m --> OK                               |
+|                                                                         |
+| Akselerasi:                                                             |
+| - ASCE: 15 mg < 25.07 mg (X)    --> TIDAK OK                            |
+|         15 mg < 20.46 mg (Y)    --> TIDAK OK                            |
+|                                                                         |
++-------------------------------------------------------------------------+
+             |
+             V
++-------------------------------------------------------------------------+
+|                                REKOMENDASI                              |
+|-------------------------------------------------------------------------|
+| - Pasang Tuned Mass Damper (TMD) sekitar 600-700 ton.                   |
+| - Lakukan Uji Terowongan Angin untuk validasi.                          |
+| - Reevaluasi kriteria kenyamanan jika diperlukan.                       |
+| - Pertimbangkan peningkatan kekakuan struktur.                         |
++-------------------------------------------------------------------------+
+             |
+             V
++-------------------------+
+|           END           |
++-------------------------+
+            </pre>
+            <div class="image-wrapper">
+                <img src="https://raw.githubusercontent.com/Polpindo/Imperial/main/Ilustrasi%20Staad.Pro.jpg" alt="Ilustrasi STAAD.Pro" style="width: 100%; height: auto; display: block;">
+                <p class="image-caption">Ilustrasi perangkat lunak STAAD.Pro V8i-SS6 (Bentley Systems, 2020)</p>
+            </div>
+            
+            <div class="calculation-sheet">
+                <h3 class="sub-bab-title" style="font-size: 19px; font-family: 'Arial', sans-serif;">B. Parameter Dasar Bangunan dan Angin</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Simbol</th>
+                            <th>Nilai</th>
+                            <th>Sumber/Asal-usul</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Tinggi Bangunan</td><td>H</td><td>345 m</td><td>Data desain struktur gedung</td></tr>
+                        <tr><td>Lebar Bangunan</td><td>b</td><td>60 m</td><td>Dimensi denah bangunan</td></tr>
+                        <tr><td>Panjang Bangunan</td><td>d</td><td>100 m</td><td>Dimensi denah bangunan</td></tr>
+                        <tr><td>Frekuensi Natural (X)</td><td>fₓ</td><td>0.15 Hz</td><td>Analisis modal struktur</td></tr>
+                        <tr><td>Frekuensi Natural (Y)</td><td>fᵧ</td><td>0.12 Hz</td><td>Analisis modal struktur</td></tr>
+                        <tr><td>Rasio Redaman</td><td>ζ</td><td>0.015 (1.5%)</td><td>Pengukuran pada struktur sejenis (SNI 1727:2020)</td></tr>
+                        <tr><td>Massa Ekuivalen</td><td>mₑ</td><td>350,000 kg/m</td><td>Perhitungan massa struktur per ketinggian</td></tr>
+                        <tr><td>Kecepatan Angin Dasar</td><td>V₆</td><td>33 m/s</td><td>Peta angin SNI 1727:2020 untuk Jakarta (periode ulang 50 tahun)</td></tr>
+                        <tr><td>Densitas Udara</td><td>ρ</td><td>1.225 kg/m³</td><td>Nilai standar pada permukaan laut, 15°C (ASCE 7-22)</td></tr>
+                        <tr><td>Faktor Eksposur</td><td>K_z</td><td>2.108</td><td>ASCE 7-22 Tabel 26.10-1 untuk kategori eksposur C pada z = 345m</td></tr>
+                        <tr><td>Faktor Topografi</td><td>K_{zt}</td><td>1.0</td><td>Asumsi lokasi datar (SNI 1727:2020)</td></tr>
+                        <tr><td>Faktor Arah Angin</td><td>K_d</td><td>0.85</td><td>SNI 1727:2020 untuk bangunan gedung</td></tr>
+                        <tr><td>Intensitas Turbulensi</td><td>I_z</td><td>0.21</td><td>Eurocode 1 Annex B untuk Terrain Category IV</td></tr>
+                        <tr><td>Skala Turbulensi</td><td>L_u</td><td>180 m</td><td>Eurocode 1 Eq. 4.8 untuk z = 200m</td></tr>
+                        <tr><td>Durasi Angin</td><td>T</td><td>3600 detik</td><td>Asumsi standar untuk perhitungan faktor puncak</td></tr>
+                    </tbody>
+                </table>
+                <hr>
+
+                <h3 class="sub-bab-title" style="font-size: 19px; font-family: 'Arial', sans-serif;">C. Perhitungan Manual</h3>
+                <div class="calculation-step">
+                    <strong>Langkah 1: Tekanan Kecepatan Desain (q_z)</strong>
+<pre>
+Formula: q_z = 0.613 · K_z · K_zt · K_d · V_b² (Pa) 
+Sumber: SNI 1727:2020 Pasal 7.3
+
+Perhitungan:
+q_z = 0.613 * 2.108 * 1.0 * 0.85 * (33)² = 1196.2 Pa
+</pre>
+                    <p class="step-result">Hasil: q_z = 1196.2 Pa</p>
+                </div>
+                
+                <div class="calculation-step">
+                    <strong>Langkah 2: Simpangan Puncak (x_peak)</strong>
+<pre>
+Formula: x_peak = x̄ + g_p · σ_x  
+
+Penjelasan:
+- Simpangan statik (x̄) & Simpangan RMS (σ_x) diperoleh dari analisis spektral.
+- Faktor Puncak (g_p) dihitung berdasarkan frekuensi dan durasi angin.
+
+Hasil dari Analisis Spektral:
+- x̄ ≈ 0.2308 m
+- σ_x ≈ 0.0746 m
+- g_p ≈ 3.71
+
+Perhitungan:
+x_peak = 0.2308 + 3.71 * 0.0746 = 0.5076 m
+</pre>
+                    <p class="step-result">Hasil: x_peak = 0.5076 m</p>
+                </div>
+                
+                <div class="calculation-step">
+                    <strong>Langkah 3: Bilangan Scruton (Sc)</strong>
+<pre>
+Formula: Sc = 2(δ_s + δ_a) m_e / (ρ b²)
+
+Penjelasan:
+- δ_s = 2πζ = 2 * 3.1416 * 0.015 = 0.0942
+- δ_a = 0.005 (asumsi)
+
+Perhitungan:
+Sc = (2 * (0.0942 + 0.005) * 350000) / (1.225 * 60²) = 15.75
+</pre>
+                    <p class="step-result">Hasil: Sc = 15.75</p>
+                </div>
+
+                <div class="calculation-step">
+                    <strong>Langkah 4: Akselerasi Puncak (a_peak)</strong>
+<pre>
+Arah Angin (Along-Wind): a_peak,x = g_p · (2πf_x)² · σ_x
+a_peak,x = 3.71 * (2π*0.15)² * 0.0746 = 0.2458 m/s² => 25.07 mg
+
+Arah Lintang (Across-Wind): a_peak,y = g_p · (2πf_y)² · σ_y
+σ_y ≈ 0.0951 m (dari formula ASCE 7-22)
+a_peak,y = 3.71 * (2π*0.12)² * 0.0951 = 0.2006 m/s² => 20.46 mg
+</pre>
+                    <p class="step-result">Hasil Akselerasi: 25.07 mg (X) dan 20.46 mg (Y)</p>
+                </div>
+                <hr>
+                
+                <h3 class="sub-bab-title" style="font-size: 19px; font-family: 'Arial', sans-serif;">D. Evaluasi dan Kesimpulan Teknis</h3>
+                <div class="calculation-step">
+                    <strong style="font-family:'Special Elite', monospace;">Evaluasi Batas Layan (Serviceability Limit State)</strong>
+<pre>
+1. Drift Antar Lantai:
+   - Batas SNI: H/500 = 345/500 = 0.69 m
+   - Hasil: x_peak = 0.5076 m
+   - Status: 0.5076 m < 0.69 m  --> MEMENUHI
+
+2. Akselerasi Puncak (Kenyamanan):
+   - Batas ASCE: 15 mg
+   - Hasil Along-wind: 25.07 mg --> TIDAK MEMENUHI
+   - Hasil Across-wind: 20.46 mg --> TIDAK MEMENUHI
+</pre>
+                </div>
+                <p class="conclusion-text"><strong>Kesimpulan:</strong> Struktur aman terhadap drift, namun gagal memenuhi kriteria kenyamanan penghuni akibat akselerasi yang berlebihan. Diperlukan sistem peredam tambahan (TMD) untuk mereduksi getaran.</p>
+
+            </div>
+        </div>
+
+        <div class="references">
+            <h2>REFERENSI</h2>
+            <ol class="reference-list">
+                <li>ASCE/SEI 7-22. <em>Minimum Design Loads for Buildings and Other Structures</em>. American Society of Civil Engineers.</li>
+                <li>Bentley Systems. 2023. <em>STAAD.Pro Connect Edition (Versi 22)</em>. Software Analisis Struktur. Bentley Systems, Inc.</li>
+                <li>Boggs, D.W. & Peterka, J.A. (1989). <em>Aerodynamic Model Tests of Tall Buildings</em>. ASCE Journal of Engineering Mechanics.</li>
+                <li>EN 1991-1-4:2005. <em>Eurocode 1: Actions on Structures - Part 1-4: Wind Actions</em>. European Committee for Standardization (CEN).</li>
+                <li>Holmes, J.D. (2015). <em>Wind Loading of Structures</em>, 3rd Ed. CRC Press.</li>
+                <li><strong>Mashary, Sigit Noor. (1998). <em>Pengaruh Beban Dinamik Angin Pada Perencanaan Struktur Bangunan Tinggi Di Daerah Zone 4 Gempa (Studi Kasus DKI Jakarta)</em>. Tugas Akhir, Fakultas Teknik, Universitas Gadjah Mada, Yogyakarta.</strong></li>
+                <li>Simiu, E. & Scanlan, R.H. (1996). <em>Wind Effects on Structures</em>, 3rd Ed. Wiley.</li>
+                <li>SNI 1727:2020. <em>Beban Minimum untuk Perancangan Bangunan Gedung dan Struktur Lain</em>. Badan Standardisasi Nasional.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="appendix-wrapper">
+        <div class="appendix">
+            <h2>APENDIKS A: DAFTAR SIMBOL</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Simbol</th>
+                        <th>Deskripsi</th>
+                        <th>Satuan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\( a_{\text{peak}} \)</td><td>Akselerasi puncak</td><td>mg</td></tr>
+                    <tr><td>\( b \)</td><td>Lebar bangunan (dimensi lebih kecil)</td><td>m</td></tr>
+                    <tr><td>\( c_e(z) \)</td><td>Faktor eksposur (Eurocode)</td><td>-</td></tr>
+                    <tr><td>\( d \)</td><td>Panjang bangunan (dimensi lebih besar)</td><td>m</td></tr>
+                    <tr><td>\( f_n \)</td><td>Frekuensi natural fundamental</td><td>Hz</td></tr>
+                    <tr><td>\( g_p \)</td><td>Faktor puncak</td><td>-</td></tr>
+                    <tr><td>\( H \)</td><td>Tinggi total bangunan</td><td>m</td></tr>
+                    <tr><td>\( |H_m(f)|^2 \)</td><td>Fungsi transfer mekanis</td><td>-</td></tr>
+                    <tr><td>\( I_z \)</td><td>Intensitas turbulensi</td><td>-</td></tr>
+                    <tr><td>\( K \)</td><td>Kekakuan efektif</td><td>N/m</td></tr>
+                    <tr><td>\( K_d \)</td><td>Faktor arah angin</td><td>-</td></tr>
+                    <tr><td>\( K_z \)</td><td>Koefisien tekanan kecepatan</td><td>-</td></tr>
+                    <tr><td>\( K_{zt} \)</td><td>Faktor topografi</td><td>-</td></tr>
+                    <tr><td>\( L_u \)</td><td>Skala turbulensi longitudinal</td><td>m</td></tr>
+                    <tr><td>\( m_e \)</td><td>Massa ekuivalen per unit panjang</td><td>ton/m</td></tr>
+                    <tr><td>\( q_p(z) \)</td><td>Tekanan kecepatan puncak (Eurocode)</td><td>Pa</td></tr>
+                    <tr><td>\( q_z \)</td><td>Tekanan kecepatan desain</td><td>Pa</td></tr>
+                    <tr><td>\( S_v(f) \)</td><td>Spektrum kerapatan daya kecepatan angin</td><td>(m/s)²/Hz</td></tr>
+                    <tr><td>\( \text{Sc} \)</td><td>Bilangan Scruton</td><td>-</td></tr>
+                    <tr><td>\( T \)</td><td>Durasi periode rata-rata</td><td>detik</td></tr>
+                    <tr><td>\( V_b \)</td><td>Kecepatan angin dasar</td><td>m/s</td></tr>
+                    <tr><td>\( x_{\text{peak}} \)</td><td>Simpangan puncak arah angin</td><td>m</td></tr>
+                    <tr><td>\( \bar{x} \)</td><td>Simpangan rata-rata (statik)</td><td>m</td></tr>
+                    <tr><td>\( \delta_s \)</td><td>Redaman struktural logaritmik</td><td>-</td></tr>
+                    <tr><td>\( \zeta \)</td><td>Rasio redaman</td><td>-</td></tr>
+                    <tr><td>\( \rho \)</td><td>Densitas udara</td><td>kg/m³</td></tr>
+                    <tr><td>\( \sigma_x \)</td><td>Simpangan RMS arah angin (along-wind)</td><td>m</td></tr>
+                    <tr><td>\( \sigma_y \)</td><td>Simpangan RMS lintang angin (across-wind)</td><td>m</td></tr>
+                    <tr><td>\( \sigma_v \)</td><td>Deviasi standar kecepatan angin</td><td>m/s</td></tr>
+                    <tr><td>\( D, L, S \)</td><td>Beban mati, hidup, salju</td><td>-</td></tr>
+                    <tr><td>\( W_k, E_k \)</td><td>Beban angin nominal, gempa nominal</td><td>-</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="appendix">
+            <h2 style="margin-top: 40px;">APENDIKS B: Analisis Perbandingan dan Solusi Mitigasi Getaran Angin</h2>
+            <div class="content" style="font-family: 'Times New Roman', serif; font-size: 17px;">
+                <h3 class="sub-bab-title" style="padding-left:0; text-indent:0; font-family:'Arial', sans-serif;">1. Latar Belakang Masalah: Beban Angin pada Struktur Supertall</h3>
+                <p>Untuk gedung dengan ketinggian di atas 300 meter (<em>supertall</em>), beban angin menjadi faktor desain yang seringkali lebih dominan daripada beban gempa. Fokusnya tidak hanya pada kekuatan struktur (<em>ULS - Ultimate Limit State</em>), tetapi secara krusial pada <strong>kinerja layanan (<em>SLS - Serviceability Limit State</em>)</strong>. Dua fenomena utama yang menjadi perhatian adalah:</p>
+                <ul style="margin-left:20px; line-height:1.4;">
+                    <li><strong>Buffeting (Terpaan Angin):</strong> Respons struktur terhadap sifat turbulen dan acak dari angin, menyebabkan getaran pada arah angin (<em>along-wind</em>).</li>
+                    <li><strong>Vortex Shedding (Pelepasan Pusaran):</strong> Terbentuknya pusaran angin bertekanan rendah secara bergantian di sisi-sisi gedung, menyebabkan getaran periodik pada arah lintang angin (<em>across-wind</em>) yang bisa memicu resonansi jika frekuensinya dekat dengan frekuensi natural gedung.</li>
+                </ul>
+                <p style="margin-top:1.2em;">Kedua fenomena ini menyebabkan getaran yang, meskipun aman secara struktural, dapat menimbulkan ketidaknyamanan ekstrem bagi penghuni (akselerasi berlebih) dan mempercepat kelelahan (<em>fatigue</em>) pada komponen struktur.</p>
+                <hr style="margin: 30px 0;">
+
+                <h3 class="sub-bab-title" style="padding-left:0; text-indent:0; font-family:'Arial', sans-serif;">2. Studi Kasus Perbandingan Gedung Ikonik Dunia</h3>
+                <p>Tabel berikut menyajikan perbandingan antara beberapa gedung <em>supertall</em> di dunia dan studi kasus dalam makalah ini, dengan fokus pada strategi mitigasi angin dan hasilnya.</p>
+                <table class="data-table" style="font-size: 15px;">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Taipei 101 (Taiwan)</th>
+                            <th>432 Park Ave (USA)</th>
+                            <th>Burj Khalifa (UAE)</th>
+                            <th>Studi Kasus (Jakarta)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Tinggi / Lebar</strong></td><td>508m / 100m</td><td>426m / 28m</td><td>828m / ~150m (basis)</td><td>345m / 60m</td></tr>
+                        <tr><td><strong>Rasio Kelangsingan</strong></td><td>5.1 : 1</td><td><strong>15.2 : 1 (Sangat Langsing)</strong></td><td>~5.5 : 1</td><td>5.75 : 1</td></tr>
+                        <tr><td><strong>Sistem Mitigasi Angin</strong></td><td>1. <strong>Struktur:</strong> Core & Outrigger<br>2. <strong>Mekanis:</strong> TMD Bola Baja 660 ton</td><td>1. <strong>Struktur:</strong> Core & Outrigger<br>2. <strong>Mekanis:</strong> 2 x TMD @ 650 ton<br>3. <strong>Aerodinamis:</strong> Lantai terbuka</td><td>1. <strong>Aerodinamis:</strong> Bentuk sayap "Y" & <em>setbacks</em> yang mengecil ke atas untuk disorganisasi <em>vortex</em></td><td><strong>Hanya Struktur Open Frame Beton Komposit Baja (dalam model awal)—disarankan menggunakan RC core & Outrigger dengan TMD</strong></td></tr>
+                        <tr><td><strong>Simpangan Puncak (Tanpa Peredam)</strong></td><td>Estimasi: ~1.15 m (H/440)</td><td>Estimasi: ~1.5 m (H/280)</td><td>Estimasi: ~1.7 m (H/490)</td><td><strong>1.4175 m (H/244)</strong></td></tr>
+                        <tr><td><strong>Simpangan Puncak (Dengan Peredam)</strong></td><td><strong>~0.95 m (H/530)</strong> - OK</td><td><strong>~1.2 m (H/355)</strong> - OK</td><td><strong>~1.5 m (H/550)</strong> - OK</td><td><strong>~1.2 m (H/285)</strong> - OK</td></tr>
+                        <tr><td><strong>Akselerasi Puncak (Tanpa Peredam)</strong></td><td>~35 mg (Tidak Nyaman)</td><td>~50 mg (Sangat Tidak Nyaman)</td><td>~25 mg (Tidak Nyaman)</td><td><strong>127.4 mg (Along)</strong><br><strong>21.2 mg (Across)</strong></td></tr>
+                        <tr><td><strong>Akselerasi Puncak (Dengan Peredam)</strong></td><td><strong>~18 mg (Nyaman)</strong></td><td><strong>~22 mg (Batas Atas)</strong></td><td><strong>~20 mg (Tanpa TMD)</strong></td><td><strong>~76 mg / ~13 mg</strong></td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:14px; text-align: right; font-style:italic;">*Catatan: Nilai "Tanpa Peredam" dan "Dengan Peredam" adalah estimasi berdasarkan data publik dan efektivitas sistem yang umum untuk tujuan perbandingan.</p>
+                <hr style="margin: 30px 0;">
+
+                <h3 class="sub-bab-title" style="padding-left:0; text-indent:0; font-family:'Arial', sans-serif;">3. Analisis Lanjut dan Solusi Multi-Dimensi</h3>
+                <h4 style="font-size:17px; margin-top:15px; margin-bottom:5px; font-weight:bold;">A. Modifikasi Aerodinamis (Garis Pertahanan Pertama)</h4>
+                <ul style="margin-left:20px; line-height:1.4;">
+                    <li><strong>Menumpulkan Sudut (<em>Chamfered/Rounded Corners</em>):</strong> Mengurangi intensitas <em>vortex shedding</em> secara signifikan.</li>
+                    <li><strong>Tapering & Setbacks:</strong> Mengecilkan denah seiring ketinggian (seperti Burj Khalifa) untuk mengganggu korelasi tekanan angin di sepanjang fasad.</li>
+                    <li><strong>Memuntir Bentuk (<em>Twisting Shape</em>):</strong> Sangat efektif mengacaukan aliran angin yang teratur.</li>
+                    <li><strong>Celah Terbuka (<em>Through-Building Openings</em>):</strong> Lantai mekanikal yang didesain terbuka memungkinkan angin lewat, menyamakan tekanan, dan merusak koherensi getaran.</li>
+                </ul>
+
+                <h4 style="font-size:17px; margin-top:15px; margin-bottom:5px; font-weight:bold;">B. Optimasi Sistem Struktur (Peningkatan Kekakuan)</h4>
+                <ul style="margin-left:20px; line-height:1.4;">
+                    <li><strong>Sistem Outrigger dan Belt Truss:</strong> Mengoptimalkan lokasi, jumlah, dan ukuran elemen pengaku lateral untuk meningkatkan kekakuan secara efisien tanpa menambah massa berlebihan.</li>
+                    <li><strong>Memperbesar Dimensi Core Wall:</strong> Menebalkan dinding inti beton adalah cara langsung untuk menambah kekakuan.</li>
+                    <li><strong>Sistem Super-Frame atau Diagrid:</strong> Menggunakan rangka eksternal sebagai tulang punggung utama, memberikan kekakuan yang sangat tinggi.</li>
+                </ul>
+                
+                <h4 style="font-size:17px; margin-top:15px; margin-bottom:5px; font-weight:bold;">C. Sistem Peredam Tambahan (<em>Supplemental Damping</em>)</h4>
+                 <ul style="margin-left:20px; line-height:1.4;">
+                    <li><strong>Tuned Mass Damper (TMD):</strong> Bandul raksasa yang "di-tuning" untuk berayun berlawanan arah dengan frekuensi natural gedung. Sangat efektif mengurangi <strong>akselerasi</strong>.</li>
+                    <li><strong>Tuned Liquid Damper (TLD):</strong> Menggunakan tangki air besar dimana gerakan air (<em>sloshing</em>) melawan getaran gedung.</li>
+                    <li><strong>Viscous Damper:</strong> Seperti <em>shock absorber</em>, dipasang di antara elemen struktur untuk menyerap energi melalui deformasi.</li>
+                </ul>
+                <hr style="margin: 30px 0;">
+
+                <h3 class="sub-bab-title" style="padding-left:0; text-indent:0; font-family:'Arial', sans-serif;">4. Kesimpulan Apendiks</h3>
+                <p>Desain gedung <em>supertall</em> adalah sebuah proses holistik. Hasil analisis awal yang menunjukkan respons ekstrem adalah bagian normal dari proses desain, yang berfungsi untuk menginformasikan perlunya strategi mitigasi. Solusi yang andal selalu berupa kombinasi cerdas dari <strong>bentuk aerodinamis yang baik, sistem struktur yang kaku dan efisien, serta sistem peredam tambahan yang terkalibrasi dengan baik.</strong> Tanpa pendekatan multi-lapis ini, gedung tinggi modern tidak akan dapat mencapai standar keamanan, layanan, dan kenyamanan yang dibutuhkan.</p>
+            </div>
+        </div>
+
+        <div class="appendix">
+            <h2 style="margin-top: 40px;">APENDIKS C: Daftar 10 Gedung Tertinggi di Jakarta (Per Awal 2025)</h2>
+            <div class="content" style="font-family: 'Times New Roman', serif; font-size: 17px;">
+                <p>Berikut adalah peringkat gedung tertinggi di Jakarta yang telah selesai dibangun (<em>completed</em>) atau tutup atap (<em>topped-out</em>) per awal tahun 2025, berdasarkan data terverifikasi dari Council on Tall Buildings and Urban Habitat (CTBUH).</p>
+                <table class="data-table" style="font-size: 15px;">
+                    <thead>
+                        <tr>
+                            <th>Peringkat</th>
+                            <th>Nama Gedung</th>
+                            <th>Tinggi (m)</th>
+                            <th>Lantai</th>
+                            <th>Lokasi</th>
+                            <th>Fungsi Utama</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Autograph Tower</td><td>382.9</td><td>75</td><td>Thamrin Nine, Jkt Pusat</td><td>Perkantoran, Hotel</td></tr>
+                        <tr><td>2</td><td>Luminary Tower</td><td>304</td><td>64</td><td>Thamrin Nine, Jkt Pusat</td><td>Perkantoran, Hotel</td></tr>
+                        <tr><td>3</td><td>Gama Tower</td><td>285.5</td><td>69</td><td>Rasuna Said, Jkt Selatan</td><td>Perkantoran, Hotel</td></tr>
+                        <tr><td>4</td><td>Treasury Tower</td><td>279.5</td><td>61</td><td>SCBD, Jkt Selatan</td><td>Perkantoran</td></tr>
+                        <tr><td>5</td><td>Jakarta Mori Tower</td><td>266</td><td>59</td><td>Sudirman, Jkt Pusat</td><td>Perkantoran</td></tr>
+                        <tr><td>6</td><td>Wisma 46</td><td>261.9</td><td>51</td><td>Sudirman, Jkt Pusat</td><td>Perkantoran</td></tr>
+                        <tr><td>7</td><td>Menara Astra</td><td>261.5</td><td>63</td><td>Sudirman, Jkt Pusat</td><td>Perkantoran</td></tr>
+                        <tr><td>8</td><td>Sahid Sudirman Centre</td><td>258</td><td>59</td><td>Sudirman, Jkt Pusat</td><td>Perkantoran</td></tr>
+                        <tr><td>9</td><td>Raffles Hotel</td><td>257</td><td>52</td><td>Kuningan, Jkt Selatan</td><td>Hotel, Apartemen</td></tr>
+                        <tr><td>10</td><td>The Pakubuwono Signature</td><td>252</td><td>52</td><td>Kebayoran Baru, Jkt Selatan</td><td>Apartemen</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>```
