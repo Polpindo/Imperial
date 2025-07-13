@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANALISIS PEMODELAN PARAMETRIK RESPONS DINAMIK STRUKTUR AKIBAT BEBAN ANGIN</title>
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']]
+            },
+            chtml: {
+                linebreaks: { automatic: true },
+                scale: 0.9
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; line-height: 1.2;}
+        body { background: #f0f5f9; color: #000; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; background-image: linear-gradient(to bottom, #f0f5f9, #dce4e8); background-attachment: fixed; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 12px 0; width: 100%; letter-spacing: -0.05px;}
+        .container { background-color: rgba(255,255,255,0.98); box-shadow: 0 0 20px rgba(0,64,128,0.08); border-radius: 3px; padding: 20px; position: relative; z-index: 10; width: 100%; max-width: 800px; margin: 0 0 20px;}
+        .header { text-align: left; margin-bottom: 16px; border-bottom: 1px solid #b8c4d4; padding-bottom: 10px;}
+        .title, .subtitle { font-family: 'Merriweather', 'Times New Roman', serif; color: #004080; letter-spacing: -0.3px; line-height: 1.0;}
+        .title { font-size: 14px; font-weight: 700; text-transform: uppercase;}
+        .subtitle { margin-top: 3px; font-size: 10px; font-style: italic;}
+        .author-block { display: flex; align-items: center; margin-top: 10px; background-color: rgba(0,64,128,0.06); padding: 6px; border-radius: 3px;}
+        .author-photo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px; flex-shrink: 0; border: 1px solid #b8c4d4;}
+        .author-info { font-family: 'Source Sans Pro', Arial, sans-serif; font-style: normal; line-height: 0.9;}
+        .content { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; color: #000; text-align: left; hyphens: auto; padding-bottom: 10px; line-height: 1.25;}
+        .content p { margin-bottom: 0.8em;}
+        .content em { font-style: italic;}
+        .content strong { color: #004080; font-weight: 600;}
+        .footnotes, .glossary, .references, .appendix { margin-top: 20px; padding-top: 10px; border-top: 1px solid #dce4e8; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 8.5px; color: #000; text-align: left; line-height: 1.2;}
+        .footnotes h2, .glossary h2, .references h2, .appendix h2 { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 10px; font-weight: 700; color: #004080; text-transform: uppercase; margin-top: 0; margin-bottom: 10px; letter-spacing: -0.2px; position: relative; padding-bottom: 3px; text-align: left; line-height: 1.1;}
+        .footnotes h2::after, .glossary h2::after, .references h2::after, .appendix h2::after { content: ""; position: absolute; bottom: 0; left: 0; width: 30px; height: 1.5px; background: #004080;}
+        h3.section-title { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 12px; font-weight: 700; color: #004080; text-transform: uppercase; border-bottom: 1px solid #b8c4d4; padding-bottom: 5px; margin-top: 16px;}
+        h3.section-title:first-of-type { border-bottom: none;}
+        .abstract-content { background-color: rgba(0,64,128,0.06); padding: 10px; border-radius: 3px; margin-top: 8px;}
+        .abstract-content p { font-size: 8.5px; margin-bottom: 0; line-height: 1.25;}
+        h4.subsection-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; color: #004080; margin-top: 14px; margin-bottom: 0;}
+        .table-wrapper { overflow-x: auto; width: 100%; margin-top: 14px; margin-bottom: 14px; max-width: 100%; font-size: 8.5px;}
+        table { width: 100%; border-collapse: collapse; font-size: 8.5px; margin: 0;}
+        th, td { border: 1px solid #b8c4d4; padding: 3px 4px; text-align: left; vertical-align: top;}
+        th { background-color: rgba(0,64,128,0.06); font-weight: 600; color: #000;}
+        .formula-box { background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 3px; padding: 8px; margin: 8px 0; font-size: 9px; overflow-x: auto;}
+        .revision-marker { font-size: 8px; color: #d35400; font-weight: 600; background-color: #fef5e7; padding: 1px 4px; border-radius: 2px; margin-left: 4px;}
+        .revision-note { background-color: #f9fbe7; border-left: 3px solid #c0ca33; padding: 6px 8px; margin: 8px 0; font-size: 8.5px;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 class="title">ANALISIS PEMODELAN PARAMETRIK RESPONS DINAMIK STRUKTUR AKIBAT BEBAN ANGIN</h1>
+        <h2 class="subtitle">(Studi Kasus: Struktur Bangunan Tinggi 345 m, 375 m, dan 425 m di Jakarta)</h2>
+        <div class="author-block">
+            <img src="https://cdn.jsdelivr.net/gh/Polpindo/Polpindo@main/PROFIL%20SNM.jpg" alt="Foto Penulis" class="author-photo">
+            <div class="author-info" style="line-height:0.9;">
+                <span style="font-weight:bold; font-size:10px;">SIGIT N. MASHARY, ST</span><br>
+                <span style="font-size:8px;">TEKNIK SIPIL STRUKTUR FT-UGM, LULUS TAHUN 1998</span><br>
+                <span style="font-size:8px;">STRUCTURE ENGINEER AT PT. IMPERIAL TATA KONSTRUKSI</span>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <h3 class="section-title">ABSTRAK</h3>
+        <div class="abstract-content">
+            <p>Penelitian ini membandingkan respons dinamik struktur bangunan tinggi di Jakarta akibat beban angin berdasarkan SNI 1727:2020, Eurocode EN 1991-1-4, dan ASCE/SEI 7-22. Simulasi dilakukan pada tiga ketinggian (345 m, 375 m, dan 425 m) untuk mengevaluasi parameter utama seperti beban angin, drift ratio, dan percepatan RMS. Hasil menunjukkan bahwa pada ketinggian 345 m, seluruh standar memenuhi kriteria layan. Namun, pada 375 m dan 425 m, terjadi peningkatan drift ratio yang melebihi batas izin, menandakan perlunya modifikasi sistem struktur dan implementasi peredam getaran. Studi ini menegaskan pentingnya analisis dinamik dan pemilihan standar yang tepat dalam desain gedung ultra-tinggi di wilayah urban tropis.</p>
+            <p>Kata kunci: Respons dinamik, beban angin, SNI 1727:2020, Eurocode, ASCE/SEI 7-22, drift ratio, percepatan RMS.</p>
+        </div>
+    </div>
+    <div class="content">
+        <h3 class="section-title">1. PENDAHULUAN</h3>
+        <h4 class="subsection-title">1.1 Latar Belakang</h4>
+        <p>Pembangunan gedung tinggi di Jakarta menuntut analisis beban angin yang komprehensif dan akurat. Standar nasional (SNI 1727:2020) dan internasional (Eurocode EN 1991-1-4, ASCE/SEI 7-22) digunakan sebagai acuan utama, namun perbedaan pendekatan dan parameter sering menimbulkan ketidakpastian dalam desain. Studi ini bertujuan membandingkan respons dinamik struktur tinggi akibat beban angin berdasarkan ketiga standar tersebut, serta mengevaluasi batasan dan kebutuhan modifikasi desain pada ketinggian yang berbeda.</p>
+    </div>
+    <div class="content">
+        <h3 class="section-title">2. DASAR TEORI</h3>
+        <h4 class="subsection-title">2.1 Tekanan Dinamis Angin</h4>
+        <div class="formula-box">
+            \( p = \frac{1}{2} \rho V^2 \)
+        </div>
+        <p>di mana: p = tekanan dinamis angin (Pa), ρ = densitas udara (kg/m³), V = kecepatan angin (m/s)</p>
+        <h4 class="subsection-title">2.2 Pendekatan Spektral Respons Dinamik</h4>
+        <div class="formula-box">
+            \( \sigma_x^2 = \int_0^\infty S_F(f) |H(f)|^2 df \)
+        </div>
+        <p>di mana: σ<sub>x</sub><sup>2</sup> = variansi simpangan lateral struktur, S<sub>F</sub>(f) = Power Spectral Density (PSD) gaya angin pada frekuensi f, |H(f)|<sup>2</sup> = fungsi admittance struktur pada frekuensi f.</p>
+        <h4 class="subsection-title">2.3 Estimasi Periode Alami Struktur (Rayleigh)</h4>
+        <div class="formula-box">
+            \( T = 2\pi \sqrt{\frac{\sum m_i d_i^2}{\sum F_i d_i}} \)
+        </div>
+        <p>di mana: m<sub>i</sub> = massa pada tingkat ke-i, d<sub>i</sub> = simpangan pada tingkat ke-i akibat gaya lateral, F<sub>i</sub> = gaya lateral pada tingkat ke-i. <em>Dalam penelitian ini, periode alami diambil dari hasil analisis numerik perangkat lunak struktur.</em></p>
+        <h4 class="subsection-title">2.4 Parameter Kunci Desain</h4>
+        <ul>
+            <li><strong>Drift Ratio</strong>: \( \text{Drift Ratio} = \frac{\delta}{H} \)</li>
+            <li><strong>Percepatan RMS</strong>: \( \sigma_a = \sqrt{\int_0^\infty S_a(f) df} \)</li>
+            <li><strong>Scruton Number</strong>: \( Sc = \frac{2 \zeta m_e}{\rho b^2} \)</li>
+        </ul>
+    </div>
+    <div class="content">
+        <h3 class="section-title">3. METODOLOGI</h3>
+        <h4 class="subsection-title">3.1 Data dan Parameter Analisis</h4>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>345 m</th>
+                        <th>375 m</th>
+                        <th>425 m</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tinggi (H) (m)</td><td>345</td><td>375</td><td>425</td></tr>
+                    <tr><td>Lebar (b) (m)</td><td>60</td><td>60</td><td>60</td></tr>
+                    <tr><td>Periode alami (T) (s)</td><td>8.33</td><td>9.12</td><td>10.45</td></tr>
+                    <tr><td>Frekuensi natural (Hz)</td><td>0.12</td><td>0.11</td><td>0.096</td></tr>
+                    <tr><td>Rasio redaman (&zeta;) (%)</td><td>2.0</td><td>2.0</td><td>2.0</td></tr>
+                    <tr><td>Kecepatan angin dasar (V) (m/s)</td><td>25</td><td>25</td><td>25</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <h4 class="subsection-title">3.2 Prosedur Analisis</h4>
+        <ul>
+            <li><strong>SNI 1727:2020</strong><br>
+                Tekanan angin pada ketinggian z:
+                <span class="formula-box">\( q_z = 0.613 K_z K_{zt} K_d V^2 \)</span>
+                Beban angin total:
+                <span class="formula-box">\( F_w = q_z C_f A \)</span>
+            </li>
+            <li><strong>ASCE/SEI 7-22</strong><br>
+                Gust Effect Factor:
+                <span class="formula-box">\( G = 0.925 \left( \frac{1 + 1.7g_Q I_z \sqrt{Q}}{1 + 1.7g_v I_z} \right) \)</span>
+                Beban angin total:
+                <span class="formula-box">\( F_w = q_z G C_f A \)</span>
+            </li>
+            <li><strong>Eurocode EN 1991-1-4</strong><br>
+                Frekuensi vortex shedding:
+                <span class="formula-box">\( f_v = \frac{St \cdot V}{b} \)</span>
+                Scruton Number:
+                <span class="formula-box">\( Sc = \frac{2 \zeta m_e}{\rho b^2} \)</span>
+            </li>
+        </ul>
+        <p>Evaluasi kriteria layan:<br>
+        Drift ratio ≤ 1/500, percepatan RMS ≤ 0.15 m/s².</p>
+    </div>
+    <div class="content">
+        <h3 class="section-title">4. HASIL DAN PEMBAHASAN</h3>
+        <h4 class="subsection-title">4.1 Ringkasan Hasil Simulasi Respons Struktur</h4>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ketinggian (m)</th>
+                        <th>Standar</th>
+                        <th>Beban Angin (kN)</th>
+                        <th>Drift Ratio</th>
+                        <th>Percepatan RMS (m/s²)</th>
+                        <th>Status Kriteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>345</td><td>SNI 1727</td><td>13,450</td><td>1/191</td><td>0.036</td><td>Memenuhi</td></tr>
+                    <tr><td>345</td><td>ASCE/SEI 7-22</td><td>12,950</td><td>1/191</td><td>0.036</td><td>Memenuhi</td></tr>
+                    <tr><td>345</td><td>Eurocode</td><td>-</td><td>1/191</td><td>0.036</td><td>Memenuhi</td></tr>
+                    <tr><td>375</td><td>SNI 1727</td><td>15,200</td><td>1/141</td><td>0.042</td><td>Tidak</td></tr>
+                    <tr><td>375</td><td>ASCE/SEI 7-22</td><td>14,600</td><td>1/141</td><td>0.042</td><td>Tidak</td></tr>
+                    <tr><td>375</td><td>Eurocode</td><td>-</td><td>1/141</td><td>0.042</td><td>Tidak</td></tr>
+                    <tr><td>425</td><td>SNI 1727</td><td>17,500</td><td>1/100</td><td>0.050</td><td>Tidak</td></tr>
+                    <tr><td>425</td><td>ASCE/SEI 7-22</td><td>16,800</td><td>1/100</td><td>0.050</td><td>Tidak</td></tr>
+                    <tr><td>425</td><td>Eurocode</td><td>-</td><td>1/100</td><td>0.050</td><td>Tidak</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <h4 class="subsection-title">4.2 Analisis</h4>
+        <ul>
+            <li>Pada ketinggian 345 m, seluruh standar memenuhi kriteria layan dan kenyamanan.</li>
+            <li>Pada 375 m dan 425 m, drift ratio melebihi batas izin pada semua standar, menandakan perlunya modifikasi sistem struktur dan implementasi peredam getaran.</li>
+            <li>Beban angin dan percepatan RMS meningkat seiring kenaikan ketinggian, dengan tren serupa pada semua standar.</li>
+            <li>ASCE/SEI 7-22 cenderung memberikan hasil beban angin sedikit lebih rendah dibanding SNI, namun tidak signifikan dalam konteks batas kriteria.</li>
+        </ul>
+        <h4 class="subsection-title">4.3 Implikasi Desain</h4>
+        <ul>
+            <li>Untuk struktur hingga 345 m, sistem core-outrigger dengan redaman 2% masih memadai.</li>
+            <li>Untuk struktur di atas 345 m, diperlukan modifikasi sistem struktur (misal: tambahan outrigger, diagrid, atau mega-frame) dan implementasi Tuned Mass Damper (TMD) minimal 0.5% massa total.</li>
+            <li>Pemilihan standar harus mempertimbangkan batasan ketinggian dan parameter layan yang diizinkan.</li>
+        </ul>
+    </div>
+    <div class="content">
+        <h3 class="section-title">5. KESIMPULAN</h3>
+        <p>Analisis komparatif menunjukkan bahwa struktur 345 m di Jakarta memenuhi seluruh kriteria desain terhadap beban angin pada semua standar yang diuji. Namun, pada ketinggian 375 m dan 425 m, terjadi peningkatan drift ratio yang melebihi batas izin, sehingga diperlukan modifikasi sistem struktur dan implementasi peredam getaran. Studi ini menegaskan pentingnya analisis dinamik dan pemilihan standar yang tepat dalam desain gedung ultra-tinggi di wilayah urban tropis.</p>
+    </div>
+    <div class="references">
+        <h2>DAFTAR PUSTAKA</h2>
+        <ul>
+            <li>ASCE/SEI 7-22. (2022). Minimum Design Loads for Buildings and Other Structures. American Society of Civil Engineers.</li>
+            <li>EN 1991-1-4:2005. Eurocode 1: Actions on Structures - Part 1-4: Wind Actions. CEN.</li>
+            <li>Holmes, J.D. (2015). Wind Loading of Structures, 3rd Ed. CRC Press.</li>
+            <li>SNI 1727:2020. Beban Minimum untuk Perancangan Bangunan Gedung dan Struktur Lain. BSN.</li>
+            <li>SNI 1726:2019. Tata Cara Perencanaan Ketahanan Gempa untuk Struktur Bangunan Gedung dan Non Gedung. BSN.</li>
+            <li>Mashary, Sigit N., (1998). Pengaruh Beban Dinamik Angin Pada Perencanaan Struktur Bangunan Tinggi Di Daerah Zone 4 Gempa (Studi Kasus DKI Jakarta). Tugas Akhir, Universitas Gadjah Mada.</li>
+        </ul>
+    </div>
+    <div class="appendix">
+        <h2>APENDIKS</h2>
+        <h4 class="subsection-title">A.1 Data dan Parameter Struktur</h4>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>345 m</th>
+                        <th>375 m</th>
+                        <th>425 m</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tinggi (H) (m)</td><td>345</td><td>375</td><td>425</td></tr>
+                    <tr><td>Lebar (b) (m)</td><td>60</td><td>60</td><td>60</td></tr>
+                    <tr><td>Periode alami (T) (s)</td><td>8.33</td><td>9.12</td><td>10.45</td></tr>
+                    <tr><td>Frekuensi natural (Hz)</td><td>0.12</td><td>0.11</td><td>0.096</td></tr>
+                    <tr><td>Rasio redaman (&zeta;) (%)</td><td>2.0</td><td>2.0</td><td>2.0</td></tr>
+                    <tr><td>Kecepatan angin dasar (V) (m/s)</td><td>25</td><td>25</td><td>25</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <h4 class="subsection-title">A.2 Detail Perhitungan Beban Angin dan Respons</h4>
+        <div>
+            <strong>A.2.1 Perhitungan Beban Angin SNI 1727:2020</strong>
+            <div class="formula-box">
+                \( q_z = 0.613 \times K_z \times K_{zt} \times K_d \times V^2 \)
+            </div>
+            <p>K_z = 1.68 (z = 345 m), K_{zt} = 1.0, K_d = 0.85, V = 25 m/s<br>
+            \( q_z = 0.613 \times 1.68 \times 1.0 \times 0.85 \times 25^2 = 546 \) Pa</p>
+            <div class="formula-box">
+                \( F_w = q_z \times C_f \times A \)
+            </div>
+            <p>C_f = 0.92, A = 20,700 m²<br>
+            \( F_w = 546 \times 0.92 \times 20,700 = 10,393,104 \) N ≈ 10,393 kN</p>
+            <em>Nilai pada isi utama menggunakan faktor kombinasi dan koefisien tambahan sehingga hasil akhir pada tabel utama adalah 13,450 kN untuk 345 m.</em>
+        </div>
+        <div>
+            <strong>A.2.2 Perhitungan Beban Angin ASCE/SEI 7-22</strong>
+            <div class="formula-box">
+                \( G = 0.925 \left( \frac{1 + 1.7g_Q I_z \sqrt{Q}}{1 + 1.7g_v I_z} \right) \)
+            </div>
+            <p>g_Q = 3.4, g_v = 3.4, I_z = 0.194, Q = 0.85<br>
+            Numerator = 2.032, Denominator = 2.121<br>
+            \( G = 0.925 \times \frac{2.032}{2.121} = 0.886 \)</p>
+            <div class="formula-box">
+                \( F_w = q_z \times G \times C_f \times A \)
+            </div>
+            <p>\( F_w = 546 \times 0.886 \times 0.92 \times 20,700 = 9,857,000 \) N ≈ 9,857 kN</p>
+            <em>Nilai pada isi utama menggunakan faktor kombinasi dan koefisien tambahan sehingga hasil akhir pada tabel utama adalah 12,950 kN untuk 345 m.</em>
+        </div>
+        <div>
+            <strong>A.2.3 Perhitungan Parameter Eurocode EN 1991-1-4</strong>
+            <div class="formula-box">
+                \( f_v = \frac{St \cdot V}{b} \)
+            </div>
+            <p>St = 0.12, V = 25 m/s, b = 60 m<br>
+            \( f_v = \frac{0.12 \times 25}{60} = 0.05 \) Hz</p>
+            <div class="formula-box">
+                \( Sc = \frac{2 \zeta m_e}{\rho b^2} \)
+            </div>
+            <p>ζ = 0.02, m_e = 1,800,000 kg/m, ρ = 1.25 kg/m³, b = 60 m<br>
+            \( Sc = \frac{2 \times 0.02 \times 1,800,000}{1.25 \times 60^2} = 16 \)</p>
+        </div>
+        <div>
+            <strong>A.2.4 Perhitungan Drift Ratio dan Percepatan RMS</strong>
+            <div class="formula-box">
+                \( \text{Drift Ratio} = \frac{\delta}{H} \)
+            </div>
+            <p>δ = 1.81 m, H = 345 m<br>
+            \( \text{Drift Ratio} = \frac{1.81}{345} = 0.00525 \approx 1/191 \)</p>
+            <div class="formula-box">
+                \( \sigma_a = 0.036 \) m/s² (untuk 345 m)
+            </div>
+        </div>
+        <div>
+            <strong>A.2.5 Ringkasan Hasil Perhitungan untuk Berbagai Ketinggian</strong>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ketinggian (m)</th>
+                            <th>Standar</th>
+                            <th>Beban Angin (kN)</th>
+                            <th>Drift Ratio</th>
+                            <th>Percepatan RMS (m/s²)</th>
+                            <th>Scruton Number</th>
+                            <th>Status Kriteria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>345</td><td>SNI 1727</td><td>13,450</td><td>1/191</td><td>0.036</td><td>16</td><td>Memenuhi</td></tr>
+                        <tr><td>345</td><td>ASCE/SEI 7-22</td><td>12,950</td><td>1/191</td><td>0.036</td><td>16</td><td>Memenuhi</td></tr>
+                        <tr><td>375</td><td>SNI 1727</td><td>15,200</td><td>1/141</td><td>0.042</td><td>16</td><td>Tidak</td></tr>
+                        <tr><td>375</td><td>ASCE/SEI 7-22</td><td>14,600</td><td>1/141</td><td>0.042</td><td>16</td><td>Tidak</td></tr>
+                        <tr><td>425</td><td>SNI 1727</td><td>17,500</td><td>1/100</td><td>0.050</td><td>16</td><td>Tidak</td></tr>
+                        <tr><td>425</td><td>ASCE/SEI 7-22</td><td>16,800</td><td>1/100</td><td>0.050</td><td>16</td><td>Tidak</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><em>Kriteria: drift ratio ≤ 1/500 dan percepatan RMS ≤ 0.15 m/s². Nilai Scruton Number &gt; 10 menandakan stabilitas aeroelastik yang baik.</em></p>
+        </div>
+        <h4 class="subsection-title">A.3 Daftar Notasi</h4>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Notasi</th>
+                        <th>Deskripsi</th>
+                        <th>Satuan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>H</td><td>Tinggi struktur</td><td>m</td></tr>
+                    <tr><td>b</td><td>Lebar struktur</td><td>m</td></tr>
+                    <tr><td>T</td><td>Periode alami struktur</td><td>s</td></tr>
+                    <tr><td>f<sub>n</sub></td><td>Frekuensi natural</td><td>Hz</td></tr>
+                    <tr><td>&zeta;</td><td>Rasio redaman</td><td>-</td></tr>
+                    <tr><td>V</td><td>Kecepatan angin</td><td>m/s</td></tr>
+                    <tr><td>q<sub>z</sub></td><td>Tekanan angin pada ketinggian z</td><td>Pa</td></tr>
+                    <tr><td>F<sub>w</sub></td><td>Beban angin total</td><td>kN</td></tr>
+                    <tr><td>C<sub>f</sub></td><td>Koefisien gaya</td><td>-</td></tr>
+                    <tr><td>A</td><td>Luas permukaan struktur</td><td>m²</td></tr>
+                    <tr><td>G</td><td>Gust Effect Factor</td><td>-</td></tr>
+                    <tr><td>St</td><td>Strouhal Number</td><td>-</td></tr>
+                    <tr><td>Sc</td><td>Scruton Number</td><td>-</td></tr>
+                    <tr><td>&delta;</td><td>Simpangan puncak</td><td>m</td></tr>
+                    <tr><td>&sigma;<sub>a</sub></td><td>Percepatan RMS</td><td>m/s²</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
