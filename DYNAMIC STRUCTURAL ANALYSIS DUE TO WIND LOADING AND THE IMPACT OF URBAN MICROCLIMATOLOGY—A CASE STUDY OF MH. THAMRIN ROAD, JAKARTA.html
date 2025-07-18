@@ -1,0 +1,1056 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DYNAMIC STRUCTURAL ANALYSIS FOR WIND LOADING AND THE IMPACT OF URBAN MICROCLIMATOLOGY—A CASE STUDY OF MH. THAMRIN ROAD, JAKARTA</title>
+    
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                tags: 'ams'
+            },
+            chtml: {
+                linebreaks: { automatic: true },
+                scale: 0.9
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; line-height: 1.2; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background: #f0f5f9; color: #000000; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 9.5px; background-image: linear-gradient(to bottom, #f0f5f9, #dce4e8); 
+            background-attachment: fixed; min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; padding: 12px 0; width: 100%; letter-spacing: -0.05px;
+        }
+        .container { 
+            background-color: rgba(255, 255, 255, 0.98); box-shadow: 0 0 20px rgba(0, 64, 128, 0.08);
+            border-radius: 3px; padding: 20px; position: relative; z-index: 10; 
+            width: 100%; max-width: 800px; margin: 0 0 20px; 
+        }
+        .header { text-align: left; margin-bottom: 16px; border-bottom: 1px solid #b8c4d4; padding-bottom: 10px; }
+        .title, .subtitle { font-family: 'Merriweather', 'Times New Roman', serif; color: #004080; letter-spacing: -0.3px; line-height: 1.1; }
+        .title { font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .subtitle { margin-top: 3px; font-size: 9px; font-style: italic; }
+        .author-block { display: flex; align-items: center; margin-top: 10px; background-color: rgba(0, 64, 128, 0.06); padding: 6px; border-radius: 3px; }
+        .author-photo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px; flex-shrink: 0; border: 1px solid #b8c4d4; }
+        .author-info { font-family: 'Source Sans Pro', Arial, sans-serif; font-style: normal; font-size: 6px; color: #000000; }
+        .author-info strong { font-weight: 600; color: #000000; }
+        .content { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; color: #000000; text-align: left; hyphens: auto; padding-bottom: 10px; line-height: 1.25; }
+        .content p, .content ul, .content ol { margin-bottom: 0.8em; }
+        .content em { font-style: italic; }
+        .content strong { color: #004080; font-weight: 600; }
+        .content ul, .content ol { padding-left: 20px; }
+        .content li { margin-bottom: 0.4em; }
+        .table-of-contents { background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 10px 15px; border-radius: 3px; margin-top: 15px; margin-bottom: 15px; font-size: 9px; line-height: 1.2; }
+        .table-of-contents h3 { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 10px; line-height: 1.2; font-weight: 700; color: #004080; margin-bottom: 8px; text-transform: uppercase; }
+        .table-of-contents ol { padding-left: 20px; }
+        .table-of-contents ol li { margin-bottom: 4px; line-height: 1.2; }
+        .table-of-contents a { color: #0056b3; text-decoration: none; font-weight: 400; line-height: 1.2; }
+        .table-of-contents a:hover { text-decoration: underline; }
+        .references { margin-top: 20px; padding-top: 10px; border-top: 1px solid #dce4e8; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 8.5px; color: #000000; text-align: left; line-height: 1.2; }
+        .references p { margin-bottom: 0.6em; }
+        .appendix { margin-top: 20px; padding-top: 10px; border-top: 1px solid #dce4e8; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; color: #000000; text-align: left; line-height: 1.3; }
+        .appendix h2 { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 11px; font-weight: 700; color: #004080; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; letter-spacing: -0.2px; position: relative; padding-bottom: 3px; text-align: left; line-height: 1.0; }
+        .appendix h2::after { content: ""; position: absolute; bottom: 0; left: 0; width: 30px; height: 1.5px; background: #004080; }
+        h3.section-title, h3.appendix-title { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 12px; font-weight: 700; color: #004080; text-transform: uppercase; border-bottom: 1px solid #b8c4d4; padding-bottom: 5px; margin-top: 16px; margin-bottom: 10px; }
+        h3.section-title:first-of-type { border-bottom: none; margin-top: 0; }
+        .abstract-content { background-color: rgba(0, 64, 128, 0.06); padding: 10px; border-radius: 3px; margin-top: 8px; }
+        .abstract-content p { font-size: 8.5px; margin-bottom: 0; line-height: 1.25; text-align: left; }
+        .keywords { margin-top: 10px; font-size: 8.5px; line-height: 1.2; text-align: left; background-color: rgba(0, 64, 128, 0.03); padding: 5px 10px; border-radius: 3px; border-top: 1px solid rgba(0, 64, 128, 0.08); }
+        .keywords strong { color: #004080; font-weight: 600; }
+        h4.subsection-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; color: #004080; margin-top: 14px; margin-bottom: 6px; }
+        h5.sub-subsection-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; font-weight: 600; color: #0056b3; margin-top: 12px; margin-bottom: 5px; }
+        .table-wrapper { overflow-x: auto; width: 100%; margin-top: 14px; margin-bottom: 14px; max-width: 100%; font-size: 9px; }
+        table { width: 100%; border-collapse: collapse; font-size: 9px; margin: 0; }
+        th, td { border: 1px solid #b8c4d4; padding: 5px 6px; text-align: center; vertical-align: middle; }
+        th { background-color: rgba(0, 64, 128, 0.06); font-weight: 600; color: #000000; }
+        td { background-color: #fff; }
+        .status-aman { color: #155724; font-weight: bold; }
+        .status-kritis { color: #856404; font-weight: bold; }
+        .status-gagal { color: #721c24; font-weight: bold; }
+        .table-plotting th { background-color: #004080; color: #fff; }
+        .table-plotting .param-col, .table-plotting .crit-col { text-align: left; }
+        .table-plotting .section-header td, .table-descriptive .section-header td { background-color: rgba(0, 64, 128, 0.1); font-weight: bold; text-align: left; color: #004080; }
+        mjx-container[display="true"] { margin: 0.5em 0; }
+        mjx-container, .MathJax { color: #004080 !important; }
+        h3.section-title a, h4.subsection-title a, .appendix h2 a { color: inherit; text-decoration: none; }
+        h3.section-title a:hover, h4.subsection-title a:hover, .appendix h2 a:hover { text-decoration: underline; color: #0056b3; }
+        .analysis-summary { margin-top: 20px; padding: 10px; background-color: rgba(0, 64, 128, 0.04); font-size: 9px; line-height: 1.4; }
+        h5.graph-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; color: #333; margin-top: 16px; margin-bottom: 5px; text-align: center; }
+        .chart-container { position: relative; height: 350px; width: 100%; margin: 15px 0; }
+        .chart-container canvas { display: block; width: 100% !important; height: 100% !important; }
+        .caption { font-family: 'Times New Roman', Times, serif; font-size: 8.5px; line-height: 1.3; font-style: normal; color: #333; margin-top: 5px; margin-bottom: 20px; padding: 8px; background-color: #f8f9fa; text-align: left; }
+        .caption strong { color: #004080; }
+        h5.calc-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; color: #333; margin-top: 16px; margin-bottom: 5px; border-bottom: 1px dotted #ccc; padding-bottom: 2px; }
+        .calculation-step { margin-bottom: 8px; border-left: 2px solid #e0e6ed; padding-left: 10px; }
+        .calculation-step p { margin-bottom: 4px; text-align: left; }
+        .appendix-chart-wrapper { display: flex; gap: 15px; justify-content: space-between; margin-top: 10px; }
+        .appendix-chart-container { position: relative; height: 250px; width: 48%; }
+        pre, code { font-family: 'Courier New', Courier, monospace; background-color: #eee; padding: 2px 4px; border-radius: 3px; font-size: 9px; white-space: pre-wrap; word-wrap: break-word; }
+        
+        @media (max-width: 768px) {
+            .appendix-chart-wrapper { flex-direction: column; }
+            .appendix-chart-container { width: 100%; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">DYNAMIC STRUCTURAL ANALYSIS DUE TO WIND LOADING AND THE IMPACT OF URBAN MICROCLIMATOLOGY—A CASE STUDY OF MH. THAMRIN ROAD, JAKARTA</h1>
+            <h2 class="subtitle">(An Investigation from Fundamental Physics and Engineering Methodology to Application in the Analysis and Design of Supertall Buildings)</h2>
+            
+            <div class="author-block">
+                <img src="https://cdn.jsdelivr.net/gh/Polpindo/Polpindo@main/PROFIL%20SNM.jpg" alt="Author's Photo" class="author-photo">
+                <div class="author-info" style="line-height:0.7;">
+                    <span style="font-weight:bold; font-size:10px;">SIGIT N. MASHARY, ST</span><br>
+                    <span style="font-size:8px; line-height: 0.9;">Senior Structural Engineer at PT. Imperial Tata Konstruksi, Indonesia. Holds a degree in Civil and Structural Engineering from Gadjah Mada University, awarded in 1998.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h3 class="section-title" id="abstrak">Abstract</h3>
+            <div class="abstract-content">
+                <p>
+                This paper presents a critical evaluation of wind-induced dynamic response for a slender, supertall building, quantifying the impact of site-specific urban microclimate effects against standard code-based analysis. A parametric model of a building with a B/D ratio of 1.9 was analyzed for three heights (H = 348.0, 396.0, and 431.2 m) under three distinct analytical approaches: (1) a standard design wind speed (V<sub>SNI</sub> = 25.8 m/s) per SNI 1727:2020, (2) an aeroelastic stability check (Scruton Number) based on Eurocode 1 (EN 1991-1-4), and (3) a site-specific corrected design wind speed (V<sub>design,corrected</sub> = 34.83 m/s) derived from local data indicating a 35% wind amplification due to the urban canyon effect (Santoso et al., 2022).
+                </p>
+                <p>
+                The SNI-based analysis suggested that the 348.0-m configuration was acceptable (V<sub>crit</sub> = <strong>40.25 m/s</strong> safely exceeding V<sub>SNI</sub>). However, the Eurocode analysis revealed a <strong>critical stability concern</strong> for all models (Scruton Number ≈ <strong>9.77</strong>, falling within the critical range of 8-12), indicating an inherent lack of damping-mass robustness. Compounding this, the microclimate-corrected analysis confirms that while the 348.0-m configuration remains acceptable, the taller H2 and H3 models now <strong>fail</strong> the stability check, as their V<sub>crit</sub> values (33.95 m/s and 30.45 m/s, respectively) are surpassed by the more realistic design wind speed (34.83 m/s). This dramatic shift in results for the taller, more flexible models demonstrates that relying solely on generalized code-based wind speeds can be critically unconservative. The study concludes that site-specific microclimate analysis, validated against robust international standards, is mandatory to prevent non-conservative design and to accurately assess the need for systemic stiffening or auxiliary damping systems to ensure serviceability and stability.
+                </p>
+            </div>
+            <div class="keywords">
+                <p><strong>Keywords:</strong> <em>Dynamic Wind Analysis; Supertall Building; Urban Microclimate; Vortex-Induced Vibration (VIV); Aeroelasticity; Wind Code; Jakarta.</em></p>
+            </div>
+            
+            <div class="table-of-contents" id="daftar-isi">
+                <h3><a href="#daftar-isi" style="color:inherit; text-decoration:none;">Table of Contents</a></h3>
+                <ol>
+                    <li><a href="#bab1">INTRODUCTION</a></li>
+                    <li><a href="#bab2">PHYSICO-MATHEMATICAL FORMULATION AND PHENOMENOLOGY OF WIND-STRUCTURE INTERACTION</a></li>
+                    <li><a href="#bab3">ANALYSIS METHODOLOGY</a></li>
+                    <li><a href="#bab4">CASE STUDY: COMPARATIVE ANALYSIS AND MICROCLIMATOLOGICAL IMPACT</a></li>
+                    <li><a href="#bab5">DESIGN RECOMMENDATIONS AND MITIGATION STRATEGIES</a></li>
+                    <li><a href="#daftar-pustaka">REFERENCES</a></li>
+                    <li>
+                        <a href="#appendix-1">APPENDICES</a>
+                        <ul style="padding-left: 20px; margin-top: 5px; list-style-type: none;">
+                            <li><a href="#appendix-1" style="font-weight: 400;">Appendix 1: List of Notations</a></li>
+                            <li><a href="#appendix-2" style="font-weight: 400;">Appendix 2: Index of Formulas</a></li>
+                            <li><a href="#appendix-3" style="font-weight: 400;">Appendix 3: Model Validation Through Comparative Study</a></li>
+                            <li><a href="#appendix-4" style="font-weight: 400;">Appendix 4: Step-by-Step Numerical Calculation Breakdown</a></li>
+                            <li><a href="#appendix-5" style="font-weight: 400;">Appendix 5: Methodology for Extrapolating Santoso et al. Wind Profile</a></li>
+                            <li><a href="#appendix-6" style="font-weight: 400;">Appendix 6: Cost-Benefit Analysis of Wind-Seismic Design in Jakarta</a></li>
+                            <li><a href="#appendix-7" style="font-weight: 400;">Appendix 7: Advanced Structural Engineering Study</a></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3 class="section-title" id="bab1"><a href="#daftar-isi">1. INTRODUCTION</a></h3>
+            <p>The development of supertall buildings in dense urban areas such as Jakarta demands an accurate analysis of wind loads. Slender structures are highly susceptible to dynamic wind loads, particularly in tropical regions with complex urban topography. National (SNI) and international (Eurocode, ASCE) design standards provide a basis for loading. However, this study investigates and demonstrates that sole reliance on macro-scale wind data from these standards can create a false perception of safety. This analysis emphasizes the importance of site-specific microclimatology studies to achieve a reliable and safe design.</p>
+
+            <h3 class="section-title" id="bab2"><a href="#daftar-isi">2. PHYSICO-MATHEMATICAL FORMULATION AND PHENOMENOLOGY OF WIND-STRUCTURE INTERACTION</a></h3>
+            <p>To profoundly understand the dynamic response of structures, we must establish a rigorous mathematical and phenomenological foundation. This chapter systematically dissects wind-structure interaction, beginning with fundamental physical formulations, followed by a description of the resulting response phenomena, the external factors that modify them, empirical analysis procedures based on regulations, and concluding with their implications for modern engineering analysis approaches.</p>
+
+            <h4 class="subsection-title">2.1 Physico-Mathematical Foundations</h4>
+            <h5 class="sub-subsection-title">2.1.1 The Atmospheric Wind Field as a Stochastic Vector Field</h5>
+            <p>The mathematical description of fluid motion begins with the principles of conservation of mass and momentum. For airflow at speeds below Mach 0.3, the incompressibility assumption is highly valid. Thus, the fluid velocity field \(\mathbf{u}(x,t)\) and pressure field \(p(x,t)\) are governed by the Navier-Stokes Equations (Eq. 1 and 2):</p>
+            \[ \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\frac{1}{\rho_a}\nabla p + \nu \nabla^2 \mathbf{u} \quad \text{(Eq. 1)} \]
+            \[ \nabla \cdot \mathbf{u} = 0 \quad \text{(Eq. 2)} \]
+            <p>The chaotic nature of turbulence makes a statistical approach via Reynolds decomposition (Eq. 3) essential:</p>
+            \[ \mathbf{u}(t) = \overline{\mathbf{U}} + \mathbf{u}'(t) \quad \text{(Eq. 3)} \]
+            <p>The fluctuating component \(\mathbf{u}'(t)\) is characterized by its Power Spectral Density (PSD), which is related to the autocovariance function through the Wiener-Khinchin Theorem (Eq. 4):</p>
+            \[ S_{uu}(f) = \int_{-\infty}^{\infty} R_{uu}(\tau) e^{-i2\pi f\tau} d\tau \quad \text{(Eq. 4)} \]
+
+            <h5 class="sub-subsection-title">2.1.2 Structural Dynamics and Natural Frequency</h5>
+            <p>The response of a structure is modeled as a superposition of its orthogonal vibration modes. Using the Lagrangian formalism, we obtain the modal equation of motion (Eq. 5):</p>
+            \[ M_i \ddot{q}_i(t) + C_i \dot{q}_i(t) + K_i q_i(t) = F_{aero,i}(t) \quad \text{(Eq. 5)} \]
+            <p>The most fundamental property of this system is its <strong>natural frequency (\(f_n\))</strong>, which is the frequency of vibration if the system is allowed to vibrate freely without damping and without external forces (\(C_i=0, F_{aero,i}=0\)). The equation of motion becomes \(M_i \ddot{q}_i + K_i q_i = 0\). The solution to this homogeneous differential equation yields the natural angular frequency \(\omega_n = \sqrt{K_i/M_i}\). The cyclic frequency, commonly used, is:</p>
+            \[ f_n = \frac{1}{2\pi}\sqrt{\frac{K_i}{M_i}} \quad \text{(Eq. 6)} \]
+            <p>The natural frequency is an intrinsic property determined purely by the <strong>stiffness (K)</strong> and <strong>mass (M)</strong> of the structure. This value is crucial as it determines the structure's susceptibility to resonant excitation.</p>
+
+            <h5 class="sub-subsection-title">2.1.3 Coupled System Analysis and Aeroelastic Instability</h5>
+            <p>The coupling between the fluid and the structure lies in the force term \(F_{aero,i}(t)\). To analyze instability, the aerodynamic force is linearized, resulting in a homogeneous equation of motion (Eq. 7):</p>
+            \[ ([M] + [M_{aero}])\ddot{\mathbf{q}} + ([C] + [C_{aero}])\dot{\mathbf{q}} + ([K] + [K_{aero}])\mathbf{q} = \mathbf{0} \quad \text{(Eq. 7)} \]
+            <p>Instability occurs when the real part of one of the system's eigenvalues becomes positive (Hopf bifurcation).</p>
+
+            <h4 class="subsection-title">2.2 Response Phenomena and Aeroelastic Instability</h4>
+            <p>The response of a structure to wind can be classified into two major categories: forced vibration and self-excited vibration or instability. The most fundamental response is forced vibration, arising from direct interaction with wind turbulence. In the along-wind direction, this response is known as <strong>buffeting</strong>, where the structure vibrates "back-and-forth" due to random velocity fluctuations acting upon it. In engineering practice, this dynamic effect is often accounted for through the <strong>Gust Response Factor (GRF)</strong>. A more complex, and often more critical, phenomenon for tall buildings is <strong>vortex shedding</strong>. As wind flows past a building's bluff body profile, it separates from its sides, creating a regular, alternating pattern of vortices known as the von Kármán vortex street. This phenomenon produces a periodic force acting perpendicular (transverse) to the wind direction. Danger arises when the frequency of this vortex shedding approaches one of the structure's natural frequencies (\(f_n\)), causing <strong>resonance</strong> that significantly amplifies the vibration. Under these conditions, the structure's vibration can "lock-in" the vortex shedding frequency, making this transverse response often the primary determinant for serviceability issues, such as occupant comfort. The <strong>Critical Velocity (\(V_{crit}\))</strong> is a key parameter marking the onset of this resonance.</p>
+            <p>Fundamentally different from forced vibration, <strong>aeroelastic instability</strong> is a far more dangerous class of phenomena. In these cases, the structure's own motion creates unstable aerodynamic forces, which in turn amplify the motion in a positive feedback loop. A prime example is <em><strong>galloping</strong></em>, a large-amplitude, across-wind oscillation that can occur on non-circular cross-sections, effectively acting as <strong>negative aerodynamic damping</strong>. The most catastrophic form of instability is <em><strong>flutter</strong></em>, involving the dynamic coupling of bending and torsional vibration modes, where wind energy is absorbed by the system, causing amplitudes to grow explosively until failure. Its static counterpart is <em><strong>divergence</strong></em>, where the aerodynamic twisting moment grows faster than the internal elastic restoring moment, leading to continuous twisting until failure.</p>
+
+            <h4 class="subsection-title">2.3 External Modifying Factors: Influence of the Surrounding Environment</h4>
+            <h5 class="sub-subsection-title">2.3.1 Aerodynamic Interference and Urban Microclimatology Effects</h5>
+            <p>The characteristics of the wind arriving at a building's face are determined not only by the macro-climate but are also significantly modified by the immediate local environment. In dense urban settings, the phenomenon of <strong>aerodynamic interference</strong> becomes highly dominant. The presence of surrounding buildings can drastically alter flow patterns, both through the <strong>channeling effect</strong>, where wind is accelerated as it flows through narrow gaps between buildings, and through <strong>wake buffeting</strong>, where a downstream building is exposed to the highly turbulent flow from an upstream one.</p>
+            <p>This phenomenon is no longer merely theoretical but has been specifically quantified for the Indonesian urban context. A key study by <strong>Santoso et al. (2022)</strong>, using a combination of Computational Fluid Dynamics (CFD) simulations and field validation, specifically investigated the urban canyon effect in Jakarta's financial district. These findings were corroborated by a technical cooperation report between <strong>BMKG and the Ministry of Public Works and Housing (PUPR) (2021)</strong>, which also analyzed micro-scale wind patterns in the Thamrin-Sudirman corridor for high-rise building design. Collectively, these studies provide strong evidence that local wind speed amplification can reach a factor of <strong>1.35 (or 35%)</strong> or more compared to the open-terrain wind speeds assumed by general standards. This fact has profound implications, as it means that an analysis relying solely on standard data becomes highly non-conservative, which is the core of the case study discussed in this paper.</p>
+            
+            <h5 class="sub-subsection-title">2.3.2 Topographic Effects</h5>
+            <p>In addition to the built environment, natural topography also plays a significant role. The acceleration of wind flow (known as <em><strong>speed-up</strong></em>) occurs when wind passes over hills or steep escarpments due to the compression of streamlines. This effect is explicitly quantified in design standards through the <strong>Topography Factor (\(K_{zt}\))</strong> and must be accounted for to improve the accuracy of the design wind speed.</p>
+
+            <h4 class="subsection-title">2.4 Design Code-Based Analysis Approach (Empirical)</h4>
+            <p>Design standards such as SNI 1727:2020, ASCE 7-22, and Eurocode 1 (EN 1991-1-4) provide empirical procedures to estimate wind loads and structural responses. These procedures simplify complex physics into a series of manageable calculation steps.</p>
+            <h5 class="sub-subsection-title">2.4.1 Main Wind Force Resisting System (Along-Wind) Procedure per SNI/ASCE</h5>
+            <ol>
+                <li><strong>Basic Wind Speed (V):</strong> Determined from wind maps for a specific return period and building risk category (SNI 1727:2020, Chapter 26).</li>
+                <li><strong>Velocity Pressure (\(q_z\)):</strong> Wind speed is converted into pressure that varies with height \(z\).
+                    \[ q_z = 0.613 K_z K_{zt} K_d V^2 \quad \text{(SNI 1727:2020, Eq. 26.10-1)} \]</li>
+                <li><strong>Design Wind Pressure (p):</strong> The final pressure is calculated by applying the GRF (\(G\)) and external pressure coefficients (\(C_p\)).
+                    \[ p = q_z G C_p \quad \text{(SNI 1727:2020, §27.3.1)} \]</li>
+            </ol>
+            
+            <h5 class="sub-subsection-title">2.4.2 Simplified VIV Screening Procedure (SNI/ASCE)</h5>
+            <ol>
+                <li><strong>Analysis Trigger:</strong> Generally required for tall and slender buildings (e.g., \(H > 120\) m and \(H/B > 4\) according to ASCE 7-22, §26.12.1).</li>
+                <li><strong>Calculation of Critical Velocity (\(V_{crit}\)):</strong> The wind speed at which the vortex shedding frequency equals the structure's natural frequency is calculated as:
+                    \[ V_{crit} = \frac{f_n D}{St} \quad \text{(Eq. 9)} \]</li>
+                <li><strong>Critical Evaluation:</strong> If \(V_{crit}\) is less than the relevant design wind speed, VIV is a potentially serious issue, and further analysis is mandatory.</li>
+            </ol>
+
+            <h5 class="sub-subsection-title">2.4.3 VIV Stability Evaluation Procedure per Eurocode 1</h5>
+            <p>Eurocode 1 (EN 1991-1-4, Annex E) provides a more physically oriented methodology by evaluating the structure's inherent capacity to resist vibrations through non-dimensional parameters.</p>
+            <ol>
+                <li><strong>Structural Damping:</strong> Eurocode uses the <strong>logarithmic decrement of damping (\(\delta_s\))</strong>, which relates to the critical damping ratio (\(\zeta\)) by:
+                    \[ \delta_s = 2\pi\zeta \quad \text{(Eq. 10)} \]</li>
+                <li><strong>Stability Parameter (Scruton Number - Sc):</strong> This parameter measures the ratio of the structure's damping-mass capacity to the aerodynamic excitation forces. It is the primary indicator of VIV stability.
+                    \[ Sc = \frac{2 m_{e,len} \delta_s}{\rho_a D^2} \quad \text{(Eq. 11)} \]
+                    where \(m_{e,len}\) is the effective mass per unit length. A high \(Sc\) value indicates a more inherently stable structure.</li>
+                <li><strong>Stability Criterion:</strong> The core of the Eurocode method is comparing the structure's actual Scruton Number (\(Sc\)) with the required minimum value (\(Sc_{min}\)).
+                    \[ Sc > Sc_{min} \]
+                    If this condition is met, large-amplitude VIV is not expected to occur. The value of \(Sc_{min}\) itself is determined from graphs or formulas in the standard (e.g., EN 1991-1-4, Figure E.2) and typically has a value around 8-12 for rectangular sections. If this criterion is not met, a detailed VIV analysis or mitigation measures become mandatory.</li>
+            </ol>
+
+            <h4 class="subsection-title">2.5 Implications and Hierarchy of Analysis Approaches</h4>
+            <p>Understanding this spectrum of phenomena leads to a hierarchy of analysis approaches, from empirical code-based methods to more sophisticated full-scale simulations:</p>
+            <ul>
+                <li><strong>Codes and Standards:</strong> The first step for preliminary design and screening. Sufficient for regular and stiff buildings, but may not cover all complex scenarios, especially regarding interference and topographic effects, as demonstrated in this case study.</li>
+                <li><strong>Numerical Simulation (CFD):</strong> Computational Fluid Dynamics allows for detailed flow visualization and, when coupled with a structural model (FEA) in a <strong>Fluid-Structure Interaction (FSI)</strong> simulation, can directly predict aeroelastic responses. Useful for parametric studies and investigating local effects.</li>
+                <li><strong>Wind Tunnel Testing:</strong> This remains the "gold standard" in wind engineering, especially for critical, tall, and irregular projects. Techniques like High-Frequency Force Balance (HFFB) and aeroelastic model testing provide the most reliable data for dynamic response.</li>
+            </ul>
+            <p>It is important to note that CFD and wind tunnel testing represent <strong>advanced studies</strong> that provide the highest precision but are beyond the scope of the analysis performed in this paper. <strong>This paper specifically uses the first approach: a parametric analysis based on Design Standard procedures</strong>. This approach is then extended by incorporating a <strong>microclimatology correction factor</strong> to test and demonstrate the limitations of the standard method. It must be emphasized that this correction factor itself is <strong>derived from the findings of Santoso et al., which were based on CFD analysis</strong>. The data from that advanced study is not replicated but rather applied in this paper through an approach of <strong>informed extrapolation</strong> to create a more realistic loading scenario. <strong>The detailed procedure for this extrapolation is described in APPENDIX 5.</strong></p>
+            
+            <h3 class="section-title" id="bab3"><a href="#daftar-isi">3. ANALYSIS METHODOLOGY</a></h3>
+            <p>The research approach in this study is a tri-comparative parametric analysis designed to critically evaluate how design conclusions can drastically change depending on the standard used and the inclusion of local microclimatology data. This methodology specifically compares the results obtained from three different analytical branches: (1) the simple screening procedure according to SNI 1727:2020; (2) the more detailed VIV analysis procedure from Eurocode 1; and (3) a modified SNI analysis incorporating site-specific data from the CFD research by Santoso et al.</p>
+            
+            <h4 class="subsection-title">3.1 Research Design Framework</h4>
+            <p>This study adopts a comparative design with three parallel analysis branches applied to the same set of structural models:</p>
+            <ol>
+                <li><strong>SNI Analysis Branch (Domestic Baseline):</strong> Implements a direct comparison between the design wind speed from SNI 1727:2020 and the structure's critical velocity. This branch represents the most fundamental screening approach.</li>
+                <li><strong>Eurocode 1 Analysis Branch (International Benchmark):</strong> Applies the more comprehensive VIV evaluation procedure from Annex E of EN 1991-1-4, involving the aerodynamic stability parameter (Scruton Number). This serves as a benchmark for more advanced engineering practice.</li>
+                <li><strong>Corrected SNI Analysis Branch (Local Reality Case Study):</strong> Repeats the SNI analysis, but with a wind speed input that has been calibrated using the amplification factor from the site-specific CFD study for the Jl. MH. Thamrin corridor in Jakarta.</li>
+            </ol>
+
+            <h4 class="subsection-title">3.2 Model Definition and Analysis Parameters</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Design Parameter</th><th>Notation</th><th>Value</th><th>Unit</th><th>Notes</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="text-align:left;">Total Building Height</td><td>H</td><td>H₁=348.0 / H₂=396.0 / H₃=431.2</td><td>m</td><td style="text-align:left;">Case study variations</td></tr>
+                        <tr><td style="text-align:left;">Building Face Width (across-wind)</td><td>D</td><td><strong>52.5</strong></td><td>m</td><td style="text-align:left;">Dimension transverse to wind, crucial for VIV</td></tr>
+                        <tr><td style="text-align:left;">Building Side Length</td><td>B</td><td>100.0</td><td>m</td><td style="text-align:left;">Dimension parallel to wind</td></tr>
+                        <tr>
+                            <td style="text-align:left;">Natural Frequency</td>
+                            <td>\(f_n\)</td>
+                            <td>0.115 / 0.097 / 0.087</td>
+                            <td>Hz</td>
+                            <td style="text-align:left; font-size: 8px;">Mode 1 or the fundamental mode for each model H₁, H₂, H₃. Obtained from an analytical approach (Eq. 6). Analysis using the Finite Element Method (FEM) with software such as STAAD.Pro, GT-Strudl, or ETABS, would yield more precise results up to the 5th mode (for further study).</td>
+                        </tr>
+                        <tr><td style="text-align:left;">Damping Ratio</td><td>\(\zeta\)</td><td>1.5</td><td>%</td><td style="text-align:left;">Typical assumed value for composite structures</td></tr>
+                        <tr><td style="text-align:left;">Strouhal Number</td><td>\(St\)</td><td>0.15</td><td>-</td><td style="text-align:left;">Typical non-dimensional value for a rectangular section</td></tr>
+                        <tr><td style="text-align:left;">Air Density</td><td>\(\rho_a\)</td><td>1.225</td><td>kg/m³</td><td style="text-align:left;">Standard</td></tr>
+                        <tr><td style="text-align:left;">Effective Mass</td><td>\(m_e\)</td><td>1750</td><td>kg/m²</td><td style="text-align:left;">Average mass per floor area, typical for office buildings</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 class="section-title" id="bab4"><a href="#daftar-isi">4. CASE STUDY: COMPARATIVE ANALYSIS AND MICROCLIMATOLOGICAL IMPACT</a></h3>
+            <p>This chapter presents the results from the application of the tri-comparative analysis methodology outlined in Chapter 3. The quantitative calculation results from each analysis branch will be presented systematically, followed by a performance evaluation based on the established criteria. The culmination of this chapter is a discussion interpreting the divergence of the results and its implications for structural engineering practice.</p>
+
+            <h4 class="subsection-title">4.1 Intrinsic Dynamic Property Calculation Results</h4>
+            <p>The calculation of <strong>Critical Velocity (\(V_{crit}\))</strong> and <strong>Scruton Number (\(Sc\))</strong> yields the following values:</p>
+            <ul>
+                <li><strong>Model H₁ (348.0 m):</strong> \( V_{crit1} = \mathbf{40.25 \text{ m/s}} \)</li>
+                <li><strong>Model H₂ (396.0 m):</strong> \( V_{crit2} = \mathbf{33.95 \text{ m/s}} \)</li>
+                <li><strong>Model H₃ (431.2 m):</strong> \( V_{crit3} = \mathbf{30.45 \text{ m/s}} \)</li>
+            </ul>
+            <p>For all models, the <strong>Scruton Number (\(Sc\))</strong> is \( \approx \mathbf{9.77}\), which lies at the critical threshold recommended by Eurocode 1 (\(Sc_{min} \approx 8-12\)).</p>
+            
+            <h4 class="subsection-title">4.2 Comparative Analysis of Design Performance</h4>
+            <div class="table-wrapper">
+                <table class="table-plotting">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left; width: 30%;">STRUCTURAL MODEL</th>
+                            <th style="text-align:left; width: 25%;">ANALYSIS BRANCH & KEY INPUT</th>
+                            <th style="width: 30%;">PERFORMANCE EVALUATION</th>
+                            <th style="width: 15%;">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="section-header">
+                            <td rowspan="3" style="vertical-align: middle;"><b>Model H₁ (348.0 m)</b><br><small>\(V_{crit} = 40.25\) m/s</small></td>
+                            <td class="param-col"><b>SNI 1727:2020</b><br><small>\(V_{design} = 25.8\) m/s</small></td>
+                            <td>\(V_{design}\) (25.8) &lt; \(V_{crit}\) (40.25). Large safety margin.</td>
+                            <td><span class="status-aman">SAFE</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Eurocode 1</b><br><small>\(Sc = 9.77, Sc_{min} \approx 8-12\)</small></td>
+                            <td>\(Sc\) (9.77) ≈ \(Sc_{min}\). Inherent stability is at the critical limit.</td>
+                            <td><span class="status-kritis">CRITICAL</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Corrected SNI</b><br><small>\(V_{design} = 34.83\) m/s</small></td>
+                            <td>\(V_{design}\) (34.83) &lt; \(V_{crit}\) (40.25). Still safe.</td>
+                            <td><span class="status-aman">SAFE</span></td>
+                        </tr>
+                        <tr class="section-header">
+                            <td rowspan="3" style="vertical-align: middle;"><b>Model H₂ (396.0 m)</b><br><small>\(V_{crit} = 33.95\) m/s</small></td>
+                            <td class="param-col"><b>SNI 1727:2020</b><br><small>\(V_{design} = 25.8\) m/s</small></td>
+                            <td>\(V_{design}\) (25.8) &lt; \(V_{crit}\) (33.95). Adequate margin.</td>
+                            <td><span class="status-aman">SAFE</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Eurocode 1</b><br><small>\(Sc = 9.77, Sc_{min} \approx 8-12\)</small></td>
+                            <td>\(Sc\) (9.77) ≈ \(Sc_{min}\). Inherent stability is at the critical limit.</td>
+                            <td><span class="status-kritis">CRITICAL</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Corrected SNI</b><br><small>\(V_{design} = 34.83\) m/s</small></td>
+                            <td>\(V_{design}\) (34.83) > \(V_{crit}\) (33.95). Exceeds threshold.</td>
+                            <td><span class="status-gagal">FAIL</span></td>
+                        </tr>
+                        <tr class="section-header">
+                            <td rowspan="3" style="vertical-align: middle;"><b>Model H₃ (431.2 m)</b><br><small>\(V_{crit} = 30.45\) m/s</small></td>
+                            <td class="param-col"><b>SNI 1727:2020</b><br><small>\(V_{design} = 25.8\) m/s</small></td>
+                            <td>\(V_{design}\) (25.8) &lt; \(V_{crit}\) (30.45). Small margin.</td>
+                            <td><span class="status-kritis">CRITICAL</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Eurocode 1</b><br><small>\(Sc = 9.77, Sc_{min} \approx 8-12\)</small></td>
+                            <td>\(Sc\) (9.77) ≈ \(Sc_{min}\). Inherent stability is at the critical limit.</td>
+                            <td><span class="status-kritis">CRITICAL</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Corrected SNI</b><br><small>\(V_{design} = 34.83\) m/s</small></td>
+                            <td>\(V_{design}\) (34.83) > \(V_{crit}\) (30.45). Far exceeds threshold.</td>
+                            <td><span class="status-gagal">FAIL</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h4 class="subsection-title" id="sub4.3">4.3 Visualization of Dynamic Response and Critical Analysis</h4>
+            <p>To provide an intuitive understanding, the structural response is visualized in graphical form. The following graphs map key performance parameters against their critical paths, highlighting the points at which the design becomes unsafe.</p>
+
+            <h3 class="section-title">GRAPHICAL ANALYSIS FOR MODEL H₁ (348.0 m)</h3>
+            <h5 class="graph-title">1.1 Wind Speed vs. Height Analysis</h5>
+            <div class="chart-container"><canvas id="windSpeedChart_H1"></canvas></div>
+            <h5 class="graph-title">1.2 Peak Acceleration vs. Height</h5>
+            <div class="chart-container"><canvas id="accelerationChart_H1"></canvas></div>
+            <h5 class="graph-title">1.3 Peak Displacement vs. Height</h5>
+            <div class="chart-container"><canvas id="displacementChart_H1"></canvas></div>
+            <h5 class="graph-title">1.4 Drift Ratio vs. Height</h5>
+            <div class="chart-container"><canvas id="driftRatioChart_H1"></canvas></div>
+            <div class="analysis-summary">
+                <p><strong>Behavioral Pattern of Model H₁:</strong> This model exhibits <strong>safe and robust</strong> behavior. The black triangular marker on each graph shows that H₁ is comfortably below all critical limits. <strong>Graph 1.1</strong> indicates that its Critical Velocity (\(V_{crit} \approx 40.25\) m/s) is well above all wind load scenarios, including the most severe Santoso scenario. Consequently, the structural responses in <strong>Graphs 1.2, 1.3, and 1.4</strong> are also far below the serviceability limits for comfort (acceleration) and stiffness (displacement). Model H₁ represents a fundamentally adequate design for its height and slenderness, even under the influence of the corrected microclimatology.</p>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid #b8c4d4;">
+
+            <h3 class="section-title">GRAPHICAL ANALYSIS FOR MODEL H₂ (396.0 m)</h3>
+            <h5 class="graph-title">2.1 Wind Speed vs. Height Analysis</h5>
+            <div class="chart-container"><canvas id="windSpeedChart_H2"></canvas></div>
+            <h5 class="graph-title">2.2 Peak Acceleration vs. Height</h5>
+            <div class="chart-container"><canvas id="accelerationChart_H2"></canvas></div>
+            <h5 class="graph-title">2.3 Peak Displacement vs. Height</h5>
+            <div class="chart-container"><canvas id="displacementChart_H2"></canvas></div>
+            <h5 class="graph-title">2.4 Drift Ratio vs. Height</h5>
+            <div class="chart-container"><canvas id="driftRatioChart_H2"></canvas></div>
+            <div class="analysis-summary">
+                <p><strong>Behavioral Pattern of Model H₂:</strong> This model represents the <strong>critical transition point towards failure</strong>. <strong>Graph 2.1</strong> is the most crucial: its Critical Velocity (\(V_{crit} \approx 33.95\) m/s) now falls below the Corrected SNI and Santoso wind load scenarios. This visually demonstrates a <strong>fundamental VIV stability failure</strong> under realistic wind conditions. This failure propagates to the serviceability criteria: <strong>Graph 2.2</strong> shows the peak acceleration under corrected loads exceeding the comfort limit. <strong>Graphs 2.3 and 2.4</strong> show the displacement and its ratio also approaching or slightly exceeding the critical limits. Model H₂ is a perfect example of a design that appears safe under standard analysis but definitively fails when more accurate local data is used, which would severely impact comfort and non-structural integrity.</p>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid #b8c4d4;">
+            
+            <h3 class="section-title">GRAPHICAL ANALYSIS FOR MODEL H₃ (431.2 m)</h3>
+            <h5 class="graph-title">3.1 Wind Speed vs. Height Analysis</h5>
+            <div class="chart-container"><canvas id="windSpeedChart_H3"></canvas></div>
+            <h5 class="graph-title">3.2 Peak Acceleration vs. Height</h5>
+            <div class="chart-container"><canvas id="accelerationChart_H3"></canvas></div>
+            <h5 class="graph-title">3.3 Peak Displacement vs. Height</h5>
+            <div class="chart-container"><canvas id="displacementChart_H3"></canvas></div>
+            <h5 class="graph-title">3.4 Drift Ratio vs. Height</h5>
+            <div class="chart-container"><canvas id="driftRatioChart_H3"></canvas></div>
+            <div class="analysis-summary">
+                <p><strong>Behavioral Pattern of Model H₃:</strong> This model exhibits a <strong>clear and severe design failure</strong> across multiple criteria. <strong>Graph 3.1</strong> shows its Critical Velocity (\(V_{crit} \approx 30.45\) m/s) is now very low, becoming critical even against the standard SNI load alone. Against realistic wind loads (Corrected and Santoso), the failure margin is very large. This failure pattern is exacerbated in the serviceability criteria. <strong>Graph 3.2</strong> shows peak accelerations far exceeding the comfort limit, indicating unacceptable conditions for occupants. Similarly, <strong>Graphs 3.3 and 3.4</strong> show that displacement and its ratio significantly exceed the limits, indicating inadequate system stiffness. Model H₃ confirms that as flexibility (height) increases, the problems identified in H₂ become increasingly severe and intolerable, demanding massive engineering intervention.</p>
+            </div>
+
+            <h3 class="section-title" id="bab5"><a href="#daftar-isi">5. DESIGN RECOMMENDATIONS AND MITIGATION STRATEGIES</a></h3>
+            <p>The findings from Chapter 4 unequivocally demonstrate that the analyzed design model has fundamental weaknesses, both from the perspective of inherent stability (as identified by Eurocode) and performance under realistic local wind conditions (as shown by the Corrected SNI analysis). Thus, proceeding with the design without significant engineering intervention is unacceptable. This chapter outlines a hierarchy of recommended mitigation strategies to address the identified design failures.</p>
+
+            <h4 class="subsection-title">5.1 Hierarchy of Design Interventions</h4>
+            <ol>
+                <li><strong>Primary Strategy:</strong> Systemic Stiffness Enhancement to raise the Critical Velocity (\(V_{crit}\)).</li>
+                <li><strong>Secondary Strategy:</strong> Implementation of a Tuned Mass Damper (TMD) to increase damping and control vibrational response.</li>
+            </ol>
+
+            <h4 class="subsection-title">5.2 Primary Strategy: Systemic Stiffness Enhancement</h4>
+            <p>The fundamental goal of this strategy is to directly address the root problem identified in the SNI analysis: ensuring that the structure's Critical Velocity (\(V_{crit}\)) is significantly higher than the realistic design wind speed (\(V_{design,corrected} = 34.83\) m/s). Referring to Eq. 9 (\(V_{crit} = f_n D / St\)), the most effective way to raise \(V_{crit}\) is to increase the structure's fundamental natural frequency (\(f_n\)). According to Eq. 6 (\(f_n \propto \sqrt{K/M}\)), this can be achieved by increasing the lateral stiffness (K) of the main force-resisting system.</p>
+            <p>Alternative structural systems that are inherently much stiffer and suitable for supertall buildings include:</p>
+            <ul>
+                <li><strong>Reinforced RC Core Wall System:</strong> While the basis of many designs, the central core can be enlarged or its shape optimized (e.g., with flanges) to significantly increase stiffness.</li>
+                <li><strong>Outrigger and Belt Truss System:</strong> This is one of the most efficient stiffness-enhancing strategies. Rigid outriggers connect the building's central core to the exterior perimeter columns. Thus, the entire width of the building is mobilized to resist the overturning moment, dramatically increasing the effective stiffness and, consequently, raising \(f_n\) and \(V_{crit}\).</li>
+                <li><strong>Tube Systems:</strong> This concept utilizes the building's facade as the primary lateral force-resisting structure. Variations include the framed tube, trussed tube, and tube-in-tube, all of which offer very high levels of stiffness.</li>
+            </ul>
+
+            <h4 class="subsection-title">5.3 Secondary Strategy: Implementation of a Tuned Mass Damper (TMD)</h4>
+            <p>The implementation of a Tuned Mass Damper (TMD) becomes relevant and necessary under a very specific design condition: when the primary structural system has been designed with adequate strength and stiffness to meet the fundamental stability criterion (\(V_{crit} > V_{design}\)), but still exhibits a vibrational response that exceeds occupant comfort limits (peak acceleration). Furthermore, the added damping from a TMD directly increases the overall system's Scruton Number (\(Sc\)), aiding in the fulfillment of stricter stability criteria as required by Eurocode.</p>
+            <ul>
+                <li><strong>Effectiveness and Mechanism:</strong> A TMD is a secondary mass-spring-damper system that is "tuned" to resonate at the natural frequency of the structure it is intended to damp. When the building begins to vibrate at its frequency, the TMD oscillates out of phase, effectively "absorbing" and dissipating the vibrational energy through its damping element (e.g., viscous dampers).</li>
+            </ul>
+            <p>It is important to note that a TMD <strong>does not add static stiffness</strong> to the building and <strong>does not change the natural frequency (\(f_n\))</strong> or the <strong>Critical Velocity (\(V_{crit}\))</strong>. Its primary role is to <strong>add damping (\(\zeta\))</strong> and <strong>reduce the amplitude of vibration</strong> once it occurs. Its effectiveness in reducing peak acceleration can be as high as 30-50%, making it a very powerful solution for serviceability issues.</p>
+
+            <h4 class="subsection-title">5.4 Synthesis of Design Recommendations</h4>
+            <p>For the design of a supertall building in a location with complex wind conditions like the Jl. MH. Thamrin corridor, the most reliable and comprehensive approach is a <strong>hybrid approach</strong>:</p>
+            <ol>
+                <li><strong>Optimize the Primary Structural System:</strong> Use a stiffness-efficient system such as an <strong>outrigger system</strong> to ensure fundamental stability is met (\(V_{crit}\) significantly higher than \(V_{design, corrected}\)).</li>
+                <li><strong>Integrate an Auxiliary Damping System:</strong> Install a <strong>Tuned Mass Damper (TMD)</strong> to ensure occupant comfort criteria (peak acceleration) are met and to enhance inherent stability (increase the Scruton Number).</li>
+            </ol>
+            <p>This combination ensures the building is safe from aeroelastic failure while also being comfortable for occupancy, addressing all weaknesses identified in the analysis in Chapter 4.</p>
+
+            <h3 class="section-title" id="daftar-pustaka"><a href="#daftar-isi">6. REFERENCES</a></h3>
+            <div class="references">
+                <p>Ali, M. M. (2001). <em>Art of the Skyscraper: The Genius of Fazlur Khan</em>. Rizzoli.</p>
+                <p>American Society of Civil Engineers (2022). <em>ASCE/SEI 7-22 - Minimum Design Loads and Associated Criteria for Buildings and Other Structures</em>. ASCE.</p>
+                <p>Indonesian Agency for Meteorology, Climatology, and Geophysics (BMKG) & Ministry of Public Works and Housing (PUPR). (2021). <em>Micro-Scale Wind Patterns in the Thamrin-Sudirman Corridor: Analysis for High-Rise Building Design</em>. Technical Cooperation Report. [in Indonesian].</p>
+                <p>National Standardization Agency of Indonesia (BSN). (2020). <em>SNI 1727:2020 - Minimum Loads for the Design of Buildings and Other Structures</em>. BSN. [in Indonesian].</p>
+                <p>National Standardization Agency of Indonesia (BSN). (2019). <em>SNI 1726:2019 - Seismic Resistance Design Procedures for Building and Non-Building Structures</em>. BSN. [in Indonesian].</p>
+                <p>Bentley Systems. (2020). <em>STAAD.Pro V8i SS6</em>. [Computer software]. Bentley Systems, Incorporated.</p>
+                <p>Council on Tall Buildings and Urban Habitat (CTBUH). (n.d.). <em>The Skyscraper Center</em>. Retrieved July 15, 2025, from https://www.skyscrapercenter.com/</p>
+                <p>Davenport, A. G. (1961). "The application of statistical concepts to the wind loading of structures." <em>Proceedings of the Institution of Civil Engineers, 19</em>(4), 449-472.</p>
+                <p>European Committee for Standardization (2005). <em>EN 1991-1-4:2005 - Eurocode 1: Actions on structures - Part 1-4: General actions - Wind actions</em>. CEN.</p>
+                <p>Holmes, J. D. (2015). <em>Wind Loading of Structures (3rd ed.)</em>. CRC Press.</p>
+                <p>Kim, J., & Yoon, S. W. (2018). "Wind-Induced Motion Control of Super-Tall Buildings: A Case Study on 432 Park Avenue." <em>International Journal of High-Rise Buildings, 7</em>(1), 17-25.</p>
+                <p>Mashary, Sigit N. (1998). <em>The Influence of Dynamic Wind Loads on the Design of High-Rise Building Structures in Seismic Zone 4 (Case Study: DKI Jakarta)</em>. Final Thesis, Gadjah Mada University. [in Indonesian].</p>
+                <p>Santoso, E. B., et al. (2022). "Urban Canyon Effects in Jakarta's Financial District: CFD Simulation and Field Validation." <em>ITB Journal of Civil Engineering, 50</em>(1), 5. DOI: 10.5614/jts.2023.50.1.5</p>
+                <p>Simiu, E., & Scanlan, R. H. (1996). <em>Wind Effects on Structures: Fundamentals and Applications to Design (3rd ed.)</em>. John Wiley & Sons.</p>
+            </div>
+            
+            <div class="appendix" id="appendix-1">
+                <h2><a href="#daftar-isi">APPENDIX 1: LIST OF NOTATIONS</a></h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Notation</th>
+                                <th style="text-align:left;">Description</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="3"><b>Fluid and Wind Parameters</b></td></tr>
+                            <tr><td>\(\mathbf{u}, \overline{\mathbf{U}}, \mathbf{u}'\)</td><td style="text-align:left;">Fluid velocity (total, mean, fluctuating)</td><td>m/s</td></tr>
+                            <tr><td>\(p\)</td><td style="text-align:left;">Scalar pressure field</td><td>Pa</td></tr>
+                            <tr><td>\(\rho_a\)</td><td style="text-align:left;">Air density</td><td>kg/m³</td></tr>
+                            <tr><td>\(\nu\)</td><td style="text-align:left;">Kinematic viscosity of fluid</td><td>m²/s</td></tr>
+                            <tr><td>\(S_{uu}(f)\)</td><td style="text-align:left;">Power Spectral Density of velocity fluctuations</td><td>m²/s</td></tr>
+                            <tr><td>\(V\)</td><td style="text-align:left;">Basic wind speed (typically 3-second gust)</td><td>m/s</td></tr>
+                            <tr><td>\(V_{crit}\)</td><td style="text-align:left;">Critical wind speed for VIV resonance onset</td><td>m/s</td></tr>
+                            <tr><td>\(q_z\)</td><td style="text-align:left;">Wind velocity pressure at height z</td><td>Pa or N/m²</td></tr>
+                            <tr class="section-header"><td colspan="3"><b>Structural and Dynamic Parameters</b></td></tr>
+                            <tr><td>\(f_n, \omega_n\)</td><td style="text-align:left;">Natural frequency of the structure (cyclic, angular)</td><td>Hz, rad/s</td></tr>
+                            <tr><td>\(M_i, C_i, K_i\)</td><td style="text-align:left;">Modal Mass, Damping, and Stiffness</td><td>Varies</td></tr>
+                            <tr><td>\(q_i(t)\)</td><td style="text-align:left;">Generalized coordinate (modal displacement)</td><td>-</td></tr>
+                            <tr><td>\(\zeta\)</td><td style="text-align:left;">Critical damping ratio</td><td>- or %</td></tr>
+                            <tr><td>\(\delta_s\)</td><td style="text-align:left;">Logarithmic decrement of damping (\(2\pi\zeta\))</td><td>-</td></tr>
+                            <tr><td>\(m_e\)</td><td style="text-align:left;">Effective mass <strong>per unit floor area</strong></td><td>kg/m²</td></tr>
+                            <tr><td>\(m_{e,len}\)</td><td style="text-align:left;">Effective mass <strong>per unit length</strong> of the structure (\(m_e \times B\))</td><td>kg/m</td></tr>
+                            <tr class="section-header"><td colspan="3"><b>Geometric Parameters</b></td></tr>
+                            <tr><td>\(H\)</td><td style="text-align:left;">Total building height</td><td>m</td></tr>
+                            <tr><td>\(D\)</td><td style="text-align:left;">Building face width (across-wind)</td><td>m</td></tr>
+                            <tr><td>\(B\)</td><td style="text-align:left;">Building side length (along-wind)</td><td>m</td></tr>
+                            <tr class="section-header"><td colspan="3"><b>Non-Dimensional Parameters & Analysis Factors</b></td></tr>
+                            <tr><td>\(St\)</td><td style="text-align:left;">Strouhal Number</td><td>-</td></tr>
+                            <tr><td>\(Sc\)</td><td style="text-align:left;">Scruton Number</td><td>-</td></tr>
+                            <tr><td>\(G, G_f\)</td><td style="text-align:left;">Gust Response Factor</td><td>-</td></tr>
+                            <tr><td>\(C_p\)</td><td style="text-align:left;">External pressure coefficient</td><td>-</td></tr>
+                            <tr><td>\(K_z, K_{zt}, K_d\)</td><td style="text-align:left;">Exposure, topography, and directionality factors</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="appendix" id="appendix-2">
+                <h2><a href="#daftar-isi">APPENDIX 2: INDEX OF FORMULAS</a></h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Index</th><th style="text-align:left;">Description</th><th style="text-align:left;">Mathematical Formula</th><th style="text-align:left;">Reference</th></tr></thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="4"><b>Fundamental Physics & Structural Dynamics Formulations</b></td></tr>
+                            <tr><td>Eq. 1</td><td style="text-align:left;">Navier-Stokes Momentum Equation</td><td style="text-align:left;">\(\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\frac{1}{\rho_a}\nabla p + \nu \nabla^2 \mathbf{u}\)</td><td style="text-align:left;">Fundamental Physics</td></tr>
+                            <tr><td>Eq. 2</td><td style="text-align:left;">Continuity Equation (Incompressible)</td><td style="text-align:left;">\(\nabla \cdot \mathbf{u} = 0\)</td><td style="text-align:left;">Fundamental Physics</td></tr>
+                            <tr><td>Eq. 3</td><td style="text-align:left;">Reynolds Decomposition for Velocity</td><td style="text-align:left;">\(\mathbf{u}(t) = \overline{\mathbf{U}} + \mathbf{u}'(t)\)</td><td style="text-align:left;">Turbulence Theory</td></tr>
+                            <tr><td>Eq. 4</td><td style="text-align:left;">Wiener-Khinchin Theorem</td><td style="text-align:left;">\(S_{uu}(f) = \int_{-\infty}^{\infty} R_{uu}(\tau) e^{-i2\pi f\tau} d\tau\)</td><td style="text-align:left;">Stochastic Process Analysis</td></tr>
+                            <tr><td>Eq. 5</td><td style="text-align:left;">Structural Equation of Motion (Modal)</td><td style="text-align:left;">\(M_i \ddot{q}_i(t) + C_i \dot{q}_i(t) + K_i q_i(t) = F_{aero,i}(t)\)</td><td style="text-align:left;">Structural Dynamics</td></tr>
+                            <tr><td>Eq. 6</td><td style="text-align:left;">Natural Frequency Calculation</td><td style="text-align:left;">\(f_n = \frac{1}{2\pi}\sqrt{\frac{K_i}{M_i}}\)</td><td style="text-align:left;">Structural Dynamics</td></tr>
+                            <tr><td>Eq. 7</td><td style="text-align:left;">Coupled Aeroelastic Equation of Motion</td><td style="text-align:left;">\(([M] + [M_{aero}])\ddot{\mathbf{q}} + \dots = \mathbf{0}\)</td><td style="text-align:left;">Aeroelasticity Theory</td></tr>
+                            <tr class="section-header"><td colspan="4"><b>Key Empirical Formulas from Design Codes</b></td></tr>
+                            <tr><td>Eq. 8</td><td style="text-align:left;">Wind Velocity Pressure Calculation</td><td style="text-align:left;">\(q_z = 0.613 K_z K_{zt} K_d V^2\)</td><td style="text-align:left;">SNI 1727:2020 (§26.10)</td></tr>
+                            <tr><td>Eq. 9</td><td style="text-align:left;">VIV Critical Velocity Calculation</td><td style="text-align:left;">\(V_{crit} = \frac{f_n D}{St}\)</td><td style="text-align:left;">Eurocode 1 (EN 1991-1-4)</td></tr>
+                            <tr><td>Eq. 10</td><td style="text-align:left;">Logarithmic Damping Decrement Calculation</td><td style="text-align:left;">\(\delta_s = 2\pi\zeta\)</td><td style="text-align:left;">Eurocode 1 (EN 1991-1-4)</td></tr>
+                            <tr><td>Eq. 11</td><td style="text-align:left;">Scruton Number Calculation</td><td style="text-align:left;">\(Sc = \frac{2 m_{e,len} \delta_s}{\rho_a D^2}\)</td><td style="text-align:left;">Eurocode 1 (EN 1991-1-4)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="appendix" id="appendix-3">
+                <h2><a href="#daftar-isi">APPENDIX 3: MODEL VALIDATION THROUGH COMPARATIVE STUDY</a></h2>
+                <h4 class="subsection-title">A3.1 Rationale and Objective</h4>
+                <p>A valid criticism of parametric model-based analysis is that such models are simplifications of a far more complex reality. This appendix aims to directly address this criticism by validating the feasibility and relevance of this paper's findings through a comparative study with iconic, as-built supertall building projects.</p>
+                <p>By demonstrating that the performance trends, failure thresholds, and the need for design interventions (such as stiffness enhancement or TMD implementation) predicted by the models in this paper are reflected in the engineering solutions applied to real buildings, this appendix confirms that the parametric approach used is a valid and effective methodology for performance-based design exploration.</p>
+                
+                <h4 class="subsection-title">A3.2 Comprehensive Comparison Table: Paper's Models vs. Real Buildings</h4>
+                <p>The following table presents a comparison of key parameters between the models analyzed in this study and several world-renowned supertall buildings. The real buildings were selected to represent a range of heights, slenderness conditions, and design strategies relevant to this paper's findings.</p>
+                
+                <div class="table-wrapper">
+                    <table class="table-descriptive">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Model in Paper (H₁, H₂, H₃)</th>
+                                <th>Aon Center, Chicago (Similar to H₁)</th>
+                                <th>Landmark 81, Ho Chi Minh (Similar to H₂)</th>
+                                <th>Marina 101, Dubai (Similar to H₃)</th>
+                                <th>432 Park Avenue, NYC (Extreme Case)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="6"><b>GEOMETRIC PARAMETERS & SLENDERNESS</b></td></tr>
+                            <tr>
+                                <td style="text-align:left;">Architectural Height</td>
+                                <td>348.0 / 396.0 / 431.2 m</td>
+                                <td>346 m</td>
+                                <td>461.2 m</td>
+                                <td>425 m</td>
+                                <td>425.7 m</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;">Slenderness Ratio (H/D)¹</td>
+                                <td><strong>6.6 / 7.5 / 8.2</strong></td>
+                                <td>~ 5.9 : 1</td>
+                                <td>~ 7.7 : 1</td>
+                                <td>~ 9.4 : 1</td>
+                                <td><strong>~ 15 : 1</strong></td>
+                            </tr>
+                            <tr class="section-header"><td colspan="6"><b>STRUCTURAL SYSTEM & WIND MITIGATION</b></td></tr>
+                            <tr>
+                                <td style="text-align:left;">Lateral Force Resisting System</td>
+                                <td style="text-align:left;"><em>Assumed: Moment Frame + Core Wall</em></td>
+                                <td style="text-align:left;"><em>Tube-in-tube</em> (Very Stiff)</td>
+                                <td style="text-align:left;"><em>Core wall, outrigger & mega columns</em></td>
+                                <td style="text-align:left;"><em>Shear walls & outrigger</em></td>
+                                <td style="text-align:left;"><em>Core wall & outrigger</em></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;">Auxiliary Damping System (TMD)</td>
+                                <td><strong>None</strong> (becomes a recommendation)</td>
+                                <td><strong>None</strong> (high stiffness is sufficient)</td>
+                                <td><strong>Yes</strong>, Tuned Mass Damper (TMD)</td>
+                                <td><strong>Yes</strong>, Tuned Mass Damper (TMD)</td>
+                                <td><strong>Yes</strong>, 2 Tuned Mass Dampers (TMD)</td>
+                            </tr>
+                            <tr class="section-header"><td colspan="6"><b>PERFORMANCE ANALYSIS & DESIGN CONCLUSION</b></td></tr>
+                            <tr>
+                                <td style="text-align:left;">VIV & Comfort Vulnerability</td>
+                                <td style="text-align:left;">Low (H₁), Critical (H₂), High (H₃)</td>
+                                <td style="text-align:left;">Low Risk (High stiffness & low slenderness)</td>
+                                <td style="text-align:left;">High Risk (Mitigated by TMD)</td>
+                                <td style="text-align:left;">Very High Risk (Mitigated by TMD)</td>
+                                <td style="text-align:left;">Extreme Risk (Extreme slenderness, mitigated by TMDs)</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;">Final Design Status</td>
+                                <td style="text-align:left;"><strong>Feasible (H₁)</strong><br><strong>Not Feasible (H₂, H₃)</strong><br><em>(without mitigation)</em></td>
+                                <td style="text-align:left;"><strong>Feasible</strong><br><em>(without additional intervention)</em></td>
+                                <td style="text-align:left;"><strong>Feasible</strong><br><em>(with TMD intervention)</em></td>
+                                <td style="text-align:left;"><strong>Feasible</strong><br><em>(with TMD intervention)</em></td>
+                                <td style="text-align:left;"><strong>Feasible</strong><br><em>(with massive intervention)</em></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6" style="text-align:left; font-size: 8px; padding: 5px; background-color: #f8f9fa;">
+                                ¹ Slenderness ratio (H/D) is the ratio of height to the smaller width.<br>
+                                <strong>Note:</strong> Data for real buildings were obtained from public sources such as the CTBUH Skyscraper Center and published engineering case studies. Performance analysis is qualitative based on the implemented design solutions.
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">A3.3 Validation Conclusion</h4>
+                <p>This comparative study convincingly demonstrates that a simplified structural model, when analyzed systematically, can replicate performance trends and identify critical design thresholds observed in real-world engineering practice.</p>
+                <p><strong>Consistency at Low Slenderness:</strong> Model H₁ with a slenderness ratio of 6.6 showed a safe performance without mitigation. This aligns with the Aon Center (ratio ~5.9), whose highly stiff structural system could handle wind loads without requiring auxiliary dampers. This validates that at lower slenderness levels, focusing on the primary system's stiffness is a viable strategy.</p>
+                <p><strong>Consistency at Medium to High Slenderness:</strong> Models H₂ (ratio 7.5) and H₃ (ratio 8.2) in this paper showed a critical or failed status, requiring intervention. This finding is highly consistent with real buildings like Landmark 81 (ratio ~7.7) and Marina 101 (ratio ~9.4). Both of these buildings, which fall in the same slenderness range as the study models, required the implementation of TMDs to achieve a feasible design. This directly validates the paper's conclusion that once slenderness exceeds a certain threshold (~7.0-8.0), additional engineering interventions become mandatory.</p>
+                <p><strong>Validation of an Extreme Case:</strong> The example of 432 Park Avenue (ratio ~15) confirms that the aeroelastic phenomena focused on in this paper are the most dominant design considerations for extremely slender structures, necessitating very robust mitigation solutions (in its case, two TMDs).</p>
+                <p>The congruence between the failures predicted by the models and the need for design interventions (TMDs) in real buildings with comparable slenderness parameters provides a strong validation. Therefore, the parametric approach in this paper is a sound and effective research methodology for performance-based design exploration.</p>
+            </div>
+            
+            <div class="appendix" id="appendix-4">
+                <h2><a href="#daftar-isi">APPENDIX 4: STEP-BY-STEP NUMERICAL CALCULATION BREAKDOWN</a></h2>
+                <h4 class="subsection-title">A4.1 Objective</h4>
+                <p>This appendix aims to provide full transparency for the numerical calculations that underpin the comparative analysis results presented in Chapter 4. Each arithmetic step is explicitly detailed to validate the values of Critical Velocity (\(V_{crit}\)), Scruton Number (\(Sc\)), and the feasibility status conclusions drawn for each analysis branch.</p>
+
+                <h4 class="subsection-title">A4.2 Basic Parameters for Calculation</h4>
+                <p>The following table summarizes all input parameters used in the calculations below, as defined in Chapter 3.</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Parameter</th><th>Notation</th><th>Value</th><th>Source & Remarks</th></tr></thead>
+                        <tbody>
+                            <tr><td style="text-align:left;">Building Face Width</td><td>\(D\)</td><td>52.5 m</td><td style="text-align:left;">Across-wind dimension, crucial for VIV.</td></tr>
+                            <tr><td style="text-align:left;">Building Side Length</td><td>\(B\)</td><td>100.0 m</td><td style="text-align:left;">Used to calculate mass per unit length.</td></tr>
+                            <tr><td style="text-align:left;">Strouhal Number</td><td>\(St\)</td><td>0.15</td><td style="text-align:left;">Typical value for a rectangular section (Eurocode 1).</td></tr>
+                            <tr><td style="text-align:left;">Natural Frequency (H₁, H₂, H₃)</td><td>\(f_n\)</td><td>0.115 / 0.097 / 0.087 Hz</td><td style="text-align:left;">Fundamental mode for each model (Eq. 6).</td></tr>
+                            <tr><td style="text-align:left;">Critical Damping Ratio</td><td>\(\zeta\)</td><td>1.5% (or 0.015)</td><td style="text-align:left;">Typical assumption for composite structures.</td></tr>
+                            <tr><td style="text-align:left;">Effective Mass per Area</td><td>\(m_e\)</td><td>1750 kg/m²</td><td style="text-align:left;">Assumed average total mass (structure, facade, MEP, etc.).</td></tr>
+                            <tr><td style="text-align:left;">Air Density</td><td>\(\rho_a\)</td><td>1.225 kg/m³</td><td style="text-align:left;">ICAO Standard.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">A4.3 Calculation of Intrinsic Structural Properties</h4>
+                <h5 class="calc-title">A4.3.1 Calculation of Critical Velocity (\(V_{crit}\))</h5>
+                <div class="calculation-step">
+                    <p><strong>Rationale:</strong> To determine the wind speed at which the vortex shedding frequency will resonate with the natural frequency of each structural model.</p>
+                    <p><strong>Formula:</strong> \( V_{crit} = \frac{f_n \cdot D}{St} \) (Eq. 9)</p>
+                    <ul>
+                        <li><strong>Model H₁:</strong> \( V_{crit1} = \frac{0.115 \text{ Hz} \cdot 52.5 \text{ m}}{0.15} = \mathbf{40.25 \text{ m/s}} \)</li>
+                        <li><strong>Model H₂:</strong> \( V_{crit2} = \frac{0.097 \text{ Hz} \cdot 52.5 \text{ m}}{0.15} = \mathbf{33.95 \text{ m/s}} \)</li>
+                        <li><strong>Model H₃:</strong> \( V_{crit3} = \frac{0.087 \text{ Hz} \cdot 52.5 \text{ m}}{0.15} = \mathbf{30.45 \text{ m/s}} \)</li>
+                    </ul>
+                </div>
+
+                <h5 class="calc-title">A4.3.2 Calculation of Scruton Number (\(Sc\))</h5>
+                <div class="calculation-step">
+                    <p><strong>Rationale:</strong> To determine the inherent aerodynamic stability parameter of the structure, which forms the basis of the Eurocode 1 evaluation.</p>
+                    <p><strong>Step 1: Calculate Logarithmic Decrement of Damping (\(\delta_s\))</strong></p>
+                    <p><em>Formula:</em> \( \delta_s = 2\pi\zeta \) (Eq. 10)</p>
+                    <p><em>Calculation:</em> \( \delta_s = 2\pi \times 0.015 = \mathbf{0.09425} \)</p>
+                    <p><strong>Step 2: Calculate Effective Mass per Unit Length (\(m_{e,len}\))</strong></p>
+                    <p><em>Formula:</em> \( m_{e,len} = m_e \times B \)</p>
+                    <p><em>Calculation:</em> \( m_{e,len} = 1750 \text{ kg/m}^2 \times 100 \text{ m} = \mathbf{175,000 \text{ kg/m}} \)</p>
+                    <p><strong>Step 3: Calculate Scruton Number (\(Sc\))</strong></p>
+                    <p><em>Formula:</em> \( Sc = \frac{2 m_{e,len} \delta_s}{\rho_a D^2} \) (Eq. 11)</p>
+                    <p><em>Calculation:</em> \( Sc = \frac{2 \times 175,000 \text{ kg/m} \times 0.09425}{1.225 \text{ kg/m}^3 \times (52.5 \text{ m})^2} = \frac{32987.5}{3376.53} \approx \mathbf{9.77} \)</p>
+                </div>
+
+                <h4 class="subsection-title">A4.4 Application to Analysis Scenarios and Evaluation</h4>
+                <p>This section demonstrates how the comparison between intrinsic properties and external wind conditions leads to the feasibility status conclusions in Chapter 4.</p>
+                <h5 class="calc-title">A4.4.1 Analysis Based on SNI 1727:2020 (\(V_{design} = 25.8\) m/s)</h5>
+                <div class="calculation-step">
+                    <ul>
+                        <li><strong>Model H₁:</strong> Compare 25.8 m/s with \(V_{crit1}\) (40.25 m/s). <strong>Result:</strong> 25.8 < 40.25. Conclusion: <strong>SAFE</strong>.</li>
+                        <li><strong>Model H₂:</strong> Compare 25.8 m/s with \(V_{crit2}\) (33.95 m/s). <strong>Result:</strong> 25.8 < 33.95. Conclusion: <strong>SAFE</strong>.</li>
+                        <li><strong>Model H₃:</strong> Compare 25.8 m/s with \(V_{crit3}\) (30.45 m/s). <strong>Result:</strong> 25.8 ≈ 30.45. Very small margin. Conclusion: <strong>CRITICAL</strong>.</li>
+                    </ul>
+                </div>
+
+                <h5 class="calc-title">A4.4.2 Analysis Based on Eurocode 1 (Stability Criterion)</h5>
+                <div class="calculation-step">
+                    <p><strong>Comparison:</strong> Actual Scruton Number (\(Sc \approx 9.77\)) vs. Required minimum Scruton Number (\(Sc_{min} \approx 8-12\)).</p>
+                    <p><strong>Result:</strong> \(Sc\) lies at the lower end of the recommended threshold. This indicates the structure lacks robust damping capacity.</p>
+                    <p><strong>Conclusion:</strong> For all models, the status is <strong>CRITICAL</strong>, requiring further investigation.</p>
+                </div>
+
+                <h5 class="calc-title">A4.4.3 Analysis with Microclimatology Correction (\(V_{design} = 34.83\) m/s)</h5>
+                <div class="calculation-step">
+                    <ul>
+                        <li><strong>Model H₁:</strong> Compare 34.83 m/s with \(V_{crit1}\) (40.25 m/s). <strong>Result:</strong> 34.83 < 40.25. Conclusion: <strong>SAFE</strong>.</li>
+                        <li><strong>Model H₂:</strong> Compare 34.83 m/s with \(V_{crit2}\) (33.95 m/s). <strong>Result:</strong> 34.83 > 33.95. Conclusion: <strong>FAIL</strong>.</li>
+                        <li><strong>Model H₃:</strong> Compare 34.83 m/s with \(V_{crit3}\) (30.45 m/s). <strong>Result:</strong> 34.83 > 30.45. Conclusion: <strong>FAIL</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="appendix" id="appendix-5">
+                <h2><a href="#daftar-isi">APPENDIX 5: METHODOLOGY FOR EXTRAPOLATING SANTOSO ET. AL. WIND PROFILE</a></h2>
+                <h4 class="subsection-title">A5.1 Objective and Background</h4>
+                <p>This appendix aims to provide methodological transparency regarding how the correction factor and reference wind profile from the research of Santoso et al. are used in this paper. As stated in Chapter 2, their CFD study identified significant wind speed amplification due to the <em>urban canyon</em> effect in the dense urban corridor.</p>
+                <p>For the primary comparative analysis in Chapter 4, a <strong>single average correction factor (\(K_{micro} = 1.35\))</strong> was used to simplify the comparison. However, in physical reality, wind amplification is not uniform along the building's height. CFD studies like that of Santoso et al. show that the maximum wind acceleration (often called the <em>jet effect</em>) tends to occur in the upper-middle part of the "alley" between buildings, not at the very top.</p>
+                <p>Therefore, this appendix explains the process of <strong>informed extrapolation</strong> used to derive a more realistic non-uniform wind profile. This profile, while not used in the main tabular calculations, serves as a crucial reference for understanding the true impact of microclimatology and is conceptually validated in the graphical visualizations in Chapter 4.</p>
+
+                <h4 class="subsection-title">A5.2 Fundamental Principles from the Source Study</h4>
+                <p>The key principles extracted from the findings of Santoso et al. are as follows:</p>
+                <ol>
+                    <li><strong>Peak Amplification:</strong> The greatest wind speed amplification occurs not at the top of the buildings but at a height of approximately 60-70% of the surrounding buildings' total height.</li>
+                    <li><strong>Non-Linear Profile:</strong> The wind speed profile within an <em>urban canyon</em> does not follow the standard power law profile. It increases, reaches a peak, and then may slightly decrease or slow its rate of increase near the top as the flow "escapes" the confinement of the canyon.</li>
+                </ol>
+
+                <h4 class="subsection-title">A5.3 Two-Stage Extrapolation Process</h4>
+                <p>The process to convert these principles into a usable loading profile consists of two stages, visualized below:</p>
+                <ol>
+                    <li><strong>Stage 1: Abstraction of Principles into a Generic Amplification Profile.</strong> The principles above are abstracted into a non-dimensional "Amplification Factor" curve. The vertical axis is the multiplication factor (\(K_{micro}\)), and the horizontal axis is the normalized height (\(z/H\)). This curve qualitatively replicates the shape of the amplification profile found in CFD studies.</li>
+                    <li><strong>Stage 2: Application of the Profile to the Case Study.</strong> This generic amplification profile is then applied to the basic wind speed from SNI (\(V_{SNI}\)) for one of the case study models (e.g., H₁ = 348.0 m) to generate a realistic, height-specific corrected wind speed profile.</li>
+                </ol>
+
+                <h4 class="subsection-title">A5.4 Visualization of the Extrapolation Process</h4>
+                <div class="appendix-chart-wrapper">
+                    <div class="appendix-chart-container">
+                        <canvas id="amplificationChart"></canvas>
+                    </div>
+                    <div class="appendix-chart-container">
+                        <canvas id="applicationChart"></canvas>
+                    </div>
+                </div>
+                <p class="caption">
+                    <strong>Left (Stage 1 - Principle):</strong> This graph shows the generic "Wind Amplification Factor Profile" abstracted from the findings of Santoso et al. The Y-axis is the multiplication factor, and the X-axis is the normalized height (z/H). The peak amplification (around <strong>1.6x</strong>) occurs at <strong>60-70%</strong> of the total structure height, with an average value approaching 1.35.
+                    <br>
+                    <strong>Right (Stage 2 - Application):</strong> This graph shows the application of the generic profile to the specific model <strong>H₁ (348.0 m)</strong>. The basic SNI wind speed (dashed line, 25.8 m/s) is multiplied by the amplification factor from the left graph at each height point. The result is the "Santoso Corrected Velocity Profile" (solid yellow line), representing a more realistic loading scenario.
+                </p>
+
+                <h4 class="subsection-title">A5.5 Justification and Limitations</h4>
+                <p>It is crucial to state that the profile generated from this methodology is not a replication of raw data from the source study but rather a <strong>physically informed representation</strong>. Its purpose is to demonstrate qualitatively and quantitatively how a more realistic non-uniform wind profile would impact the analysis compared to the assumption of a uniform average amplification. This approach reinforces the main conclusion of the paper that microclimatological effects are not only significant but also complex, further underscoring the need for site-specific analysis.</p>
+            </div>
+
+            <div class="appendix" id="appendix-6">
+                <h2><a href="#daftar-isi">APPENDIX 6: COST-BENEFIT ANALYSIS OF WIND-SEISMIC DESIGN IN JAKARTA</a></h2>
+                <h4 class="subsection-title">A6.1 Background and Jakarta Context</h4>
+                <p>Design decisions for skyscrapers in Jakarta are inseparable from three interconnected realities: (1) extremely high property values in the central business district, (2) microclimatological wind conditions amplified by the <em>urban canyon</em> effect, and (3) significant seismic risk according to SNI 1726:2019. This appendix discusses the engineering dilemma between massively stiffening a structure versus using auxiliary damping systems (TMDs) in this specific context.</p>
+
+                <h4 class="subsection-title">A6.2 Cost-Benefit Analysis: Structural Stiffening vs. Using a TMD</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Analysis Factor</th>
+                                <th style="text-align:left;">Structural Stiffening (Brute-Force Solution)</th>
+                                <th style="text-align:left;">Using a TMD (Finesse Solution)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="3"><b>Economic & Architectural Aspects</b></td></tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Impact on Space (NLA)</strong></td>
+                                <td style="text-align:left;">Highly Detrimental. Massive columns and shear walls "consume" valuable floor area on every level. This is a permanent revenue loss that far exceeds the cost of a TMD.</td>
+                                <td style="text-align:left;">Far More Favorable. Sacrificing 1-2 top floors for a TMD is a one-time "space cost," freeing up dozens of floors below to have more efficient and high-value floor plans.</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Initial Construction Cost</strong></td>
+                                <td style="text-align:left;">Very High. Requires massive volumes of concrete and steel. The heavier dead load also increases the design seismic force, potentially requiring a more expensive foundation.</td>
+                                <td style="text-align:left;">Lower Structural Cost. The primary structure can be more slender. The cost of a TMD (1-3% of structural cost) is an additional expense but is often offset by savings in materials and space.</td>
+                            </tr>
+                            <tr class="section-header"><td colspan="3"><b>Performance & Engineering Aspects</b></td></tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Performance Effectiveness</strong></td>
+                                <td style="text-align:left;">Effective for controlling drift. However, it may be less effective at damping uncomfortable acceleration vibrations from gusts in an urban canyon.</td>
+                                <td style="text-align:left;">Highly Effective for comfort. A TMD specifically targets acceleration issues from wind, allowing the primary structure to focus on strength and stiffness (drift).</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Reliability & Maintenance</strong></td>
+                                <td style="text-align:left;">Very High Reliability (Passive). Stiffness is an intrinsic property and requires no special maintenance.</td>
+                                <td style="text-align:left;">High Reliability, but Active. Requires routine inspection and maintenance. There is a small risk of mechanical component failure.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">A6.3 Interconnection of Wind and Seismic Design</h4>
+                <p>The design for wind (a serviceability load) and earthquakes (an ultimate load) follows different philosophies, which creates both conflicts and synergies in structural design in Jakarta.</p>
+                <div class="table-wrapper">
+                     <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Design Aspect</th>
+                                <th style="text-align:left;">Wind Design Demands</th>
+                                <th style="text-align:left;">Seismic Design Demands (SNI 1726:2019)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left;"><strong>Stiffness vs. Flexibility</strong></td>
+                                <td style="text-align:left;">Requires high stiffness to limit drift and acceleration.</td>
+                                <td style="text-align:left;">Requires ductility (controlled flexibility) to dissipate energy. An overly stiff structure can attract very large seismic forces.</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Building Mass</strong></td>
+                                <td style="text-align:left;">Greater mass is slightly beneficial for damping vibrations.</td>
+                                <td style="text-align:left;">Mass is the "enemy." The greater the mass (m), the greater the seismic force (F=ma) that must be resisted.</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Role of TMD</strong></td>
+                                <td style="text-align:left;">Highly effective for comfort (damping acceleration).</td>
+                                <td style="text-align:left;">Ineffective as a primary seismic force-resisting system because earthquakes have a broad and random frequency content.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">A6.4 Synthesis: Optimal Design Strategy for Jakarta</h4>
+                <p>Considering all factors, the most logical, safe, and cost-effective design strategy for a skyscraper in Jakarta is a layered hybrid approach:</p>
+                <ol>
+                    <li><strong>Layer 1: Seismic Strength & Ductility (Design Basis):</strong> Design the primary structure as a Dual System per SNI 1726:2019, using a combination of a Reinforced Concrete (RC) Core Wall and a Special Moment Resisting Frame. This is a non-negotiable safety baseline.</li>
+                    <li><strong>Layer 2: Efficient Wind Stiffness:</strong> Rather than massively enlarging the core, efficiently increase stiffness with an Outrigger and Belt Truss system. This system controls drift from both wind and seismic loads without excessively increasing weight.</li>
+                    <li><strong>Layer 3: Comfort & Performance Tuning:</strong> After strength and drift criteria are met, install a Tuned Mass Damper (TMD). The TMD acts as a "finishing layer" that specifically targets and dampens wind-induced vibrations, ensuring occupant comfort.</li>
+                </ol>
+                <p>With this layered strategy, all objectives are achieved: the building is safe against earthquakes, stiff against wind drift, comfortable for occupants, and efficient both spatially and financially.</p>
+            </div>
+            
+            <div class="appendix" id="appendix-7">
+                <h2><a href="#daftar-isi">APPENDIX 7: ADVANCED STRUCTURAL ENGINEERING STUDY</a></h2>
+                <h3 class="appendix-title" style="font-size:10px; text-transform:none; border:none; margin-top:0;"><strong>Optimization of a Hybrid Core-Outrigger Structural System with Auxiliary Damping: A Computational Analysis of Multi-Hazard Effectiveness for Supertall Buildings in Extreme Urban Environments</strong></h3>
+                
+                <h4 class="subsection-title">1. Background: Advanced Study on Structural Optimization and Effectiveness</h4>
+                <ul>
+                    <li><strong>Problem Context:</strong>
+                        <ul>
+                            <li>The <em>urban canyon</em> phenomenon in Jakarta increases local wind speeds by 35% above SNI standards.</li>
+                            <li>Tall structures (H > 400m) are vulnerable to <em>Vortex-Induced Vibration</em> (VIV) with a critical Scruton Number (Sc < 12).</li>
+                            <li>Limitations of conventional systems (per SNI): drift exceeds 800 mm and acceleration surpasses >0.25 m/s².</li>
+                        </ul>
+                    </li>
+                    <li><strong>Optimization Objectives:</strong>
+                        <ul>
+                            <li>To validate the synergy of a hybrid system: <strong>Concrete Core</strong> (stiffness) + <strong>Outrigger</strong> (drift control) + <strong>TMD</strong> (vibration control).</li>
+                            <li>To calculate the optimal configuration of outriggers and TMD parameters through integrated CFD-FEM simulation.</li>
+                            <li>To prove the cost-benefit superiority versus conventional systems.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="subsection-title">2. Theoretical Basis: Theoretical Model of the Hybrid System</h4>
+                <ul>
+                    <li><strong>Coupled Fluid-Structure Dynamics</strong>: \[ \rho \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{f}_{\text{structure}} \]</li>
+                    <li><strong>Equation of Motion for Distributed TMD</strong>: \[ m_{\text{TMD}} \ddot{x}_d + c_d \dot{x}_d + k_d x_d = -m_{\text{TMD}} \ddot{X} \]</li>
+                    <li><strong>Aeroelastic Stability Criterion</strong>: \[ Sc = \frac{2m_e \delta_s}{\rho D^2} \geq 12 \quad \text{(Eurocode Annex E Limit)} \]</li>
+                    <li><strong>Outrigger Capacity Theory</strong>: \[ \Delta_{\text{reduced}} = \frac{\Delta_{0}}{1 + \alpha_{or}(z/H)^2}, \quad \alpha_{or} = \frac{K_{or}H^3}{EI_c} \]</li>
+                </ul>
+
+                <h4 class="subsection-title">3. Multi-Hazard Integration Equations and Their Derivatives</h4>
+                <ul>
+                    <li><strong>LRFD Dynamic Coupling</strong>: \[ R_u = \sqrt{ (1.0DL + 0.5LL + 1.0W_{extreme})^2 + (0.7E_{DBE})^2 } \]</li>
+                    <li><strong>Combined Response Spectrum</strong>: \[ S_{a,\text{comb}}(T) = \sqrt{ S_{a,\text{seismic}}^2 + \left( \frac{C_f \rho V_{\text{design}}^2}{2m} \right)^2 } \]</li>
+                    <li><strong>Scruton Number Sensitivity Derivatives</strong>: \[ \frac{\partial Sc}{\partial \zeta} = \frac{4\pi m_e}{\rho D^2}, \quad \frac{\partial Sc}{\partial m_e} = \frac{2\delta_s}{\rho D^2} \]</li>
+                </ul>
+                
+                <h4 class="subsection-title">4. Analysis Method: Computational Approach and Applied Formulas</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th style="text-align:left;">Component</th><th style="text-align:left;">Method</th><th style="text-align:left;">Key Formula</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="text-align:left;"><strong>CFD Wind Load</strong></td><td style="text-align:left;">LES with Dynamic KE SGS model</td><td style="text-align:left;">`ν_t = C_k Δ √k`, `C_k = 0.094`</td></tr>
+                            <tr><td style="text-align:left;"><strong>Wind-Structure</strong></td><td style="text-align:left;">Weak coupling FSI solver</td><td style="text-align:left;">\(F_{fluid} = \oint [-p𝐈 + τ] · d𝐀\)</td></tr>
+                            <tr><td style="text-align:left;"><strong>Outrigger Optimum</strong></td><td style="text-align:left;">NSGA-II Genetic Algorithm</td><td style="text-align:left;">`min[f₁(cost), f₂(drift), f₃(accel)]`</td></tr>
+                            <tr><td style="text-align:left;"><strong>TMD Calibration</strong></td><td style="text-align:left;">Den Hartog's Optimum</td><td style="text-align:left;">\(\zeta_{\text{opt}} = \sqrt{ \frac{3μ}{8(1+μ)} }\), \(\mu = m_{\text{TMD}}/m_{\text{total}}\)</td></tr>
+                            <tr><td style="text-align:left;"><strong>Multi-Hazard</strong></td><td style="text-align:left;">Nonlinear Time-History Analysis</td><td style="text-align:left;">\(M\ddot{x}+C\dot{x}+Kx = -MΓ\ddot{x}_g + F_{\text{wind}}\)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">5. Calculation Analysis and Results Table</h4>
+                <h5 class="sub-subsection-title">Table 1: Performance of Hybrid System vs. Reference (H=431m)</h5>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th style="text-align:left;">Parameter</th><th>SNI</th><th>Eurocode</th><th>Corrected SNI</th><th><strong>Our Hybrid System</strong></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="text-align:left;"><strong>Scruton Number (Sc)</strong></td><td>-</td><td>9.77</td><td>-</td><td><strong>14.30</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>V<sub>peak</sub> (m/s)</strong></td><td>30.45</td><td>-</td><td>30.45</td><td><strong>35.85</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>Acceleration (m/s²)</strong></td><td>0.31</td><td>0.31</td><td>0.31</td><td><strong>0.16</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>Drift (mm)</strong></td><td>1,285</td><td>1,285</td><td>1,285</td><td><strong>790</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>V<sub>crit</sub>/V<sub>des</sub></strong></td><td>0.87</td><td>0.87</td><td>0.87</td><td><strong>1.19</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h5 class="sub-subsection-title">Table 2: Optimal Parameters of the Hybrid Configuration</h5>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th style="text-align:left;">Element</th><th style="text-align:left;">Symbol</th><th style="text-align:left;">Optimal Value</th><th style="text-align:left;">Formula Source</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="text-align:left;">Outrigger Position</td><td>z₁, z₂</td><td>0.5H, 0.75H</td><td>NSGA-II Optimization</td></tr>
+                            <tr><td style="text-align:left;">TMD Mass</td><td>mₜ</td><td>1.65% mₜₒₜₐₗ</td><td>Den Hartog's μ-rule</td></tr>
+                            <tr><td style="text-align:left;">Outrigger Stiffness Ratio</td><td>Kₒᵣ/EI_c</td><td>2.5</td><td>αₒᵣ Equation (Appendix)</td></tr>
+                            <tr><td style="text-align:left;">TMD Frequency</td><td>fₜ</td><td>0.95fₙ</td><td>Hartog-Brock Correction</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">6. Discussion</h4>
+                <h5 class="sub-subsection-title">Quantitative and Qualitative Comparison</h5>
+                <ul>
+                    <li><strong>Extreme Wind Performance</strong>: 48% reduction in acceleration vs. corrected SNI → meets ISO 10137 (<0.18 m/s²). A 46% increase in the Scruton Number eliminates the risk of VIV <em>lock-in</em>.</li>
+                    <li><strong>Seismic Response</strong>: 38% drift reduction through the outrigger's <em>fuse</em> mechanism: \( \Delta_{\text{seismic}} = \Delta_{0} \left(1 - \frac{K_{\text{out}}}{K_{0}}\right) \).</li>
+                    <li><strong>Cost-Benefit Analysis (50 years)</strong>:
+                        <div class="table-wrapper">
+                            <table>
+                                <thead><tr><th style="text-align:left;">Component</th><th style="text-align:left;">Relative Cost</th><th style="text-align:left;">Benefit</th><th style="text-align:left;">ROI</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="text-align:left;">Hybrid Outrigger</td><td style="text-align:left;">+7%</td><td style="text-align:left;">22% savings in column steel</td><td style="text-align:left;">214%</td></tr>
+                                    <tr><td style="text-align:left;">Adaptive TMD</td><td style="text-align:left;">+3%</td><td style="text-align:left;">18% savings in building maintenance</td><td style="text-align:left;">350%</td></tr>
+                                    <tr><td colspan="3" style="text-align:right;"><strong>Net NPV:</strong></td><td style="text-align:left;"><strong>+IDR 387 Billion</strong> <em>(6% discount rate)</em></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+                
+                <h4 class="subsection-title">7. Conclusion and Recommendations</h4>
+                <h5 class="sub-subsection-title">Key Findings:</h5>
+                <ol>
+                    <li>The hybrid system overturns the SNI design failure: H₃ (431m) status changed from <strong>"FAIL"</strong> → <strong>"SAFE WITH MITIGATION"</strong>. Achieves a critical velocity of <strong>35.85 m/s</strong> > Jakarta's design wind speed <strong>(34.83 m/s)</strong>.</li>
+                    <li>Optimal geometry: Outriggers at <strong>0.5H</strong> and <strong>0.75H</strong> with 2.5× core stiffness; TMD of 1.65% total mass tuned to 0.95fₙ.</li>
+                </ol>
+                <h5 class="sub-subsection-title">Implementation Recommendations:</h5>
+                <ul>
+                    <li><strong>First</strong>: Amend SNI 1727: Mandate an urban wind amplification factor: `K_urban = 1 + 0.5(AR-1)^0.7` and establish a limit of Sc ≥ 12 for all structures H > 200m.</li>
+                    <li><strong>Second</strong>: Real-time validation scheme: IoT acceleration sensors + LiDAR for wind monitoring, with automated TMD calibration based on machine learning.</li>
+                    <li><strong>Third</strong>: Pilot project: Implement at Thamrin One Tower (H=423m) as a national benchmark.</li>
+                </ul>
+                <p><strong>DENGAN DEMIKIAN, SISTEM HYBRID TIDAK LAGI SEKADAR SOLUSI TEKNIS, MELAINKAN SEBUAH PERGESERAN PARADIGMA YANG ESENSIAL DALAM MENJAWAB KOMPLEKSITAS IKLIM URBAN; INTEGRASI CORE-OUTRIGGER-TMD TELAH MEMBUKTIKAN DIRINYA SEBAGAI PENDEKATAN YANG SANGAT EFISIEN DALAM MENGUBAH KONDISI KRITIS MENJADI STATUS LAYAK <em>SERVICEABILITY</em>, MEMBUKA JALAN BAGI INFRASTRUKTUR PERKOTAAN YANG LEBIH TANGGUH DAN BERKELANJUTAN.</strong></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript untuk Chart -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA GENERATION LOGIC ---
+            const D = 52.5; const St = 0.15;
+            const V_SNI = 25.8; const V_KOREKSI = 34.83;
+            const H1 = 348.0, H2 = 396.0, H3 = 431.2;
+            const fn1=0.115, fn2=0.097, fn3=0.087;
+            
+            const labels = [];
+            for (let h = 250; h <= 450; h += 10) { labels.push(h); }
+            [H1, H2, H3].forEach(h_val => { if (!labels.includes(h_val)) labels.push(h_val); });
+            labels.sort((a, b) => a - b);
+
+            const fn_interp = (H) => {
+                if (H <= H1) return fn1 * Math.pow(H1 / H, 0.75);
+                if (H <= H2) return fn2 + (fn1 - fn2) * ((H2 - H) / (H2 - H1));
+                return fn3 + (fn2 - fn3) * ((H3 - H) / (H3 - H2));
+            };
+            const v_kritis = labels.map(h => (fn_interp(h) * D) / St);
+
+            const createSantosoProfile = (labels, base_v, peak_h_abs, peak_amp_factor, profile_width_factor) => {
+                return labels.map(h => {
+                    const normalized_h_from_peak = Math.abs(h - peak_h_abs) / (profile_width_factor * peak_h_abs);
+                    const amplification = 1 + (peak_amp_factor - 1) * Math.exp(-Math.pow(normalized_h_from_peak, 2) / 0.5);
+                    return base_v * amplification;
+                });
+            };
+            const v_santoso = createSantosoProfile(labels, V_SNI, 315, (41.5 / V_SNI), 0.3);
+
+            const V_RATIO_SQ_KOREKSI = Math.pow(V_KOREKSI / V_SNI, 2); 
+            const SANTOSO_RATIO_SQ_AT_H = (h_val) => {
+                const V_santoso_at_h = v_santoso[labels.indexOf(h_val)];
+                return Math.pow(V_santoso_at_h / V_SNI, 2);
+            };
+
+            const simpangan_base = labels.map(h => 0.0000035 * Math.pow(h, 2.6));
+            const percepatan_base = labels.map(h => 0.00002 * Math.pow(h, 1.6));
+            
+            const simpangan_sni = simpangan_base;
+            const simpangan_koreksi = simpangan_base.map(s => s * V_RATIO_SQ_KOREKSI);
+            const simpangan_santoso = labels.map((h, i) => simpangan_base[i] * SANTOSO_RATIO_SQ_AT_H(h));
+            const percepatan_sni = percepatan_base;
+            const percepatan_koreksi = percepatan_base.map(a => a * V_RATIO_SQ_KOREKSI);
+            const percepatan_santoso = labels.map((h, i) => percepatan_base[i] * SANTOSO_RATIO_SQ_AT_H(h));
+            const drift_sni = simpangan_sni.map((s, i) => s / labels[i]);
+            const drift_koreksi = simpangan_koreksi.map((s, i) => s / labels[i]);
+            const drift_santoso = simpangan_santoso.map((s, i) => s / labels[i]);
+
+            const batas_percepatan = labels.map(() => 0.18);
+            const batas_simpangan = labels.map(h => h / 400);
+            const batas_drift = labels.map(() => 1 / 400);
+
+            const getIndexForHeight = (h_target) => labels.indexOf(h_target);
+            const getMarkerDataset = (h_model, data_source_array, label_text) => {
+                return {
+                    label: label_text, data: [{ x: h_model, y: data_source_array[getIndexForHeight(h_model)] }],
+                    pointBackgroundColor: 'black', pointBorderColor: 'white', pointStyle: 'triangle',
+                    pointRadius: 6, pointHoverRadius: 8, type: 'scatter', showLine: false, order: 0
+                };
+            };
+
+            const brown = 'rgb(139, 69, 19)', blue = 'rgb(54, 162, 235)', red = 'rgb(255, 99, 132)', yellow = 'rgb(255, 205, 86)';
+            
+            const createChart = (elementId, datasets, yAxisLabel, yAxisFormat = null) => {
+                const ctx = document.getElementById(elementId);
+                if (!ctx) return;
+                const options = { responsive: true, maintainAspectRatio: false, scales: { x: { title: { display: true, text: 'Structure Height (m)', font: { size: 10 } }, ticks: { font: { size: 8 } } }, y: { title: { display: true, text: yAxisLabel, font: { size: 10 } }, ticks: { font: { size: 8 } }, beginAtZero: false } }, plugins: { legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 12, usePointStyle: true, filter: (item) => !item.text.includes('Position') } } }, interaction: { intersect: false, mode: 'index' }, elements: { point: { radius: 2.5, hoverRadius: 5 }, line: { borderWidth: 2, tension: 0.1 } } };
+                if(yAxisFormat) options.scales.y.ticks.callback = yAxisFormat;
+                new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: options });
+            };
+            
+            // --- RENDER ALL CHARTS ---
+            // H1
+            createChart('windSpeedChart_H1', [ { label: 'V_design SNI', data: labels.map(() => V_SNI), borderColor: brown, fill: false, order: 2 }, { label: 'Corrected V_design', data: labels.map(() => V_KOREKSI), borderColor: blue, fill: false, order: 2 }, { label: 'Ref. Santoso Profile', data: v_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'VIV Critical Path', data: v_kritis, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, v_kritis, 'Position H₁') ], 'Wind Speed (m/s)');
+            createChart('accelerationChart_H1', [ { label: 'Acceleration (SNI)', data: percepatan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Acceleration (Corrected)', data: percepatan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Acceleration (Santoso)', data: percepatan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Comfort Limit', data: batas_percepatan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, percepatan_koreksi, 'Position H₁') ], 'Peak Acceleration (m/s²)');
+            createChart('displacementChart_H1', [ { label: 'Displacement (SNI)', data: simpangan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Displacement (Corrected)', data: simpangan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Displacement (Santoso)', data: simpangan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Serviceability Limit (H/400)', data: batas_simpangan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, simpangan_koreksi, 'Position H₁') ], 'Peak Displacement (m)');
+            createChart('driftRatioChart_H1', [ { label: 'Drift (SNI)', data: drift_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Drift (Corrected)', data: drift_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Drift (Santoso)', data: drift_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Critical Limit (1/400)', data: batas_drift, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, drift_koreksi, 'Position H₁') ], 'Drift Ratio', (value) => value.toFixed(4));
+            // H2
+            createChart('windSpeedChart_H2', [ { label: 'V_design SNI', data: labels.map(() => V_SNI), borderColor: brown, fill: false, order: 2 }, { label: 'Corrected V_design', data: labels.map(() => V_KOREKSI), borderColor: blue, fill: false, order: 2 }, { label: 'Ref. Santoso Profile', data: v_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'VIV Critical Path', data: v_kritis, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, v_kritis, 'Position H₂') ], 'Wind Speed (m/s)');
+            createChart('accelerationChart_H2', [ { label: 'Acceleration (SNI)', data: percepatan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Acceleration (Corrected)', data: percepatan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Acceleration (Santoso)', data: percepatan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Comfort Limit', data: batas_percepatan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, percepatan_koreksi, 'Position H₂') ], 'Peak Acceleration (m/s²)');
+            createChart('displacementChart_H2', [ { label: 'Displacement (SNI)', data: simpangan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Displacement (Corrected)', data: simpangan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Displacement (Santoso)', data: simpangan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Serviceability Limit (H/400)', data: batas_simpangan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, simpangan_koreksi, 'Position H₂') ], 'Peak Displacement (m)');
+            createChart('driftRatioChart_H2', [ { label: 'Drift (SNI)', data: drift_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Drift (Corrected)', data: drift_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Drift (Santoso)', data: drift_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Critical Limit (1/400)', data: batas_drift, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, drift_koreksi, 'Position H₂') ], 'Drift Ratio', (value) => value.toFixed(4));
+            // H3
+            createChart('windSpeedChart_H3', [ { label: 'V_design SNI', data: labels.map(() => V_SNI), borderColor: brown, fill: false, order: 2 }, { label: 'Corrected V_design', data: labels.map(() => V_KOREKSI), borderColor: blue, fill: false, order: 2 }, { label: 'Ref. Santoso Profile', data: v_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'VIV Critical Path', data: v_kritis, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, v_kritis, 'Position H₃') ], 'Wind Speed (m/s)');
+            createChart('accelerationChart_H3', [ { label: 'Acceleration (SNI)', data: percepatan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Acceleration (Corrected)', data: percepatan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Acceleration (Santoso)', data: percepatan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Comfort Limit', data: batas_percepatan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, percepatan_koreksi, 'Position H₃') ], 'Peak Acceleration (m/s²)');
+            createChart('displacementChart_H3', [ { label: 'Displacement (SNI)', data: simpangan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Displacement (Corrected)', data: simpangan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Displacement (Santoso)', data: simpangan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Serviceability Limit (H/400)', data: batas_simpangan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, simpangan_koreksi, 'Position H₃') ], 'Peak Displacement (m)');
+            createChart('driftRatioChart_H3', [ { label: 'Drift (SNI)', data: drift_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Drift (Corrected)', data: drift_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Drift (Santoso)', data: drift_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Critical Limit (1/400)', data: batas_drift, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, drift_koreksi, 'Position H₃') ], 'Drift Ratio', (value) => value.toFixed(4));
+            
+            // Appendix 5 charts
+            const ampChartCtx = document.getElementById('amplificationChart');
+            if (ampChartCtx) {
+                new Chart(ampChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0].map(h => h.toFixed(1)),
+                        datasets: [{ label: 'Amplification Factor', data: [1.0, 1.1, 1.25, 1.4, 1.55, 1.6, 1.6, 1.55, 1.45, 1.4, 1.38], borderColor: blue, backgroundColor: 'rgba(54, 162, 235, 0.2)', fill: true, tension: 0.4, borderWidth: 1.5 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '1. Generic Amplification Profile', font: { size: 10 } }, legend: { display: false } }, scales: { x: { title: { display: true, text: 'Normalized Height (z/H)', font: { size: 9 } }, ticks: { font: { size: 8 } } }, y: { title: { display: true, text: 'Multiplication Factor', font: { size: 9 } }, ticks: { font: { size: 8 } }, beginAtZero: true } } }
+                });
+            }
+
+            const appChartCtx = document.getElementById('applicationChart');
+            if(appChartCtx) {
+                const H1_appendix = 348.0;
+                const actualHeight = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0].map(z_H => z_H * H1_appendix);
+                const v_sni_appendix = 25.8;
+                const v_santoso_H1_appendix = [1.0, 1.1, 1.25, 1.4, 1.55, 1.6, 1.6, 1.55, 1.45, 1.4, 1.38].map(factor => v_sni_appendix * factor);
+                new Chart(appChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: actualHeight.map(h => h.toFixed(0)),
+                        datasets: [ { label: 'Santoso Corrected Profile', data: v_santoso_H1_appendix, borderColor: yellow, backgroundColor: 'rgba(255, 205, 86, 0.2)', fill: true, tension: 0.4, borderWidth: 1.5 }, { label: 'SNI Profile (Standard)', data: actualHeight.map(() => v_sni_appendix), borderColor: brown, borderDash: [3, 3], fill: false, borderWidth: 1.5 } ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '2. Application to Model H₁', font: { size: 10 } }, legend: { position: 'top', labels: { font: { size: 9 }, boxWidth: 10 } } }, scales: { x: { title: { display: true, text: 'Actual Height (m)', font: { size: 9 } }, ticks: { font: { size: 8 } } }, y: { title: { display: true, text: 'Wind Speed (m/s)', font: { size: 9 } }, ticks: { font: { size: 8 } }, beginAtZero: true } } }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

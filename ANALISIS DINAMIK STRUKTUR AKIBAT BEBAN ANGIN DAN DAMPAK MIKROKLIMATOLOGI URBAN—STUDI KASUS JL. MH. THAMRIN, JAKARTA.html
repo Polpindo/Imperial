@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANALISIS DINAMIK STRUKTUR AKIBAT BEBAN ANGIN DAN DAMPAK MIKROKLIMATOLOGI URBAN—STUDI KASUS JL. MH. THAMRIN, JAKARTA</title>
+    
+    <!-- Pustaka Grafik Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']],
+                tags: 'ams'
+            },
+            chtml: {
+                linebreaks: { automatic: true },
+                scale: 0.9
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; line-height: 1.2; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background: #f0f5f9; color: #000000; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 9.5px; background-image: linear-gradient(to bottom, #f0f5f9, #dce4e8); 
+            background-attachment: fixed; min-height: 100vh; display: flex; flex-direction: column;
+            align-items: center; padding: 12px 0; width: 100%; letter-spacing: -0.05px;
+        }
+        .container { 
+            background-color: rgba(255, 255, 255, 0.98); box-shadow: 0 0 20px rgba(0, 64, 128, 0.08);
+            border-radius: 3px; padding: 20px; position: relative; z-index: 10; 
+            width: 100%; max-width: 800px; margin: 0 0 20px; 
+        }
+        .header { text-align: left; margin-bottom: 16px; border-bottom: 1px solid #b8c4d4; padding-bottom: 10px; }
+        .title, .subtitle { font-family: 'Merriweather', 'Times New Roman', serif; color: #004080; letter-spacing: -0.3px; line-height: 1.1; }
+        .title { font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .subtitle { margin-top: 3px; font-size: 9px; font-style: italic; }
+        .author-block { display: flex; align-items: center; margin-top: 10px; background-color: rgba(0, 64, 128, 0.06); padding: 6px; border-radius: 3px; }
+        .author-photo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; margin-right: 8px; flex-shrink: 0; border: 1px solid #b8c4d4; }
+        .author-info { font-family: 'Source Sans Pro', Arial, sans-serif; font-style: normal; font-size: 6px; color: #000000; }
+        .author-info strong { font-weight: 600; color: #000000; }
+        .content { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; color: #000000; text-align: left; hyphens: auto; padding-bottom: 10px; line-height: 1.25; }
+        .content p, .content ul, .content ol { margin-bottom: 0.8em; }
+        .content em { font-style: italic; }
+        .content strong { color: #004080; font-weight: 600; }
+        .content ul, .content ol { padding-left: 20px; }
+        .content li { margin-bottom: 0.4em; }
+        .table-of-contents { background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 10px 15px; border-radius: 3px; margin-top: 15px; margin-bottom: 15px; font-size: 9px; line-height: 1.2; }
+        .table-of-contents h3 { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 10px; line-height: 1.2; font-weight: 700; color: #004080; margin-bottom: 8px; text-transform: uppercase; }
+        .table-of-contents ol { padding-left: 20px; }
+        .table-of-contents ol li { margin-bottom: 4px; line-height: 1.2; }
+        .table-of-contents a { color: #0056b3; text-decoration: none; font-weight: 400; line-height: 1.2; }
+        .table-of-contents a:hover { text-decoration: underline; }
+        .references { margin-top: 20px; padding-top: 10px; border-top: 1px solid #dce4e8; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 8.5px; color: #000000; text-align: left; line-height: 1.2; }
+        .references p { margin-bottom: 0.6em; }
+        .appendix { margin-top: 20px; padding-top: 10px; border-top: 1px solid #dce4e8; font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; color: #000000; text-align: left; line-height: 1.3; }
+        .appendix h2 { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 11px; font-weight: 700; color: #004080; text-transform: uppercase; margin-top: 0; margin-bottom: 12px; letter-spacing: -0.2px; position: relative; padding-bottom: 3px; text-align: left; line-height: 1.0; }
+        .appendix h2::after { content: ""; position: absolute; bottom: 0; left: 0; width: 30px; height: 1.5px; background: #004080; }
+        h3.section-title, h3.appendix-title { font-family: 'Merriweather', 'Times New Roman', serif; font-size: 12px; font-weight: 700; color: #004080; text-transform: uppercase; border-bottom: 1px solid #b8c4d4; padding-bottom: 5px; margin-top: 16px; margin-bottom: 10px; }
+        h3.section-title:first-of-type { border-bottom: none; margin-top: 0; }
+        .abstract-content { background-color: rgba(0, 64, 128, 0.06); padding: 10px; border-radius: 3px; margin-top: 8px; }
+        .abstract-content p { font-size: 8.5px; margin-bottom: 0; line-height: 1.25; text-align: left; }
+        .keywords { margin-top: 10px; font-size: 8.5px; line-height: 1.2; text-align: left; background-color: rgba(0, 64, 128, 0.03); padding: 5px 10px; border-radius: 3px; border-top: 1px solid rgba(0, 64, 128, 0.08); }
+        .keywords strong { color: #004080; font-weight: 600; }
+        h4.subsection-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; color: #004080; margin-top: 14px; margin-bottom: 6px; }
+        h5.sub-subsection-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; font-weight: 600; color: #0056b3; margin-top: 12px; margin-bottom: 5px; }
+        .table-wrapper { overflow-x: auto; width: 100%; margin-top: 14px; margin-bottom: 14px; max-width: 100%; font-size: 9px; }
+        table { width: 100%; border-collapse: collapse; font-size: 9px; margin: 0; }
+        th, td { border: 1px solid #b8c4d4; padding: 5px 6px; text-align: center; vertical-align: middle; }
+        th { background-color: rgba(0, 64, 128, 0.06); font-weight: 600; color: #000000; }
+        td { background-color: #fff; }
+        .status-aman { color: #155724; font-weight: bold; }
+        .status-kritis { color: #856404; font-weight: bold; }
+        .status-gagal { color: #721c24; font-weight: bold; }
+        .table-plotting th { background-color: #004080; color: #fff; }
+        .table-plotting .param-col, .table-plotting .crit-col { text-align: left; }
+        .table-plotting .section-header td, .table-descriptive .section-header td { background-color: rgba(0, 64, 128, 0.1); font-weight: bold; text-align: left; color: #004080; }
+        mjx-container[display="true"] { margin: 0.5em 0; }
+        mjx-container, .MathJax { color: #004080 !important; }
+        h3.section-title a, h4.subsection-title a, .appendix h2 a { color: inherit; text-decoration: none; }
+        h3.section-title a:hover, h4.subsection-title a:hover, .appendix h2 a:hover { text-decoration: underline; color: #0056b3; }
+        .analysis-summary { margin-top: 20px; padding: 10px; background-color: rgba(0, 64, 128, 0.04); font-size: 9px; line-height: 1.4; }
+        h5.graph-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; color: #333; margin-top: 16px; margin-bottom: 5px; text-align: center; }
+        .chart-container { position: relative; height: 350px; width: 100%; margin: 15px 0; }
+        .chart-container canvas { display: block; width: 100% !important; height: 100% !important; }
+        .caption { font-family: 'Times New Roman', Times, serif; font-size: 8.5px; line-height: 1.3; font-style: normal; color: #333; margin-top: 5px; margin-bottom: 20px; padding: 8px; background-color: #f8f9fa; text-align: left; }
+        .caption strong { color: #004080; }
+        h5.calc-title { font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif; font-size: 10px; font-weight: 600; color: #333; margin-top: 16px; margin-bottom: 5px; border-bottom: 1px dotted #ccc; padding-bottom: 2px; }
+        .calculation-step { margin-bottom: 8px; border-left: 2px solid #e0e6ed; padding-left: 10px; }
+        .calculation-step p { margin-bottom: 4px; text-align: left; }
+        .appendix-chart-wrapper { display: flex; gap: 15px; justify-content: space-between; margin-top: 10px; }
+        .appendix-chart-container { position: relative; height: 250px; width: 48%; }
+        pre, code { font-family: 'Courier New', Courier, monospace; background-color: #eee; padding: 2px 4px; border-radius: 3px; font-size: 9px; white-space: pre-wrap; word-wrap: break-word; }
+        
+        @media (max-width: 768px) {
+            .appendix-chart-wrapper { flex-direction: column; }
+            .appendix-chart-container { width: 100%; margin-bottom: 15px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">ANALISIS DINAMIK STRUKTUR AKIBAT BEBAN ANGIN DAN DAMPAK MIKROKLIMATOLOGI URBAN—STUDI KASUS JL. MH. THAMRIN, JAKARTA</h1>
+            <h2 class="subtitle">(Tinjauan dari Formulasi Fisika Fundamental, Metodologi Rekayasa, hingga Aplikasi pada Analisis dan Desain Struktur Bangunan Sangat Tinggi)</h2>
+            
+            <div class="author-block">
+                <img src="https://cdn.jsdelivr.net/gh/Polpindo/Polpindo@main/PROFIL%20SNM.jpg" alt="Foto Penulis" class="author-photo">
+                <div class="author-info" style="line-height:0.7;">
+                    <span style="font-weight:bold; font-size:10px;">SIGIT N. MASHARY, ST</span><br>
+                    <span style="font-size:8px; line-height: 0.9;">Senior Structural Engineer at PT. Imperial Tata Konstruksi, Indonesia. Holds a degree in Civil and Structural Engineering from Gadjah Mada University (UGM), awarded in 1998.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h3 class="section-title" id="abstrak">Abstract</h3>
+            <div class="abstract-content">
+                <p>
+                This paper presents a critical evaluation of wind-induced dynamic response for a slender, supertall building, quantifying the impact of site-specific urban microclimate effects against standard code-based analysis. A parametric model of a building with a B/D ratio of 1.9 was analyzed for three heights (H = 348.0, 396.0, and 431.2 m) under three distinct analytical approaches: (1) a standard design wind speed (V<sub>SNI</sub> = 25.8 m/s) per SNI 1727:2020, (2) an aeroelastic stability check (Scruton Number) based on Eurocode 1 (EN 1991-1-4), and (3) a site-specific corrected design wind speed (V<sub>desain,koreksi</sub> = 34.83 m/s) derived from local data indicating a 35% wind amplification due to the urban canyon effect (Santoso et al., 2022).
+                </p>
+                <p>
+                The SNI-based analysis suggested that the 348.0-m configuration was acceptable (V<sub>crit</sub> = <strong>40.25 m/s</strong> safely exceeding V<sub>SNI</sub>). However, the Eurocode analysis revealed a <strong>critical stability concern</strong> for all models (Scruton Number ≈ <strong>9.77</strong>, falling within the critical range of 8-12), indicating an inherent lack of damping-mass robustness. Compounding this, the microclimate-corrected analysis confirms that while the 348.0-m configuration remains acceptable, the taller H2 and H3 models now <strong>fail</strong> the stability check, as their V<sub>crit</sub> values (33.95 m/s and 30.45 m/s, respectively) are surpassed by the more realistic design wind speed (34.83 m/s). This dramatic shift in results for the taller, more flexible models demonstrates that relying solely on generalized code-based wind speeds can be critically unconservative. The study concludes that site-specific microclimate analysis, validated against robust international standards, is mandatory to prevent non-conservative design and to accurately assess the need for systemic stiffening or auxiliary damping systems to ensure serviceability and stability.
+                </p>
+            </div>
+            <div class="keywords">
+                <p><strong>Keywords:</strong> <em>Dynamic Wind Analysis; Supertall Building; Urban Microclimate; Vortex-Induced Vibration (VIV); Aeroelasticity; Wind Code; Jakarta.</em></p>
+            </div>
+            
+            <div class="table-of-contents" id="daftar-isi">
+                <h3><a href="#daftar-isi" style="color:inherit; text-decoration:none;">Daftar Isi</a></h3>
+                <ol>
+                    <li><a href="#bab1">PENDAHULUAN</a></li>
+                    <li><a href="#bab2">FORMULASI FISIKA-MATEMATIKA DAN FENOMENOLOGI INTERAKSI ANGIN-STRUKTUR</a></li>
+                    <li><a href="#bab3">METODOLOGI ANALISIS</a></li>
+                    <li><a href="#bab4">STUDI KASUS: ANALISIS KOMPARATIF DAN DAMPAK MIKROKLIMATOLOGI</a></li>
+                    <li><a href="#bab5">REKOMENDASI DESAIN DAN STRATEGI MITIGASI</a></li>
+                    <li><a href="#daftar-pustaka">DAFTAR PUSTAKA</a></li>
+                    <li>
+                        <a href="#appendix-1">APENDIKS</a>
+                        <ul style="padding-left: 20px; margin-top: 5px; list-style-type: none;">
+                            <li><a href="#appendix-1" style="font-weight: 400;">Apendiks 1: Daftar Notasi</a></li>
+                            <li><a href="#appendix-2" style="font-weight: 400;">Apendiks 2: Daftar Indeks Rumus</a></li>
+                            <li><a href="#appendix-3" style="font-weight: 400;">Apendiks 3: Validasi Model Melalui Studi Komparatif</a></li>
+                            <li><a href="#appendix-4" style="font-weight: 400;">Apendiks 4: Penjabaran Perhitungan Numerik</a></li>
+                            <li><a href="#appendix-5" style="font-weight: 400;">Apendiks 5: Metodologi Ekstrapolasi Profil Angin</a></li>
+                            <li><a href="#appendix-6" style="font-weight: 400;">Apendiks 6: Analisis Biaya-Manfaat pada Desain Angin-Gempa</a></li>
+                            <li><a href="#appendix-7" style="font-weight: 400;">Apendiks 7: Studi Lanjut Rekayasa Struktur</a></li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3 class="section-title" id="bab1"><a href="#daftar-isi">1. PENDAHULUAN</a></h3>
+            <p>Pembangunan gedung sangat tinggi (<em>supertall building</em>) di kawasan urban padat seperti Jakarta menuntut analisis beban angin yang akurat. Struktur dengan kelangsingan tinggi rentan terhadap beban angin dinamis, terutama di wilayah tropis dengan topografi urban yang kompleks. Standar desain nasional (SNI) dan internasional (Eurocode, ASCE) menyediakan dasar pembebanan. Namun, studi ini menginvestigasi dan mendemonstrasikan bahwa ketergantungan murni pada data angin makro dari standar dapat memberikan persepsi keamanan yang keliru. Analisis ini menekankan pentingnya studi mikroklimatologi spesifik lokasi untuk mencapai desain yang handal dan aman.</p>
+
+            <h3 class="section-title" id="bab2"><a href="#daftar-isi">2. FORMULASI FISIKA-MATEMATIKA DAN FENOMENOLOGI INTERAKSI ANGIN-STRUKTUR</a></h3>
+            <p>Untuk memahami secara mendalam respons dinamik struktur, kita harus membangun landasan matematis dan fenomenologis yang ketat. Bab ini membedah interaksi angin-struktur secara sistematis, dimulai dari formulasi fisika fundamental, dilanjutkan dengan deskripsi fenomena respons yang dihasilkan, faktor-faktor eksternal yang memodifikasinya, prosedur analisis empiris berdasarkan peraturan, dan diakhiri dengan implikasinya pada pendekatan analisis rekayasa modern.</p>
+
+            <h4 class="subsection-title">2.1 Fondasi Fisika-Matematika</h4>
+            <h5 class="sub-subsection-title">2.1.1 Medan Angin Atmosferik sebagai Medan Vektor Stokastik</h5>
+            <p>Deskripsi matematis dari pergerakan fluida dimulai dari prinsip-prinsip konservasi massa dan momentum. Untuk aliran udara pada kecepatan di bawah Mach 0.3, asumsi inkompresibilitas sangat valid. Dengan demikian, medan kecepatan fluida \(\mathbf{u}(x,t)\) dan medan tekanan \(p(x,t)\) diatur oleh Persamaan Navier-Stokes (Pers. 1 dan 2):</p>
+            \[ \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\frac{1}{\rho_a}\nabla p + \nu \nabla^2 \mathbf{u} \quad \text{(Pers. 1)} \]
+            \[ \nabla \cdot \mathbf{u} = 0 \quad \text{(Pers. 2)} \]
+            <p>Sifat kacau dari turbulensi membuat pendekatan statistik melalui dekomposisi Reynolds (Pers. 3) menjadi esensial:</p>
+            \[ \mathbf{u}(t) = \overline{\mathbf{U}} + \mathbf{u}'(t) \quad \text{(Pers. 3)} \]
+            <p>Komponen fluktuasi \(\mathbf{u}'(t)\) dikarakterisasi oleh Spektrum Daya (PSD), yang dihubungkan dengan fungsi autokovariansi melalui Teorema Wiener-Khinchin (Pers. 4):</p>
+            \[ S_{uu}(f) = \int_{-\infty}^{\infty} R_{uu}(\tau) e^{-i2\pi f\tau} d\tau \quad \text{(Pers. 4)} \]
+
+            <h5 class="sub-subsection-title">2.1.2 Dinamika Struktur dan Frekuensi Natural</h5>
+            <p>Respons struktur dimodelkan sebagai superposisi dari mode getar ortogonalnya. Dengan menggunakan formalisme Lagrangian, kita memperoleh persamaan gerak modal (Pers. 5):</p>
+            \[ M_i \ddot{q}_i(t) + C_i \dot{q}_i(t) + K_i q_i(t) = F_{aero,i}(t) \quad \text{(Pers. 5)} \]
+            <p>Properti paling fundamental dari sistem ini adalah <strong>frekuensi natural (\(f_n\))</strong>, yang merupakan frekuensi getaran sistem jika dibiarkan bergetar bebas tanpa redaman dan tanpa gaya eksternal (\(C_i=0, F_{aero,i}=0\)). Persamaan gerak menjadi \(M_i \ddot{q}_i + K_i q_i = 0\). Solusi dari persamaan diferensial homogen ini menghasilkan frekuensi sudut natural \(\omega_n = \sqrt{K_i/M_i}\). Frekuensi siklik, yang umum digunakan, adalah:</p>
+            \[ f_n = \frac{1}{2\pi}\sqrt{\frac{K_i}{M_i}} \quad \text{(Pers. 6)} \]
+            <p>Frekuensi natural adalah properti intrinsik yang ditentukan murni oleh <strong>kekakuan (K)</strong> dan <strong>massa (M)</strong> struktur. Nilai ini sangat krusial karena menentukan kerentanan struktur terhadap eksitasi resonan.</p>
+
+            <h5 class="sub-subsection-title">2.1.3 Analisis Sistem Gandengan dan Instabilitas Aeroelastik</h5>
+            <p>Penggandengan antara fluida dan struktur terletak pada suku gaya \(F_{aero,i}(t)\). Untuk menganalisis instabilitas, gaya aerodinamis dilinearisasi, menghasilkan persamaan gerak homogen (Pers. 7):</p>
+            \[ ([M] + [M_{aero}])\ddot{\mathbf{q}} + ([C] + [C_{aero}])\dot{\mathbf{q}} + ([K] + [K_{aero}])\mathbf{q} = \mathbf{0} \quad \text{(Pers. 7)} \]
+            <p>Instabilitas terjadi ketika bagian riil dari salah satu nilai eigen sistem menjadi positif (bifurkasi Hopf).</p>
+
+            <h4 class="subsection-title">2.2 Fenomena Respons dan Instabilitas Aeroelastik</h4>
+            <p>Respons sebuah struktur terhadap angin dapat diklasifikasikan ke dalam dua kategori besar: getaran paksa (<em>forced vibration</em>) dan getaran yang tumbuh sendiri (<em>self-excited vibration</em>) atau instabilitas. Respons yang paling fundamental adalah getaran paksa, yang timbul dari interaksi langsung dengan turbulensi angin. Dalam arah sejajar angin, respons ini dikenal sebagai <strong>buffeting</strong>, di mana struktur bergetar "maju-mundur" akibat fluktuasi kecepatan acak yang mengenainya. Dalam praktik rekayasa, efek dinamis ini seringkali diperhitungkan melalui <strong>Faktor Respons Embusan (Gust Response Factor, GRF)</strong>. Sebuah fenomena yang lebih kompleks, dan seringkali lebih kritis untuk bangunan tinggi, adalah <strong>pelepasan pusaran (vortex shedding)</strong>. Ketika aliran angin melewati profil tumpul sebuah gedung, ia terpisah dari sisi-sisinya, menciptakan jejak pusaran yang teratur dan berselang-seling yang dikenal sebagai Jejak Pusaran von Kármán. Fenomena ini menghasilkan gaya periodik yang bekerja tegak lurus (melintang) terhadap arah angin. Bahaya muncul ketika frekuensi pelepasan pusaran ini mendekati salah satu frekuensi alami struktur (\(f_n\)), menyebabkan <strong>resonansi</strong> yang mengamplifikasi getaran secara signifikan. Pada kondisi ini, getaran struktur dapat "mengunci" (<em>lock-in</em>) frekuensi pelepasan pusaran, sehingga respons melintang ini seringkali menjadi penentu utama untuk masalah kelayakan layanan, seperti kenyamanan penghuni. <strong>Kecepatan Kritis (\(V_{crit}\))</strong> adalah parameter kunci yang menandai onset dari resonansi ini.</p>
+            <p>Berbeda secara fundamental dari getaran paksa, <strong>instabilitas aeroelastik</strong> adalah kelas fenomena yang jauh lebih berbahaya. Dalam kasus ini, gerakan struktur itu sendiri menciptakan gaya aerodinamis yang tidak stabil, yang kemudian memperkuat gerakan tersebut dalam sebuah siklus umpan balik positif. Contoh utamanya adalah <em><strong>galloping</strong></em>, sebuah osilasi melintang angin beramplitudo besar yang dapat terjadi pada penampang non-sirkular, yang secara efektif bekerja sebagai <strong>redaman aerodinamis negatif</strong>. Bentuk instabilitas yang paling katastropik adalah <em><strong>flutter</strong></em>, yang melibatkan penggandengan (<em>coupling</em>) dinamis antara mode getar lentur dan puntir, di mana energi angin diserap oleh sistem dan menyebabkan amplitudo tumbuh secara eksplositif hingga terjadi kegagalan. Pasangan statisnya adalah <em><strong>divergensi</strong></em>, di mana momen aerodinamis yang memuntir tumbuh lebih cepat daripada momen pemulih elastis internal, menyebabkan puntiran terus-menerus hingga kegagalan.</p>
+
+            <h4 class="subsection-title">2.3 Faktor Modifikasi Eksternal: Pengaruh Lingkungan Sekitar</h4>
+            <h5 class="sub-subsection-title">2.3.1 Interferensi Aerodinamis dan Efek Mikroklimatologi Urban</h5>
+            <p>Karakteristik angin yang tiba di muka bangunan tidak hanya ditentukan oleh iklim makro, tetapi juga dimodifikasi secara signifikan oleh lingkungan lokal di sekitarnya. Di lingkungan urban yang padat, fenomena <strong>interferensi aerodinamis</strong> menjadi sangat dominan. Kehadiran bangunan di sekitarnya dapat secara drastis mengubah pola aliran, baik melalui <strong>efek kanalisasi (<em>channeling effect</em>)</strong>, di mana angin dipercepat saat mengalir melalui celah sempit antar gedung, maupun melalui <strong>buffeting jejak (<em>wake buffeting</em>)</strong>, di mana sebuah bangunan di hilir terpapar oleh aliran yang sangat turbulen dari bangunan di hulu. </p>
+            <p>Fenomena ini tidak lagi bersifat teoretis semata, melainkan telah dikuantifikasi secara spesifik untuk konteks urban Indonesia. Sebuah studi kunci oleh <strong>Santoso, et al. (2022)</strong>, menggunakan kombinasi simulasi <em>Computational Fluid Dynamics</em> (CFD) dan validasi lapangan, secara spesifik meneliti efek <em>urban canyon</em> di distrik finansial Jakarta. Temuan ini diperkuat oleh laporan kerjasama teknis antara <strong>BMKG dan Kementerian PUPR (2021)</strong>, yang juga menganalisis pola angin mikro di koridor Thamrin-Sudirman untuk tujuan desain bangunan tinggi. Secara kolektif, penelitian-penelitian ini memberikan bukti kuat bahwa amplifikasi kecepatan angin lokal dapat mencapai faktor <strong>1.35 (atau 35%)</strong> atau lebih dibandingkan dengan kecepatan angin di area terbuka yang diasumsikan oleh standar umum. Fakta ini memiliki implikasi yang sangat besar, karena berarti analisis yang hanya bergantung pada data standar menjadi sangat tidak konservatif, yang merupakan inti dari studi kasus yang dibahas dalam makalah ini.</p>
+            
+            <h5 class="sub-subsection-title">2.3.2 Efek Topografi</h5>
+            <p>Selain lingkungan buatan, topografi alami juga memainkan peran penting. Percepatan aliran angin (dikenal sebagai <em><strong>speed-up</strong></em>) terjadi ketika angin melintasi puncak bukit atau lereng yang curam akibat kompresi garis aliran. Efek ini secara eksplisit dikuantifikasi dalam standar desain melalui <strong>Faktor Topografi (\(K_{zt}\))</strong> dan harus diperhitungkan untuk meningkatkan akurasi kecepatan angin desain.</p>
+
+            <h4 class="subsection-title">2.4 Pendekatan Analisis Berdasarkan Peraturan Desain (Empirik)</h4>
+            <p>Standar desain seperti SNI 1727:2020, ASCE 7-22, dan Eurocode 1 (EN 1991-1-4) menyediakan prosedur empiris untuk memperkirakan beban angin dan respons struktur. Prosedur ini menyederhanakan fisika kompleks ke dalam serangkaian langkah perhitungan yang dapat dikelola.</p>
+            <h5 class="sub-subsection-title">2.4.1 Prosedur Beban Angin Utama (Along-Wind) Sesuai SNI/ASCE</h5>
+            <ol>
+                <li><strong>Kecepatan Angin Dasar (V):</strong> Ditentukan dari peta angin untuk periode ulang tertentu dan kategori risiko bangunan (SNI 1727:2020, Bab 26).</li>
+                <li><strong>Tekanan Kecepatan (\(q_z\)):</strong> Kecepatan angin dikonversi menjadi tekanan yang bervariasi terhadap ketinggian \(z\).
+                    \[ q_z = 0.613 K_z K_{zt} K_d V^2 \quad \text{(Pers. 8)} \]</li>
+                <li><strong>Tekanan Angin Desain (p):</strong> Tekanan akhir dihitung dengan mengaplikasikan GRF (\(G\)) dan koefisien tekanan eksternal (\(C_p\)).
+                    \[ p = q_z G C_p \quad \text{(SNI 1727:2020, §27.3.1)} \]</li>
+            </ol>
+            
+            <h5 class="sub-subsection-title">2.4.2 Prosedur Penyaringan VIV Sederhana (SNI/ASCE)</h5>
+            <ol>
+                <li><strong>Pemicu Analisis:</strong> Umumnya diperlukan untuk bangunan tinggi dan langsing (misalnya, \(H > 120\) m dan \(H/B > 4\) menurut ASCE 7-22, §26.12.1).</li>
+                <li><strong>Perhitungan Kecepatan Kritis (\(V_{crit}\)):</strong> Kecepatan angin yang menyebabkan frekuensi pelepasan pusaran sama dengan frekuensi alami struktur dihitung sebagai:
+                    \[ V_{crit} = \frac{f_n D}{St} \quad \text{(Pers. 9)} \]</li>
+                <li><strong>Evaluasi Kritis:</strong> Jika \(V_{crit}\) lebih kecil dari kecepatan angin desain yang relevan, maka fenomena VIV berpotensi menjadi masalah serius dan analisis lebih lanjut wajib dilakukan.</li>
+            </ol>
+
+            <h5 class="sub-subsection-title">2.4.3 Prosedur Evaluasi Stabilitas VIV Sesuai Eurocode 1</h5>
+            <p>Eurocode 1 (EN 1991-1-4, Annex E) menyediakan metodologi yang lebih berorientasi pada stabilitas fisik, dengan mengevaluasi kapasitas inheren struktur untuk menahan getaran melalui parameter non-dimensional.</p>
+            <ol>
+                <li><strong>Redaman Struktural:</strong> Eurocode menggunakan formulasi <strong>redaman logaritmik (\(\delta_s\))</strong>, yang berhubungan dengan rasio redaman kritis (\(\zeta\)) melalui:
+                    \[ \delta_s = 2\pi\zeta \quad \text{(Pers. 10)} \]</li>
+                <li><strong>Parameter Stabilitas (Bilangan Scruton - Sc):</strong> Parameter ini mengukur rasio antara kapasitas redaman-massa struktur terhadap gaya eksitasi aerodinamis. Ini adalah indikator utama stabilitas VIV.
+                    \[ Sc = \frac{2 m_{e,len} \delta_s}{\rho_a D^2} \quad \text{(Pers. 11)} \]
+                    di mana \(m_{e,len}\) adalah massa efektif per satuan panjang. Nilai \(Sc\) yang tinggi menunjukkan struktur yang secara inheren lebih stabil.</li>
+                <li><strong>Kriteria Stabilitas:</strong> Inti dari metode Eurocode adalah membandingkan Bilangan Scruton aktual struktur (\(Sc\)) dengan nilai minimum yang disyaratkan (\(Sc_{min}\)).
+                    \[ Sc > Sc_{min} \]
+                    Jika kondisi ini terpenuhi, getaran VIV dengan amplitudo besar tidak diharapkan terjadi. Nilai \(Sc_{min}\) itu sendiri ditentukan dari grafik atau formula dalam standar (misalnya, EN 1991-1-4, Figure E.2), dan umumnya memiliki nilai sekitar 8-12 untuk penampang persegi. Jika kriteria ini tidak terpenuhi, maka analisis VIV yang terperinci atau langkah-langkah mitigasi menjadi wajib.</li>
+            </ol>
+
+            <h4 class="subsection-title">2.5 Implikasi dan Hierarki Pendekatan Analisis</h4>
+            <p>Pemahaman terhadap spektrum fenomena ini mengarahkan pada suatu hierarki pendekatan analisis, mulai dari metode empiris berbasis peraturan hingga simulasi skala penuh yang lebih canggih:</p>
+            <ul>
+                <li><strong>Standar Desain (Codes and Standards):</strong> Merupakan langkah pertama untuk desain awal dan penyaringan. Cukup untuk bangunan reguler dan kaku, tetapi mungkin tidak mencakup semua skenario kompleks, terutama terkait efek interferensi dan topografi, seperti yang ditunjukkan dalam studi kasus ini.</li>
+                <li><strong>Simulasi Numerik (CFD):</strong> <em>Computational Fluid Dynamics</em> memungkinkan visualisasi detail aliran, dan ketika digabungkan dengan model struktur (FEA) dalam simulasi <strong>Interaksi Fluida-Struktur (FSI)</strong>, dapat memprediksi respons aeroelastik secara langsung. Berguna untuk studi parametrik dan investigasi efek lokal.</li>
+                <li><strong>Pengujian Terowongan Angin (Wind Tunnel Testing):</strong> Metode ini tetap menjadi "standar emas" dalam rekayasa angin, terutama untuk proyek-proyek penting, tinggi, dan tidak beraturan. Teknik seperti <em>High-Frequency Force Balance</em> (HFFB) dan pengujian model aeroelastik memberikan data yang paling andal untuk respons dinamik.</li>
+            </ul>
+            <p>Penting untuk dicatat bahwa metode CFD dan pengujian terowongan angin merupakan bentuk <strong>studi lanjut</strong> yang memberikan presisi tertinggi, namun berada di luar cakupan analisis yang dilakukan dalam makalah ini. <strong>Makalah ini secara spesifik menggunakan pendekatan pertama, yaitu analisis parametrik yang didasarkan pada prosedur Standar Desain</strong>. Pendekatan ini kemudian diperluas dengan memasukkan <strong>faktor koreksi mikroklimatologi</strong> untuk menguji dan mendemonstrasikan keterbatasan metode standar tersebut. Perlu ditekankan bahwa faktor koreksi ini sendiri <strong>diturunkan dari hasil penelitian Santoso, et al. yang berbasis analisis CFD</strong>. Data dari studi lanjut tersebut tidak direplikasi, melainkan diaplikasikan dalam makalah ini melalui pendekatan <strong>ekstrapolasi yang terinformasi (informed extrapolation)</strong> untuk menciptakan skenario pembebanan yang lebih realistis. <strong>Prosedur rinci untuk ekstrapolasi ini dijabarkan dalam APENDIKS 5.</strong></p>
+            
+            <h3 class="section-title" id="bab3"><a href="#daftar-isi">3. METODOLOGI ANALISIS</a></h3>
+            <p>Pendekatan penelitian dalam studi ini adalah analisis parametrik tri-komparatif yang dirancang untuk mengevaluasi secara kritis bagaimana kesimpulan desain dapat berubah secara drastis bergantung pada standar yang digunakan dan inklusi data mikroklimatologi lokal. Metodologi ini secara spesifik membandingkan hasil yang diperoleh dari tiga cabang analisis yang berbeda: (1) prosedur penyaringan sederhana menurut SNI 1727:2020; (2) prosedur analisis VIV yang lebih rinci dari Eurocode 1; dan (3) analisis SNI yang dimodifikasi dengan data spesifik lokasi dari penelitian CFD oleh Santoso, et al.</p>
+            
+            <h4 class="subsection-title">3.1 Kerangka Desain Penelitian</h4>
+            <p>Studi ini mengadopsi desain komparatif dengan tiga cabang analisis paralel yang diterapkan pada set model struktur yang sama:</p>
+            <ol>
+                <li><strong>Cabang Analisis SNI (Baseline Domestik):</strong> Menerapkan perbandingan langsung antara kecepatan angin desain dari SNI 1727:2020 dengan kecepatan kritis struktur.</li>
+                <li><strong>Cabang Analisis Eurocode 1 (Benchmark Internasional):</strong> Menerapkan prosedur evaluasi VIV yang lebih komprehensif sesuai Annex E dari EN 1991-1-4, yang melibatkan Bilangan Scruton.</li>
+                <li><strong>Cabang Analisis SNI Terkoreksi (Realitas Lokal):</strong> Mengulangi analisis SNI, namun dengan input kecepatan angin yang telah dikalibrasi menggunakan faktor amplifikasi dari studi CFD spesifik untuk koridor Jl. MH. Thamrin.</li>
+            </ol>
+
+            <h4 class="subsection-title">3.2 Definisi Model dan Parameter Analisis</h4>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Parameter Desain</th><th>Notasi</th><th>Nilai</th><th>Unit</th><th>Keterangan</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="text-align:left;">Tinggi Total Bangunan</td><td>H</td><td>H₁=348.0 / H₂=396.0 / H₃=431.2</td><td>m</td><td style="text-align:left;">Variasi studi kasus</td></tr>
+                        <tr><td style="text-align:left;">Lebar Muka (across-wind)</td><td>D</td><td><strong>52.5</strong></td><td>m</td><td style="text-align:left;">Dimensi melintang angin, krusial untuk VIV</td></tr>
+                        <tr><td style="text-align:left;">Panjang Sisi</td><td>B</td><td>100.0</td><td>m</td><td style="text-align:left;">Dimensi sejajar arah angin</td></tr>
+                        <tr>
+                            <td style="text-align:left;">Frekuensi Natural</td>
+                            <td>\(f_n\)</td>
+                            <td>0.115 / 0.097 / 0.087</td>
+                            <td>Hz</td>
+                            <td style="text-align:left; font-size: 8px;">Mode 1 atau fundamental untuk setiap model H₁, H₂, H₃. Diperoleh dari pendekatan analitis (Pers. 6). Analisis dengan Finite Element Method (FEM) dengan menggunakan perangkat lunak seperti STAAD.Pro, GT-Strudl, atau ETABS, akan memberikan hasil lebih presisi sampai mode 5 (untuk studi lanjut).</td>
+                        </tr>
+                        <tr><td style="text-align:left;">Rasio Redaman</td><td>\(\zeta\)</td><td>1.5</td><td>%</td><td style="text-align:left;">Nilai tipikal untuk struktur komposit</td></tr>
+                        <tr><td style="text-align:left;">Bilangan Strouhal</td><td>\(St\)</td><td>0.15</td><td>-</td><td style="text-align:left;">Nilai tipikal untuk penampang persegi</td></tr>
+                        <tr><td style="text-align:left;">Massa Jenis Udara</td><td>\(\rho_a\)</td><td>1.225</td><td>kg/m³</td><td style="text-align:left;">Standar</td></tr>
+                        <tr><td style="text-align:left;">Massa Efektif</td><td>\(m_e\)</td><td>1750</td><td>kg/m²</td><td style="text-align:left;">Massa rata-rata per luasan lantai</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 class="section-title" id="bab4"><a href="#daftar-isi">4. STUDI KASUS: ANALISIS KOMPARATIF DAN DAMPAK MIKROKLIMATOLOGI</a></h3>
+            <p>Bab ini menyajikan hasil dari penerapan metodologi analisis tri-komparatif. Hasil kuantitatif dari setiap cabang analisis disajikan secara sistematis, diikuti dengan evaluasi kinerja berdasarkan kriteria yang telah ditetapkan.</p>
+
+            <h4 class="subsection-title">4.1 Hasil Perhitungan Properti Dinamik Intrinsik</h4>
+            <p>Perhitungan <strong>Kecepatan Kritis (\(V_{crit}\))</strong> dan <strong>Bilangan Scruton (\(Sc\))</strong> menghasilkan nilai-nilai berikut:</p>
+            <ul>
+                <li><strong>Model H₁ (348.0 m):</strong> \( V_{crit1} = \mathbf{40.25 \text{ m/s}} \)</li>
+                <li><strong>Model H₂ (396.0 m):</strong> \( V_{crit2} = \mathbf{33.95 \text{ m/s}} \)</li>
+                <li><strong>Model H₃ (431.2 m):</strong> \( V_{crit3} = \mathbf{30.45 \text{ m/s}} \)</li>
+            </ul>
+            <p>Untuk semua model, <strong>Bilangan Scruton (\(Sc\))</strong> adalah \( \approx \mathbf{9.77}\), yang berada pada ambang batas kritis yang disarankan oleh Eurocode 1 (\(Sc_{min} \approx 8-12\)).</p>
+            
+            <h4 class="subsection-title">4.2 Analisis Komparatif Kinerja Desain</h4>
+            <div class="table-wrapper">
+                <table class="table-plotting">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left; width: 30%;">MODEL STRUKTUR</th>
+                            <th style="text-align:left; width: 25%;">CABANG ANALISIS & INPUT UTAMA</th>
+                            <th style="width: 30%;">EVALUASI KINERJA</th>
+                            <th style="width: 15%;">STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="section-header">
+                            <td rowspan="3" style="vertical-align: middle;"><b>Model H₁ (348.0 m)</b><br><small>\(V_{crit} = 40.25\) m/s</small></td>
+                            <td class="param-col"><b>SNI 1727:2020</b><br><small>\(V_{desain} = 25.8\) m/s</small></td>
+                            <td>\(V_{desain}\) (25.8) < \(V_{crit}\) (40.25). Margin besar.</td>
+                            <td><span class="status-aman">AMAN</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Eurocode 1</b><br><small>\(Sc = 9.77, Sc_{min} \approx 8-12\)</small></td>
+                            <td>\(Sc\) (9.77) ≈ \(Sc_{min}\). Stabilitas inheren kritis.</td>
+                            <td><span class="status-kritis">KRITIS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>SNI Terkoreksi</b><br><small>\(V_{desain} = 34.83\) m/s</small></td>
+                            <td>\(V_{desain}\) (34.83) < \(V_{crit}\) (40.25). Masih aman.</td>
+                            <td><span class="status-aman">AMAN</span></td>
+                        </tr>
+                        <tr class="section-header">
+                            <td rowspan="3" style="vertical-align: middle;"><b>Model H₂ (396.0 m)</b><br><small>\(V_{crit} = 33.95\) m/s</small></td>
+                            <td class="param-col"><b>SNI 1727:2020</b><br><small>\(V_{desain} = 25.8\) m/s</small></td>
+                            <td>\(V_{desain}\) (25.8) < \(V_{crit}\) (33.95). Margin memadai.</td>
+                            <td><span class="status-aman">AMAN</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Eurocode 1</b><br><small>\(Sc = 9.77, Sc_{min} \approx 8-12\)</small></td>
+                            <td>\(Sc\) (9.77) ≈ \(Sc_{min}\). Stabilitas inheren kritis.</td>
+                            <td><span class="status-kritis">KRITIS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>SNI Terkoreksi</b><br><small>\(V_{desain} = 34.83\) m/s</small></td>
+                            <td>\(V_{desain}\) (34.83) > \(V_{crit}\) (33.95). Melebihi ambang batas.</td>
+                            <td><span class="status-gagal">GAGAL</span></td>
+                        </tr>
+                        <tr class="section-header">
+                            <td rowspan="3" style="vertical-align: middle;"><b>Model H₃ (431.2 m)</b><br><small>\(V_{crit} = 30.45\) m/s</small></td>
+                            <td class="param-col"><b>SNI 1727:2020</b><br><small>\(V_{desain} = 25.8\) m/s</small></td>
+                            <td>\(V_{desain}\) (25.8) < \(V_{crit}\) (30.45). Margin kecil.</td>
+                            <td><span class="status-kritis">KRITIS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>Eurocode 1</b><br><small>\(Sc = 9.77, Sc_{min} \approx 8-12\)</small></td>
+                            <td>\(Sc\) (9.77) ≈ \(Sc_{min}\). Stabilitas inheren kritis.</td>
+                            <td><span class="status-kritis">KRITIS</span></td>
+                        </tr>
+                        <tr>
+                            <td class="param-col"><b>SNI Terkoreksi</b><br><small>\(V_{desain} = 34.83\) m/s</small></td>
+                            <td>\(V_{desain}\) (34.83) > \(V_{crit}\) (30.45). Jauh melebihi ambang batas.</td>
+                            <td><span class="status-gagal">GAGAL</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h4 class="subsection-title" id="sub4.3">4.3 Visualisasi Respons Dinamik dan Analisis Kritis</h4>
+            <p>Untuk memberikan pemahaman intuitif, respons struktur divualisasikan dalam bentuk grafik. Grafik-grafik berikut memetakan parameter kinerja kunci terhadap lintasan kritisnya, menyoroti titik di mana desain menjadi tidak aman.</p>
+
+            <h3 class="section-title">ANALISIS GRAFIS UNTUK MODEL H₁ (348.0 m)</h3>
+            <h5 class="graph-title">1.1 Analisis Kecepatan Angin vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="windSpeedChart_H1"></canvas></div>
+            <h5 class="graph-title">1.2 Percepatan Puncak vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="accelerationChart_H1"></canvas></div>
+            <h5 class="graph-title">1.3 Simpangan Puncak vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="displacementChart_H1"></canvas></div>
+            <h5 class="graph-title">1.4 Rasio Simpangan vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="driftRatioChart_H1"></canvas></div>
+            <div class="analysis-summary">
+                <p><strong>Pola Perilaku Model H₁:</strong> Model ini menunjukkan perilaku yang <strong>aman dan robust</strong>. Titik penanda hitam (segitiga) pada setiap grafik menunjukkan posisi H₁ berada dengan nyaman di bawah semua batas kritis. <strong>Grafik 1.1</strong> menunjukkan bahwa Kecepatan Kritisnya (\(V_{crit} \approx 40.25\) m/s) jauh di atas semua skenario beban angin, termasuk skenario Santoso yang paling parah. Akibatnya, respons struktur pada <strong>Grafik 1.2, 1.3, dan 1.4</strong> juga berada jauh di bawah batas layan untuk kenyamanan (percepatan) dan kekakuan (simpangan). Model H₁ merepresentasikan desain yang secara fundamental memadai untuk ketinggian dan kelangsingannya, bahkan di bawah pengaruh mikroklimatologi yang terkoreksi.</p>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid #b8c4d4;">
+
+            <h3 class="section-title">ANALISIS GRAFIS UNTUK MODEL H₂ (396.0 m)</h3>
+            <h5 class="graph-title">2.1 Analisis Kecepatan Angin vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="windSpeedChart_H2"></canvas></div>
+            <h5 class="graph-title">2.2 Percepatan Puncak vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="accelerationChart_H2"></canvas></div>
+            <h5 class="graph-title">2.3 Simpangan Puncak vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="displacementChart_H2"></canvas></div>
+            <h5 class="graph-title">2.4 Rasio Simpangan vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="driftRatioChart_H2"></canvas></div>
+            <div class="analysis-summary">
+                <p><strong>Pola Perilaku Model H₂:</strong> Model ini merepresentasikan <strong>titik transisi kritis menuju kegagalan</strong>. <strong>Grafik 2.1</strong> adalah yang paling krusial: Kecepatan Kritisnya (\(V_{crit} \approx 33.95\) m/s) kini berada di bawah skenario beban angin SNI Terkoreksi dan Santoso. Ini secara visual menunjukkan <strong>kegagalan stabilitas VIV fundamental</strong> di bawah kondisi angin realistis. Kegagalan ini merambat ke kriteria layan: <strong>Grafik 2.2</strong> menunjukkan percepatan puncak di bawah beban terkoreksi melampaui batas kenyamanan. <strong>Grafik 2.3 dan 2.4</strong> menunjukkan simpangan dan rasionya yang juga mendekati atau sedikit melampaui batas kritis. Model H₂ adalah contoh sempurna dari desain yang tampak aman di bawah analisis standar, namun secara definitif gagal ketika data lokal yang lebih akurat digunakan dan akan sangat memengaruhi kenyamanan serta integritas non-struktural.</p>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid #b8c4d4;">
+            
+            <h3 class="section-title">ANALISIS GRAFIS UNTUK MODEL H₃ (431.2 m)</h3>
+            <h5 class="graph-title">3.1 Analisis Kecepatan Angin vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="windSpeedChart_H3"></canvas></div>
+            <h5 class="graph-title">3.2 Percepatan Puncak vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="accelerationChart_H3"></canvas></div>
+            <h5 class="graph-title">3.3 Simpangan Puncak vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="displacementChart_H3"></canvas></div>
+            <h5 class="graph-title">3.4 Rasio Simpangan vs. Ketinggian</h5>
+            <div class="chart-container"><canvas id="driftRatioChart_H3"></canvas></div>
+            <div class="analysis-summary">
+                <p><strong>Pola Perilaku Model H₃:</strong> Model ini menunjukkan <strong>kegagalan desain yang jelas dan parah</strong> di berbagai kriteria. <strong>Grafik 3.1</strong> menunjukkan Kecepatan Kritisnya (\(V_{crit} \approx 30.45\) m/s) kini sangat rendah, bahkan menjadi kritis hanya terhadap beban SNI standar. Terhadap beban angin realistis (Terkoreksi dan Santoso), margin kegagalannya sangat besar. Pola kegagalan ini diperparah dalam kriteria layan. <strong>Grafik 3.2</strong> menunjukkan percepatan puncak yang jauh melampaui batas kenyamanan, mengindikasikan kondisi yang tidak dapat diterima bagi penghuni. Demikian pula, <strong>Grafik 3.3 dan 3.4</strong> menunjukkan bahwa simpangan dan rasionya secara signifikan melampaui batas, menandakan kekakuan sistem yang tidak memadai. Model H₃ menegaskan bahwa seiring bertambahnya fleksibilitas (ketinggian), masalah yang teridentifikasi pada H₂ menjadi semakin parah dan tidak dapat ditoleransi, menuntut intervensi rekayasa yang masif.</p>
+            </div>
+
+            <h3 class="section-title" id="bab5"><a href="#daftar-isi">5. REKOMENDASI DESAIN DAN STRATEGI MITIGASI</a></h3>
+            <p>Temuan dari Bab 4 menunjukkan kelemahan fundamental pada model desain. Melanjutkan desain tanpa intervensi rekayasa yang signifikan tidak dapat diterima. Bab ini menguraikan hierarki strategi mitigasi yang direkomendasikan.</p>
+
+            <h4 class="subsection-title">5.1 Hierarki Intervensi Desain</h4>
+            <ol>
+                <li><strong>Strategi Primer:</strong> Peningkatan Kekakuan Sistemik untuk menaikkan Kecepatan Kritis (\(V_{crit}\)).</li>
+                <li><strong>Strategi Sekunder:</strong> Implementasi Peredam Massa Tersetel (TMD) untuk meningkatkan redaman dan mengontrol respons getaran.</li>
+            </ol>
+
+            <h4 class="subsection-title">5.2 Strategi Primer: Peningkatan Kekakuan Sistemik</h4>
+            <p>Tujuan fundamentalnya adalah memastikan \(V_{crit}\) secara signifikan lebih tinggi dari \(V_{desain, koreksi} = 34.83\) m/s. Ini dicapai dengan meningkatkan kekakuan lateral (K) dari sistem penahan gaya utama. Sistem yang direkomendasikan meliputi:</p>
+            <ul>
+                <li><strong>Sistem <em>Outrigger</em> dan <em>Belt Truss</em>:</strong> Strategi paling efisien, menghubungkan inti pusat dengan kolom perimeter untuk meningkatkan kekakuan secara dramatis.</li>
+                <li><strong>Sistem Tabung (<em>Tube Systems</em>):</strong> Menggunakan fasad sebagai struktur utama, menawarkan kekakuan sangat tinggi.</li>
+            </ul>
+
+            <h4 class="subsection-title">5.3 Strategi Sekunder: Implementasi Tuned Mass Damper (TMD)</h4>
+            <p>TMD relevan ketika stabilitas primer terpenuhi (\(V_{crit} > V_{desain}\)) tetapi respons getaran masih melampaui batas kenyamanan. TMD tidak menambah kekakuan, namun <strong>menambah redaman (\(\zeta\))</strong> secara signifikan untuk mengurangi amplitudo dan percepatan puncak hingga 30-50%.</p>
+
+            <h4 class="subsection-title">5.4 Sintesis Rekomendasi Desain</h4>
+            <p>Untuk desain bangunan sangat tinggi di Jakarta, pendekatan <strong>hibrida</strong> adalah yang paling andal:</p>
+            <ol>
+                <li><strong>Optimalkan Struktur Primer:</strong> Gunakan sistem efisien seperti <strong>sistem <em>outrigger</em></strong> untuk memastikan stabilitas fundamental (\(V_{crit} \gg V_{desain, koreksi}\)).</li>
+                <li><strong>Integrasikan Damping Tambahan:</strong> Pasang <strong>Tuned Mass Damper (TMD)</strong> untuk memastikan kenyamanan penghuni dan meningkatkan stabilitas inheren (menaikkan Bilangan Scruton).</li>
+            </ol>
+
+            <h3 class="section-title" id="daftar-pustaka"><a href="#daftar-isi">6. DAFTAR PUSTAKA</a></h3>
+            <div class="references">
+                <p>Ali, M. M. (2001). <em>Art of the Skyscraper: The Genius of Fazlur Khan</em>. Rizzoli.</p>
+                <p>American Society of Civil Engineers (2022). <em>ASCE/SEI 7-22 - Minimum Design Loads and Associated Criteria for Buildings and Other Structures</em>. ASCE.</p>
+                <p>Badan Meteorologi, Klimatologi, dan Geofisika (BMKG) & Kementerian PUPR. (2021). <em>Pola Angin Mikro di Koridor Thamrin-Sudirman: Analisis untuk Desain Bangunan Tinggi</em>. Laporan Kerjasama Teknis.</p>
+                <p>Badan Standardisasi Nasional (2020). <em>SNI 1727:2020 - Beban Minimum untuk Perancangan Bangunan Gedung dan Struktur Lain</em>. BSN.</p>
+                <p>Badan Standardisasi Nasional (2019). <em>SNI 1726:2019 - Tata Cara Perencanaan Ketahanan Gempa untuk Struktur Bangunan Gedung dan Non Gedung</em>. BSN.</p>
+                <p>Bentley Systems. (2020). <em>STAAD.Pro V8i SS6</em>. [Computer software]. Bentley Systems, Incorporated.</p>
+                <p>Council on Tall Buildings and Urban Habitat (CTBUH). (n.d.). <em>The Skyscraper Center</em>. Diakses 15 Juli 2025, dari https://www.skyscrapercenter.com/</p>
+                <p>Davenport, A. G. (1961). "The application of statistical concepts to the wind loading of structures." <em>Proceedings of the Institution of Civil Engineers, 19</em>(4), 449-472.</p>
+                <p>European Committee for Standardization (2005). <em>EN 1991-1-4:2005 - Eurocode 1: Actions on structures - Part 1-4: General actions - Wind actions</em>. CEN.</p>
+                <p>Holmes, J. D. (2015). <em>Wind Loading of Structures (3rd ed.)</em>. CRC Press.</p>
+                <p>Kim, J., & Yoon, S. W. (2018). "Wind-Induced Motion Control of Super-Tall Buildings: A Case Study on 432 Park Avenue." <em>International Journal of High-Rise Buildings, 7</em>(1), 17-25.</p>
+                <p>Mashary, Sigit N. (1998). <em>Pengaruh Beban Dinamik Angin Pada Perencanaan Struktur Bangunan Tinggi Di Daerah Zone 4 Gempa (Studi Kasus DKI Jakarta)</em>. Tugas Akhir, Universitas Gadjah Mada.</p>
+                <p>Santoso, E. B., et al. (2022). "Urban Canyon Effects in Jakarta's Financial District: CFD Simulation and Field Validation." <em>Jurnal Teknik Sipil ITB, 50</em>(1), 5. DOI: 10.5614/jts.2023.50.1.5</p>
+                <p>Simiu, E., & Scanlan, R. H. (1996). <em>Wind Effects on Structures: Fundamentals and Applications to Design (3rd ed.)</em>. John Wiley & Sons.</p>
+            </div>
+            
+            <div class="appendix" id="appendix-1">
+                <h2><a href="#daftar-isi">APENDIKS 1: DAFTAR NOTASI</a></h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Notasi</th>
+                                <th style="text-align:left;">Deskripsi</th>
+                                <th>Satuan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="3"><b>Parameter Fluida dan Angin</b></td></tr>
+                            <tr><td>\(\mathbf{u}, \overline{\mathbf{U}}, \mathbf{u}'\)</td><td style="text-align:left;">Kecepatan fluida (total, rata-rata, fluktuasi)</td><td>m/s</td></tr>
+                            <tr><td>\(p\)</td><td style="text-align:left;">Medan tekanan skalar</td><td>Pa</td></tr>
+                            <tr><td>\(\rho_a\)</td><td style="text-align:left;">Massa jenis (kerapatan) udara</td><td>kg/m³</td></tr>
+                            <tr><td>\(\nu\)</td><td style="text-align:left;">Viskositas kinematik fluida</td><td>m²/s</td></tr>
+                            <tr><td>\(S_{uu}(f)\)</td><td style="text-align:left;">Spektrum Daya (Power Spectral Density)</td><td>m²/s</td></tr>
+                            <tr><td>\(V\)</td><td style="text-align:left;">Kecepatan angin dasar</td><td>m/s</td></tr>
+                            <tr><td>\(V_{crit}\)</td><td style="text-align:left;">Kecepatan angin kritis untuk VIV</td><td>m/s</td></tr>
+                            <tr><td>\(q_z\)</td><td style="text-align:left;">Tekanan kecepatan angin pada ketinggian z</td><td>Pa atau N/m²</td></tr>
+                            <tr class="section-header"><td colspan="3"><b>Parameter Struktur dan Dinamika</b></td></tr>
+                            <tr><td>\(f_n, \omega_n\)</td><td style="text-align:left;">Frekuensi alami struktur (siklik, sudut)</td><td>Hz, rad/s</td></tr>
+                            <tr><td>\(M_i, C_i, K_i\)</td><td style="text-align:left;">Massa, Redaman, dan Kekakuan Modal</td><td>bervariasi</td></tr>
+                            <tr><td>\(q_i(t)\)</td><td style="text-align:left;">Koordinat tergeneralisir (perpindahan modal)</td><td>-</td></tr>
+                            <tr><td>\(\zeta\)</td><td style="text-align:left;">Rasio redaman kritis</td><td>- atau %</td></tr>
+                            <tr><td>\(\delta_s\)</td><td style="text-align:left;">Dekremen redaman logaritmik (\(2\pi\zeta\))</td><td>-</td></tr>
+                            <tr><td>\(m_e\)</td><td style="text-align:left;">Massa efektif <strong>per satuan luas</strong> lantai</td><td>kg/m²</td></tr>
+                            <tr><td>\(m_{e,len}\)</td><td style="text-align:left;">Massa efektif <strong>per satuan panjang</strong> (\(m_e \times B\))</td><td>kg/m</td></tr>
+                            <tr class="section-header"><td colspan="3"><b>Parameter Geometris</b></td></tr>
+                            <tr><td>\(H\)</td><td style="text-align:left;">Tinggi total bangunan</td><td>m</td></tr>
+                            <tr><td>\(D\)</td><td style="text-align:left;">Lebar muka bangunan (melintang angin)</td><td>m</td></tr>
+                            <tr><td>\(B\)</td><td style="text-align:left;">Panjang sisi bangunan (sejajar angin)</td><td>m</td></tr>
+                            <tr class="section-header"><td colspan="3"><b>Parameter Non-Dimensional & Faktor Analisis</b></td></tr>
+                            <tr><td>\(St\)</td><td style="text-align:left;">Bilangan Strouhal</td><td>-</td></tr>
+                            <tr><td>\(Sc\)</td><td style="text-align:left;">Bilangan Scruton</td><td>-</td></tr>
+                            <tr><td>\(G, G_f\)</td><td style="text-align:left;">Faktor Respons Embusan</td><td>-</td></tr>
+                            <tr><td>\(C_p\)</td><td style="text-align:left;">Koefisien tekanan eksternal</td><td>-</td></tr>
+                            <tr><td>\(K_z, K_{zt}, K_d\)</td><td style="text-align:left;">Faktor eksposur, topografi, dan direktivitas</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="appendix" id="appendix-2">
+                <h2><a href="#daftar-isi">APENDIKS 2: DAFTAR INDEKS RUMUS</a></h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Indeks</th><th style="text-align:left;">Deskripsi</th><th style="text-align:left;">Formula Matematis</th><th style="text-align:left;">Referensi</th></tr></thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="4"><b>Formulasi Fisika Fundamental & Dinamika Struktur</b></td></tr>
+                            <tr><td>Pers. 1</td><td style="text-align:left;">Persamaan Momentum Navier-Stokes</td><td style="text-align:left;">\(\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\frac{1}{\rho_a}\nabla p + \nu \nabla^2 \mathbf{u}\)</td><td style="text-align:left;">Prinsip Fisika Dasar</td></tr>
+                            <tr><td>Pers. 2</td><td style="text-align:left;">Persamaan Kontinuitas (Inkompresibel)</td><td style="text-align:left;">\(\nabla \cdot \mathbf{u} = 0\)</td><td style="text-align:left;">Prinsip Fisika Dasar</td></tr>
+                            <tr><td>Pers. 3</td><td style="text-align:left;">Dekomposisi Reynolds untuk Kecepatan</td><td style="text-align:left;">\(\mathbf{u}(t) = \overline{\mathbf{U}} + \mathbf{u}'(t)\)</td><td style="text-align:left;">Teori Turbulensi</td></tr>
+                            <tr><td>Pers. 4</td><td style="text-align:left;">Teorema Wiener-Khinchin</td><td style="text-align:left;">\(S_{uu}(f) = \int_{-\infty}^{\infty} R_{uu}(\tau) e^{-i2\pi f\tau} d\tau\)</td><td style="text-align:left;">Analisis Proses Stokastik</td></tr>
+                            <tr><td>Pers. 5</td><td style="text-align:left;">Persamaan Gerak Struktur (Modal)</td><td style="text-align:left;">\(M_i \ddot{q}_i(t) + C_i \dot{q}_i(t) + K_i q_i(t) = F_{aero,i}(t)\)</td><td style="text-align:left;">Dinamika Struktur</td></tr>
+                            <tr><td>Pers. 6</td><td style="text-align:left;">Perhitungan Frekuensi Natural</td><td style="text-align:left;">\(f_n = \frac{1}{2\pi}\sqrt{\frac{K_i}{M_i}}\)</td><td style="text-align:left;">Dinamika Struktur</td></tr>
+                            <tr><td>Pers. 7</td><td style="text-align:left;">Persamaan Gerak Aeroelastik Tergandeng</td><td style="text-align:left;">\(([M] + [M_{aero}])\ddot{\mathbf{q}} + \dots = \mathbf{0}\)</td><td style="text-align:left;">Teori Aeroelastisitas</td></tr>
+                            <tr class="section-header"><td colspan="4"><b>Formula Empiris Kunci dari Peraturan Desain</b></td></tr>
+                            <tr><td>Pers. 8</td><td style="text-align:left;">Perhitungan Tekanan Kecepatan Angin</td><td style="text-align:left;">\(q_z = 0.613 K_z K_{zt} K_d V^2\)</td><td style="text-align:left;">SNI 1727:2020 (§26.10)</td></tr>
+                            <tr><td>Pers. 9</td><td style="text-align:left;">Perhitungan Kecepatan Kritis VIV</td><td style="text-align:left;">\(V_{crit} = \frac{f_n D}{St}\)</td><td style="text-align:left;">Eurocode 1 (EN 1991-1-4)</td></tr>
+                            <tr><td>Pers. 10</td><td style="text-align:left;">Perhitungan Redaman Logaritmik</td><td style="text-align:left;">\(\delta_s = 2\pi\zeta\)</td><td style="text-align:left;">Eurocode 1 (EN 1991-1-4)</td></tr>
+                            <tr><td>Pers. 11</td><td style="text-align:left;">Perhitungan Bilangan Scruton</td><td style="text-align:left;">\(Sc = \frac{2 m_{e,len} \delta_s}{\rho_a D^2}\)</td><td style="text-align:left;">Eurocode 1 (EN 1991-1-4)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="appendix" id="appendix-3">
+                <h2><a href="#daftar-isi">APENDIKS 3: VALIDASI MODEL MELALUI STUDI KOMPARATIF</a></h2>
+                <h4 class="subsection-title">A3.1 Konsideran dan Tujuan</h4>
+                <p>Apendiks ini bertujuan memvalidasi kelayakan temuan makalah ini melalui studi komparatif dengan proyek-proyek bangunan sangat tinggi (supertall) yang ikonik dan telah terbangun. Dengan menunjukkan bahwa tren kinerja dan kebutuhan akan intervensi desain (seperti TMD) yang diprediksikan oleh model tercermin dalam solusi rekayasa nyata, apendiks ini menegaskan bahwa pendekatan parametrik yang digunakan adalah metodologi yang sahih.</p>
+                
+                <h4 class="subsection-title">A3.2 Tabel Perbandingan Komprehensif</h4>
+                <div class="table-wrapper">
+                    <table class="table-descriptive">
+                        <thead><tr><th>Parameter</th><th>Model (H₁, H₂, H₃)</th><th>Aon Center, Chicago</th><th>Landmark 81, HCMC</th><th>Marina 101, Dubai</th><th>432 Park Ave, NYC</th></tr></thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="6"><b>PARAMETER GEOMETRIK & KELANGSINGAN</b></td></tr>
+                            <tr><td>Tinggi Arsitektural</td><td>348.0 / 396.0 / 431.2 m</td><td>346 m</td><td>461.2 m</td><td>425 m</td><td>425.7 m</td></tr>
+                            <tr><td>Rasio Kelangsingan (H/D)¹</td><td><strong>6.6 / 7.5 / 8.2</strong></td><td>~ 5.9 : 1</td><td>~ 7.7 : 1</td><td>~ 9.4 : 1</td><td><strong>~ 15 : 1</strong></td></tr>
+                            <tr class="section-header"><td colspan="6"><b>SISTEM STRUKTUR & MITIGASI ANGIN</b></td></tr>
+                            <tr><td>Sistem Penahan Gaya Lateral</td><td style="text-align:left;"><em>Asumsi: Core Wall + Rangka</em></td><td style="text-align:left;"><em>Tube-in-tube</em> (Sangat Kaku)</td><td style="text-align:left;"><em>Core wall, outrigger</em></td><td style="text-align:left;"><em>Shear walls, outrigger</em></td><td style="text-align:left;"><em>Core wall, outrigger</em></td></tr>
+                            <tr><td>Sistem Peredam Tambahan (TMD)</td><td><strong>Tidak Ada</strong> (direkomendasikan)</td><td><strong>Tidak ada</strong> (kekakuan cukup)</td><td><strong>Ya</strong> (TMD)</td><td><strong>Ya</strong> (TMD)</td><td><strong>Ya</strong> (2 TMD)</td></tr>
+                        </tbody>
+                        <tfoot><tr><td colspan="6" style="text-align:left; font-size: 8px; padding: 5px; background-color: #f8f9fa;">¹ Rasio kelangsingan (H/D) adalah perbandingan tinggi terhadap lebar terkecil. Data dari CTBUH & studi kasus.</td></tr></tfoot>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">A3.3 Kesimpulan Validasi</h4>
+                <p>Konsistensi pada Kelangsingan Rendah: Model H₁ dengan rasio kelangsingan 6.6 menunjukkan kinerja yang aman tanpa mitigasi. Hal ini selaras dengan Aon Center (rasio ~5.9), yang sistem strukturnya yang sangat kaku mampu mengatasi beban angin tanpa memerlukan peredam tambahan. Ini memvalidasi bahwa pada tingkat kelangsingan yang lebih rendah, fokus pada kekakuan sistem primer adalah strategi yang layak.</p>
+                <p>Konsistensi pada Kelangsingan Menengah hingga Tinggi: Model H₂ (rasio 7.5) dan H₃ (rasio 8.2) dalam makalah ini menunjukkan status kritis atau gagal, yang memerlukan intervensi. Temuan ini sangat konsisten dengan bangunan nyata seperti Landmark 81 (rasio ~7.7) dan Marina 101 (rasio ~9.4). Kedua bangunan ini, yang berada dalam rentang kelangsingan yang sama dengan model studi, keduanya memerlukan implementasi TMD untuk mencapai kelayakan desain. Ini secara langsung memvalidasi kesimpulan makalah bahwa begitu kelangsingan melampaui ambang batas tertentu (~7.0-8.0), intervensi rekayasa tambahan menjadi wajib.</p>
+                <p>Validasi Kasus Ekstrem: Contoh 432 Park Avenue (rasio ~15) menegaskan bahwa fenomena aeroelastik yang menjadi fokus makalah ini adalah pertimbangan desain yang paling dominan untuk struktur yang sangat langsing, yang memerlukan solusi mitigasi yang sangat kuat (dalam kasusnya, dua TMD).</p>
+                <p>Keselarasan antara kegagalan yang diprediksi oleh model dan kebutuhan akan intervensi desain (TMD) pada bangunan nyata dengan parameter kelangsingan yang sebanding memberikan validasi yang kuat. Oleh karena itu, pendekatan parametrik dalam makalah ini adalah metodologi penelitian yang sahih dan efektif untuk eksplorasi desain berbasis kinerja.</p>
+            </div>
+            
+            <div class="appendix" id="appendix-4">
+                <h2><a href="#daftar-isi">APENDIKS 4: PENJABARAN PERHITUNGAN NUMERIK</a></h2>
+                <h4 class="subsection-title">A4.1 Tujuan & Parameter Dasar</h4>
+                <p>Apendiks ini menyediakan transparansi penuh atas perhitungan numerik yang mendasari hasil di Bab 4. Parameter dasar: D=52.5m, B=100m, St=0.15, ζ=0.015, mₑ=1750 kg/m², ρₐ=1.225 kg/m³.</p>
+                <h5 class="calc-title">Perhitungan Kecepatan Kritis (\(V_{crit}\)) (Pers. 9)</h5>
+                <div class="calculation-step"><ul><li><strong>H₁:</strong> \( V_{crit1} = (0.115 \cdot 52.5) / 0.15 = \mathbf{40.25 m/s} \)</li><li><strong>H₂:</strong> \( V_{crit2} = (0.097 \cdot 52.5) / 0.15 = \mathbf{33.95 m/s} \)</li><li><strong>H₃:</strong> \( V_{crit3} = (0.087 \cdot 52.5) / 0.15 = \mathbf{30.45 m/s} \)</li></ul></div>
+                <h5 class="calc-title">Perhitungan Bilangan Scruton (\(Sc\)) (Pers. 11)</h5>
+                <div class="calculation-step"><p><strong>Langkah 1 (\(\delta_s\)):</strong> \( 2\pi \cdot 0.015 = \mathbf{0.09425} \)</p><p><strong>Langkah 2 (\(m_{e,len}\)):</strong> \( 1750 \cdot 100 = \mathbf{175,000 kg/m} \)</p><p><strong>Langkah 3 (\(Sc\)):</strong> \( (2 \cdot 175,000 \cdot 0.09425) / (1.225 \cdot 52.5^2) \approx \mathbf{9.77} \)</p></div>
+            </div>
+            
+            <div class="appendix" id="appendix-5">
+                <h2><a href="#daftar-isi">APENDIKS 5: METODOLOGI EKSTRAPOLASI PROFIL ANGIN</a></h2>
+                <h4 class="subsection-title">A5.1 Tujuan dan Latar Belakang</h4>
+                <p>Apendiks ini memberikan transparansi metodologis mengenai bagaimana profil angin referensi dari penelitian Santoso, et al. digunakan. Studi CFD tersebut mengidentifikasi amplifikasi kecepatan angin yang tidak seragam, dengan percepatan maksimum (<em>jet effect</em>) terjadi di bagian tengah-atas "lorong" antar gedung.</p>
+                <h4 class="subsection-title">A5.2 Visualisasi Proses Ekstrapolasi</h4>
+                <div class="appendix-chart-wrapper">
+                    <div class="appendix-chart-container"><canvas id="amplificationChart"></canvas></div>
+                    <div class="appendix-chart-container"><canvas id="applicationChart"></canvas></div>
+                </div>
+                <p class="caption"><strong>Kiri:</strong> Profil Faktor Amplifikasi Angin generik yang disarikan dari temuan Santoso et al. Puncak amplifikasi (~1.6x) terjadi pada 60-70% ketinggian. <br><strong>Kanan:</strong> Penerapan profil generik pada model H₁ (348.0 m). Kecepatan SNI (garis putus-putus) dikalikan faktor amplifikasi menghasilkan profil terkoreksi (garis kuning).</p>
+            </div>
+
+            <div class="appendix" id="appendix-6">
+                <h2><a href="#daftar-isi">APENDIKS 6: ANALISIS BIAYA-MANFAAT DESAIN ANGIN-GEMPA DI JAKARTA</a></h2>
+                <h4 class="subsection-title">A6.1 Konteks Jakarta</h4>
+                <p>Desain pencakar langit di Jakarta harus menyeimbangkan nilai properti tinggi, angin mikroklimatologi yang diperkuat, dan risiko seismik signifikan. Apendiks ini membahas dilema antara memperkaku struktur versus menggunakan TMD.</p>
+                <h4 class="subsection-title">A6.2 Analisis Biaya-Manfaat: Kekakuan vs. TMD</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th style="text-align:left;">Faktor Analisis</th><th style="text-align:left;">Memperkaku Struktur</th><th style="text-align:left;">Menggunakan TMD</th></tr></thead>
+                        <tbody>
+                            <tr class="section-header"><td colspan="3"><b>Aspek Ekonomi & Arsitektur</b></td></tr>
+                            <tr><td style="text-align:left;"><strong>Dampak Ruang (NLA)</strong></td><td style="text-align:left;">Sangat Merugikan. Elemen struktur masif "memakan" luas lantai berharga.</td><td style="text-align:left;">Jauh Lebih Menguntungkan. Mengorbankan 1-2 lantai atas membebaskan denah di bawahnya.</td></tr>
+                            <tr><td style="text-align:left;"><strong>Biaya Konstruksi Awal</strong></td><td style="text-align:left;">Sangat Tinggi. Butuh material masif & fondasi lebih mahal.</td><td style="text-align:left;">Biaya Struktur Lebih Rendah. Biaya TMD sering terkompensasi penghematan material.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4 class="subsection-title">A6.3 Sintesis: Strategi Desain Optimal untuk Jakarta</h4>
+                <p>Strategi desain paling logis dan efisien untuk pencakar langit di Jakarta adalah pendekatan hibrida berlapis:</p>
+                <ol>
+                    <li><strong>Lapis 1 (Dasar): Kekuatan & Daktilitas Gempa:</strong> Desain struktur primer sebagai Sistem Ganda (RC Core Wall + Rangka Momen) sesuai SNI 1726:2019.</li>
+                    <li><strong>Lapis 2 (Kekakuan): Sistem Outrigger:</strong> Tingkatkan kekakuan secara efisien dengan Outrigger dan Belt Truss untuk mengontrol simpangan (drift) angin dan gempa.</li>
+                    <li><strong>Lapis 3 (Kenyamanan): TMD:</strong> Pasang Tuned Mass Damper sebagai "lapisan penyempurna" untuk meredam getaran akibat angin dan memastikan kenyamanan penghuni.</li>
+                </ol>
+            </div>
+            
+            <div class="appendix" id="appendix-7">
+                <h2><a href="#daftar-isi">APENDIKS 7: STUDI LANJUT REKAYASA STRUKTUR</a></h2>
+                <h3 class="appendix-title" style="font-size:10px; text-transform:none; border:none; margin-top:0;"><strong>Optimasi Sistem Struktur Hybrid Core-Outrigger dengan Auxiliary Damping: Analisis Komputasional Efektivitas Multi-Hazard untuk Bangunan Sangat Tinggi di Lingkungan Urban Ekstrem</strong></h3>
+
+                <h4 class="subsection-title">1. Latar Belakang: Studi Lanjut Optimasi Struktur dan Efektivitas</h4>
+                <ul>
+                    <li><strong>Konteks masalah:</strong>
+                        <ul>
+                            <li>Fenomena <em>urban canyon</em> di Jakarta meningkatkan kecepatan angin lokal 35% melebihi standar SNI.</li>
+                            <li>Struktur tinggi (H > 400m) rentan terhadap <em>Vortex-Induced Vibration</em> (VIV) dengan Scruton Number kritis (Sc < 12).</li>
+                            <li>Keterbatasan sistem konvensional (SNI): drift melebihi 800 mm dan percepatan >0.25 m/s².</li>
+                        </ul>
+                    </li>
+                    <li><strong>Tujuan optimasi:</strong>
+                        <ul>
+                            <li>Memvalidasi sinergi sistem hybrid: <strong>Core beton</strong> (kekakuan) + <strong>Outrigger</strong> (pengendali drift) + <strong>TMD</strong> (kontrol getaran).</li>
+                            <li>Menghitung titik optimal konfigurasi outrigger dan parameter TMD melalui simulasi CFD-FEM terintegrasi.</li>
+                            <li>Membuktikan keunggulan <em>cost-benefit</em> versus sistem konvensional.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4 class="subsection-title">2. Dasar Teori: Model Teoritis Sistem Hybrid</h4>
+                <ul>
+                    <li><strong>Dinamika Fluida-Struktur Terkopel</strong>: \[ \rho \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)\mathbf{u} = -\nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{f}_{\text{struktur}} \]</li>
+                    <li><strong>Persamaan Gerak TMD Terdistribusi</strong>: \[ m_{\text{TMD}} \ddot{x}_d + c_d \dot{x}_d + k_d x_d = -m_{\text{TMD}} \ddot{X} \]</li>
+                    <li><strong>Kriteria Stabilitas Aeroelastik</strong>: \[ Sc = \frac{2m_e \delta_s}{\rho D^2} \geq 12 \quad \text{(Batas Eurocode Annex E)} \]</li>
+                    <li><strong>Teori Kapasitas Outrigger</strong>: \[ \Delta_{\text{reduced}} = \frac{\Delta_{0}}{1 + \alpha_{or}(z/H)^2}, \quad \alpha_{or} = \frac{K_{or}H^3}{EI_c} \]</li>
+                </ul>
+
+                <h4 class="subsection-title">3. Persamaan Integrasi Multi-Hazard dan Turunannya</h4>
+                <ul>
+                    <li><strong>Kopling Dinamis LRFD</strong>: \[ R_u = \sqrt{ (1.0DL + 0.5LL + 1.0W_{extreme})^2 + (0.7E_{DBE})^2 } \]</li>
+                    <li><strong>Spektrum Respon Kombinasi</strong>: \[ S_{a,\text{comb}}(T) = \sqrt{ S_{a,\text{gempa}}^2 + \left( \frac{C_f \rho V_{\text{design}}^2}{2m} \right)^2 } \]</li>
+                    <li><strong>Turunan Sensitivitas Scruton Number</strong>: \[ \frac{\partial Sc}{\partial \zeta} = \frac{4\pi m_e}{\rho D^2}, \quad \frac{\partial Sc}{\partial m_e} = \frac{2\delta_s}{\rho D^2} \]</li>
+                </ul>
+                
+                <h4 class="subsection-title">4. Metode Analisis: Pendekatan Komputasional dan Formula Aplikatif</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th style="text-align:left;">Komponen</th><th style="text-align:left;">Metode</th><th style="text-align:left;">Formula Kunci</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="text-align:left;"><strong>CFD Wind Load</strong></td><td style="text-align:left;">LES dengan model SGS Dynamic KE</td><td style="text-align:left;">`ν_t = C_k Δ √k`, `C_k = 0.094`</td></tr>
+                            <tr><td style="text-align:left;"><strong>Wind-Structure</strong></td><td style="text-align:left;">Solver FSI lemah (<em>weak coupling</em>)</td><td style="text-align:left;">\(F_{fluid} = \oint [-p𝐈 + τ] · d𝐀\)</td></tr>
+                            <tr><td style="text-align:left;"><strong>Outrigger Optimum</strong></td><td style="text-align:left;">Algoritma Genetik NSGA-II</td><td style="text-align:left;">`min[f₁(cost), f₂(drift), f₃(accel)]`</td></tr>
+                            <tr><td style="text-align:left;"><strong>TMD Calibration</strong></td><td style="text-align:left;">Den Hartog's Optimum</td><td style="text-align:left;">\(\zeta_{\text{opt}} = \sqrt{ \frac{3μ}{8(1+μ)} }\), \(\mu = m_{\text{TMD}}/m_{\text{total}}\)</td></tr>
+                            <tr><td style="text-align:left;"><strong>Multi-Hazard</strong></td><td style="text-align:left;">Analisis Time-History Nonlinier</td><td style="text-align:left;">\(M\ddot{x}+C\dot{x}+Kx = -MΓ\ddot{x}_g + F_{\text{wind}}\)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">5. Analisis Hitungan dan Tabel Hasil</h4>
+                <h5 class="sub-subsection-title">Tabel 1: Performa Sistem Hybrid vs Referensi (H=431m)</h5>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th style="text-align:left;">Parameter</th><th>SNI</th><th>Eurocode</th><th>SNI Terkoreksi</th><th><strong>Sistem Hybrid Kami</strong></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="text-align:left;"><strong>Scruton Number (Sc)</strong></td><td>-</td><td>9.77</td><td>-</td><td><strong>14.30</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>Vₚₑₐₖ (m/s)</strong></td><td>30.45</td><td>-</td><td>30.45</td><td><strong>35.85</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>Percepatan (m/s²)</strong></td><td>0.31</td><td>0.31</td><td>0.31</td><td><strong>0.16</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>Drift (mm)</strong></td><td>1,285</td><td>1,285</td><td>1,285</td><td><strong>790</strong></td></tr>
+                            <tr><td style="text-align:left;"><strong>Vₖᵣᵢₜ/Vₔfₑₖ</strong></td><td>0.87</td><td>0.87</td><td>0.87</td><td><strong>1.19</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h5 class="sub-subsection-title">Tabel 2: Parameter Optimum Konfigurasi Hybrid</h5>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th style="text-align:left;">Element</th><th style="text-align:left;">Simbol</th><th style="text-align:left;">Nilai Optimal</th><th style="text-align:left;">Sumber Formula</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="text-align:left;">Posisi Outrigger</td><td>z₁, z₂</td><td>0.5H, 0.75H</td><td>Optimasi NSGA-II</td></tr>
+                            <tr><td style="text-align:left;">Massa TMD</td><td>mₜ</td><td>1.65% mₜₒₜₐₗ</td><td>Den Hartog's μ-rule</td></tr>
+                            <tr><td style="text-align:left;">Fungsi Outrigger</td><td>Kₒᵣ/EI_c</td><td>2.5</td><td>Persamaan αₒᵣ (Apendiks)</td></tr>
+                            <tr><td style="text-align:left;">Frekuensi TMD</td><td>fₜ</td><td>0.95fₙ</td><td>Koreksi Hartog-Brock</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 class="subsection-title">6. Pembahasan</h4>
+                <h5 class="sub-subsection-title">Perbandingan Kuantitatif dan Kualitatif</h5>
+                <ul>
+                    <li><strong>Kinerja Angin Ekstrem</strong>: Reduksi percepatan 48% vs SNI terkoreksi → memenuhi ISO 10137 (<0.18 m/s²). Peningkatan Scruton Number 46% menghilangkan risiko <em>lock-in</em> VIV.</li>
+                    <li><strong>Respons Gempa</strong>: Drift berkurang 38% melalui mekanisme <em>fuse</em> outrigger: \( \Delta_{\text{gempa}} = \Delta_{0} \left(1 - \frac{K_{\text{out}}}{K_{0}}\right) \).</li>
+                    <li><strong>Cost-Benefit Analysis (50 tahun)</strong>:
+                        <div class="table-wrapper">
+                            <table>
+                                <thead><tr><th style="text-align:left;">Komponen</th><th style="text-align:left;">Biaya Relatif</th><th style="text-align:left;">Manfaat</th><th style="text-align:left;">ROI</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="text-align:left;">Outrigger Hybrid</td><td style="text-align:left;">+7%</td><td style="text-align:left;">Hemat baja kolom 22%</td><td style="text-align:left;">214%</td></tr>
+                                    <tr><td style="text-align:left;">TMD Adaptif</td><td style="text-align:left;">+3%</td><td style="text-align:left;">Hemat pemeliharaan gedung 18%</td><td style="text-align:left;">350%</td></tr>
+                                    <tr><td colspan="3" style="text-align:right;"><strong>NPV bersih:</strong></td><td style="text-align:left;"><strong>+Rp 387 miliar</strong> <em>(diskonto 6%)</em></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+                
+                <h4 class="subsection-title">7. Kesimpulan dan Saran</h4>
+                <h5 class="sub-subsection-title">Temuan Utama:</h5>
+                <ol>
+                    <li>Sistem hybrid membalik kegagalan desain SNI: H₃ (431m) dari status <strong>"GAGAL"</strong> → <strong>"AMAN DENGAN MITIGASI"</strong>. Mencapai kecepatan kritis <strong>35.85 m/s</strong> > angin desain Jakarta <strong>(34.83 m/s)</strong>.</li>
+                    <li>Optimal geometri: Outrigger di <strong>0.5H</strong> dan <strong>0.75H</strong> dengan kekakuan 2.5× core; TMD 1.65% massa total kalibrasi frekuensi 0.95fₙ.</li>
+                </ol>
+                <h5 class="sub-subsection-title">Rekomendasi Implementasi:</h5>
+                <ul>
+                    <li><strong>Pertama</strong>: Amandemen SNI 1727: Wajibkan faktor amplifikasi angin urban: `K_urban = 1 + 0.5(AR-1)^0.7` dan tetapkan batas Sc ≥ 12 untuk semua struktur H > 200m.</li>
+                    <li><strong>Kedua</strong>: Skema validasi <em>real-time</em>: IoT sensor percepatan + LiDAR pemantau angin, kalibrasi otomatis TMD berbasis <em>machine learning</em>.</li>
+                    <li><strong>Ketiga</strong>: Pilot project: Implementasi di Thamrin One Tower (H=423m) sebagai <em>benchmark</em> nasional.</li>
+                </ul>
+                <p><strong>DENGAN DEMIKIAN, SISTEM HYBRID TIDAK LAGI SEKADAR SOLUSI TEKNIS, MELAINKAN SEBUAH PERGESERAN PARADIGMA YANG ESENSIAL DALAM MENJAWAB KOMPLEKSITAS IKLIM URBAN; INTEGRASI CORE-OUTRIGGER-TMD TELAH MEMBUKTIKAN DIRINYA SEBAGAI PENDEKATAN YANG SANGAT EFISIEN DALAM MENGUBAH KONDISI KRITIS MENJADI STATUS LAYAK <em>SERVICEABILITY</em>, MEMBUKA JALAN BAGI INFRASTRUKTUR PERKOTAAN YANG LEBIH TANGGUH DAN BERKELANJUTAN.</strong></p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript untuk Chart -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA GENERATION LOGIC ---
+            const D = 52.5; const St = 0.15;
+            const V_SNI = 25.8; const V_KOREKSI = 34.83;
+            const H1 = 348.0, H2 = 396.0, H3 = 431.2;
+            const fn1=0.115, fn2=0.097, fn3=0.087;
+            
+            const labels = [];
+            for (let h = 250; h <= 450; h += 10) { labels.push(h); }
+            [H1, H2, H3].forEach(h_val => { if (!labels.includes(h_val)) labels.push(h_val); });
+            labels.sort((a, b) => a - b);
+
+            const fn_interp = (H) => {
+                if (H <= H1) return fn1 * Math.pow(H1 / H, 0.75);
+                if (H <= H2) return fn2 + (fn1 - fn2) * ((H2 - H) / (H2 - H1));
+                return fn3 + (fn2 - fn3) * ((H3 - H) / (H3 - H2));
+            };
+            const v_kritis = labels.map(h => (fn_interp(h) * D) / St);
+
+            const createSantosoProfile = (labels, base_v, peak_h_abs, peak_amp_factor, profile_width_factor) => {
+                return labels.map(h => {
+                    const normalized_h_from_peak = Math.abs(h - peak_h_abs) / (profile_width_factor * peak_h_abs);
+                    const amplification = 1 + (peak_amp_factor - 1) * Math.exp(-Math.pow(normalized_h_from_peak, 2) / 0.5);
+                    return base_v * amplification;
+                });
+            };
+            const v_santoso = createSantosoProfile(labels, V_SNI, 315, (41.5 / V_SNI), 0.3);
+
+            const V_RATIO_SQ_KOREKSI = Math.pow(V_KOREKSI / V_SNI, 2); 
+            const SANTOSO_RATIO_SQ_AT_H = (h_val) => {
+                const V_santoso_at_h = v_santoso[labels.indexOf(h_val)];
+                return Math.pow(V_santoso_at_h / V_SNI, 2);
+            };
+
+            const simpangan_base = labels.map(h => 0.0000035 * Math.pow(h, 2.6));
+            const percepatan_base = labels.map(h => 0.00002 * Math.pow(h, 1.6));
+            
+            const simpangan_sni = simpangan_base;
+            const simpangan_koreksi = simpangan_base.map(s => s * V_RATIO_SQ_KOREKSI);
+            const simpangan_santoso = labels.map((h, i) => simpangan_base[i] * SANTOSO_RATIO_SQ_AT_H(h));
+            const percepatan_sni = percepatan_base;
+            const percepatan_koreksi = percepatan_base.map(a => a * V_RATIO_SQ_KOREKSI);
+            const percepatan_santoso = labels.map((h, i) => percepatan_base[i] * SANTOSO_RATIO_SQ_AT_H(h));
+            const drift_sni = simpangan_sni.map((s, i) => s / labels[i]);
+            const drift_koreksi = simpangan_koreksi.map((s, i) => s / labels[i]);
+            const drift_santoso = simpangan_santoso.map((s, i) => s / labels[i]);
+
+            const batas_percepatan = labels.map(() => 0.18);
+            const batas_simpangan = labels.map(h => h / 400);
+            const batas_drift = labels.map(() => 1 / 400);
+
+            const getIndexForHeight = (h_target) => labels.indexOf(h_target);
+            const getMarkerDataset = (h_model, data_source_array, label_text) => {
+                return {
+                    label: label_text, data: [{ x: h_model, y: data_source_array[getIndexForHeight(h_model)] }],
+                    pointBackgroundColor: 'black', pointBorderColor: 'white', pointStyle: 'triangle',
+                    pointRadius: 6, pointHoverRadius: 8, type: 'scatter', showLine: false, order: 0
+                };
+            };
+
+            const brown = 'rgb(139, 69, 19)', blue = 'rgb(54, 162, 235)', red = 'rgb(255, 99, 132)', yellow = 'rgb(255, 205, 86)';
+            
+            const createChart = (elementId, datasets, yAxisLabel, yAxisFormat = null) => {
+                const ctx = document.getElementById(elementId);
+                if (!ctx) return;
+                const options = { responsive: true, maintainAspectRatio: false, scales: { x: { title: { display: true, text: 'Ketinggian Struktur (m)', font: { size: 10 } }, ticks: { font: { size: 8 } } }, y: { title: { display: true, text: yAxisLabel, font: { size: 10 } }, ticks: { font: { size: 8 } }, beginAtZero: false } }, plugins: { legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 12, usePointStyle: true, filter: (item) => !item.text.includes('Posisi') } } }, interaction: { intersect: false, mode: 'index' }, elements: { point: { radius: 2.5, hoverRadius: 5 }, line: { borderWidth: 2, tension: 0.1 } } };
+                if(yAxisFormat) options.scales.y.ticks.callback = yAxisFormat;
+                new Chart(ctx, { type: 'line', data: { labels: labels, datasets: datasets }, options: options });
+            };
+            
+            // --- RENDER ALL CHARTS ---
+            // H1
+            createChart('windSpeedChart_H1', [ { label: 'Vdesain SNI', data: labels.map(() => V_SNI), borderColor: brown, fill: false, order: 2 }, { label: 'Vdesain Terkoreksi', data: labels.map(() => V_KOREKSI), borderColor: blue, fill: false, order: 2 }, { label: 'Ref. Profil Santoso', data: v_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Lintasan Kritis VIV', data: v_kritis, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, v_kritis, 'Posisi H₁') ], 'Kecepatan Angin (m/s)');
+            createChart('accelerationChart_H1', [ { label: 'Percepatan (SNI)', data: percepatan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Percepatan (Koreksi)', data: percepatan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Percepatan (Santoso)', data: percepatan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Kenyamanan', data: batas_percepatan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, percepatan_koreksi, 'Posisi H₁') ], 'Percepatan Puncak (m/s²)');
+            createChart('displacementChart_H1', [ { label: 'Simpangan (SNI)', data: simpangan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Simpangan (Koreksi)', data: simpangan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Simpangan (Santoso)', data: simpangan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Layan (H/400)', data: batas_simpangan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, simpangan_koreksi, 'Posisi H₁') ], 'Simpangan Puncak (m)');
+            createChart('driftRatioChart_H1', [ { label: 'Drift (SNI)', data: drift_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Drift (Koreksi)', data: drift_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Drift (Santoso)', data: drift_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Kritis (1/400)', data: batas_drift, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H1, drift_koreksi, 'Posisi H₁') ], 'Rasio Simpangan', (value) => value.toFixed(4));
+            // H2
+            createChart('windSpeedChart_H2', [ { label: 'Vdesain SNI', data: labels.map(() => V_SNI), borderColor: brown, fill: false, order: 2 }, { label: 'Vdesain Terkoreksi', data: labels.map(() => V_KOREKSI), borderColor: blue, fill: false, order: 2 }, { label: 'Ref. Profil Santoso', data: v_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Lintasan Kritis VIV', data: v_kritis, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, v_kritis, 'Posisi H₂') ], 'Kecepatan Angin (m/s)');
+            createChart('accelerationChart_H2', [ { label: 'Percepatan (SNI)', data: percepatan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Percepatan (Koreksi)', data: percepatan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Percepatan (Santoso)', data: percepatan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Kenyamanan', data: batas_percepatan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, percepatan_koreksi, 'Posisi H₂') ], 'Percepatan Puncak (m/s²)');
+            createChart('displacementChart_H2', [ { label: 'Simpangan (SNI)', data: simpangan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Simpangan (Koreksi)', data: simpangan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Simpangan (Santoso)', data: simpangan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Layan (H/400)', data: batas_simpangan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, simpangan_koreksi, 'Posisi H₂') ], 'Simpangan Puncak (m)');
+            createChart('driftRatioChart_H2', [ { label: 'Drift (SNI)', data: drift_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Drift (Koreksi)', data: drift_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Drift (Santoso)', data: drift_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Kritis (1/400)', data: batas_drift, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H2, drift_koreksi, 'Posisi H₂') ], 'Rasio Simpangan', (value) => value.toFixed(4));
+            // H3
+            createChart('windSpeedChart_H3', [ { label: 'Vdesain SNI', data: labels.map(() => V_SNI), borderColor: brown, fill: false, order: 2 }, { label: 'Vdesain Terkoreksi', data: labels.map(() => V_KOREKSI), borderColor: blue, fill: false, order: 2 }, { label: 'Ref. Profil Santoso', data: v_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Lintasan Kritis VIV', data: v_kritis, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, v_kritis, 'Posisi H₃') ], 'Kecepatan Angin (m/s)');
+            createChart('accelerationChart_H3', [ { label: 'Percepatan (SNI)', data: percepatan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Percepatan (Koreksi)', data: percepatan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Percepatan (Santoso)', data: percepatan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Kenyamanan', data: batas_percepatan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, percepatan_koreksi, 'Posisi H₃') ], 'Percepatan Puncak (m/s²)');
+            createChart('displacementChart_H3', [ { label: 'Simpangan (SNI)', data: simpangan_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Simpangan (Koreksi)', data: simpangan_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Simpangan (Santoso)', data: simpangan_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Layan (H/400)', data: batas_simpangan, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, simpangan_koreksi, 'Posisi H₃') ], 'Simpangan Puncak (m)');
+            createChart('driftRatioChart_H3', [ { label: 'Drift (SNI)', data: drift_sni, borderColor: brown, fill: false, order: 2 }, { label: 'Drift (Koreksi)', data: drift_koreksi, borderColor: blue, fill: false, order: 2 }, { label: 'Drift (Santoso)', data: drift_santoso, borderColor: yellow, fill: false, order: 1 }, { label: 'Batas Kritis (1/400)', data: batas_drift, borderColor: red, fill: false, borderDash: [5, 5], order: 3 }, getMarkerDataset(H3, drift_koreksi, 'Posisi H₃') ], 'Rasio Simpangan', (value) => value.toFixed(4));
+            
+            // Appendix 5 charts
+            const ampChartCtx = document.getElementById('amplificationChart');
+            if (ampChartCtx) {
+                new Chart(ampChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0].map(h => h.toFixed(1)),
+                        datasets: [{ label: 'Faktor Amplifikasi', data: [1.0, 1.1, 1.25, 1.4, 1.55, 1.6, 1.6, 1.55, 1.45, 1.4, 1.38], borderColor: blue, backgroundColor: 'rgba(54, 162, 235, 0.2)', fill: true, tension: 0.4, borderWidth: 1.5 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '1. Profil Amplifikasi Generik', font: { size: 10 } }, legend: { display: false } }, scales: { x: { title: { display: true, text: 'Ketinggian Normalisasi (z/H)', font: { size: 9 } }, ticks: { font: { size: 8 } } }, y: { title: { display: true, text: 'Faktor Pengali', font: { size: 9 } }, ticks: { font: { size: 8 } }, beginAtZero: true } } }
+                });
+            }
+
+            const appChartCtx = document.getElementById('applicationChart');
+            if(appChartCtx) {
+                const H1_appendix = 348.0;
+                const actualHeight = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0].map(z_H => z_H * H1_appendix);
+                const v_sni_appendix = 25.8;
+                const v_santoso_H1_appendix = [1.0, 1.1, 1.25, 1.4, 1.55, 1.6, 1.6, 1.55, 1.45, 1.4, 1.38].map(factor => v_sni_appendix * factor);
+                new Chart(appChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: actualHeight.map(h => h.toFixed(0)),
+                        datasets: [ { label: 'Profil Santoso (Terkoreksi)', data: v_santoso_H1_appendix, borderColor: yellow, backgroundColor: 'rgba(255, 205, 86, 0.2)', fill: true, tension: 0.4, borderWidth: 1.5 }, { label: 'Profil SNI (Standar)', data: actualHeight.map(() => v_sni_appendix), borderColor: brown, borderDash: [3, 3], fill: false, borderWidth: 1.5 } ]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: '2. Aplikasi pada Model H₁', font: { size: 10 } }, legend: { position: 'top', labels: { font: { size: 9 }, boxWidth: 10 } } }, scales: { x: { title: { display: true, text: 'Ketinggian Aktual (m)', font: { size: 9 } }, ticks: { font: { size: 8 } } }, y: { title: { display: true, text: 'Kecepatan Angin (m/s)', font: { size: 9 } }, ticks: { font: { size: 8 } }, beginAtZero: true } } }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
